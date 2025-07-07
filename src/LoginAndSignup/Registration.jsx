@@ -149,7 +149,7 @@ const AgentRegistrationForm = () => {
             </button>
           </div>
            <p className="text-center text-sm text-gray-600 mt-6">
-         Back to login? <Link to="/login-agent" className="text-blue-500 hover:underline">Login</Link>
+         Back to login? <Link to="/agent/login-agent" className="text-blue-500 hover:underline">Login</Link>
         </p>
         </form>
       </div>

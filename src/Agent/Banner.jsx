@@ -1,8 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Banner = () => {
+  const navigate=useNavigate()
   return (
-     <div className="bg-gradient-to-br from-blue-500 to-purple-500 text-white py-16 px-4 md:px-12 relative overflow-hidden">
+     <div className="bg-gradient-to-br from-blue-500 to-purple-500 text-white pt-4 py-16 px-4 md:px-12 relative overflow-hidden">
+      <div className="flex justify-between items-center mb-6">
+        <img src="/Logo/Logo.png" alt="logo" className='w-30 h-auto' />
+          <div className="navbar-end">
+        <button onClick={()=>navigate('/agent/login-agent')} className="btn btn-outline bg-white border-[#3b82f6] text-[#3b82f6] hover:text-white hover:bg-[#3b82f6]">Agent Login</button>
+      </div>
+      </div>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Left Content */}
         <div className="md:w-1/2 z-10">
@@ -32,9 +40,13 @@ const Banner = () => {
           </p>
 
           {/* CTA */}
+          <div className="flex gap-4">
+          <button onClick={()=>navigate('/')} className="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
+           back 
+          </button>
           <button className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
             Get Travel Leads
-          </button>
+          </button></div>
         </div>
 
         {/* Right Image */}

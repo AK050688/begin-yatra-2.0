@@ -63,7 +63,7 @@ const TravelLeadsSlider = () => {
     <div className="py-10 px-4 bg-gray-50">
       <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">
         Latest Travel Leads for Travel Agents on{" "}
-        <span className="text-blue-600">TripClap</span>
+        <span className="text-blue-600">Begin Yatra</span>
       </h2>
 
       <div className="max-w-7xl mx-auto transition-all duration-300 ease-in-out">

@@ -1,57 +1,54 @@
 import React from 'react';
 import Card from '../../components/card';
 
-
 const cardData = [
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
   {
-    img: "/Images/goa.jpeg",
-    place: "Goa",
+    img: '/Images/goa.jpeg',
+    place: 'Goa',
     price: 57758,
   },
 ];
 
-
 const BestPakages = () => {
   return (
-    <div className="px-4 sm:px-8 md:px-12 py-16 bg-gradient-to-b from-blue-50 to-white">
-           <div className="bg-[url('/Images/bg.png')] bg-contain bg-no-repeat text-white bg-center h-[70vh] w-full">
-        <div className="absolute inset-0 h-[70vh] top-20 bg-black/50"></div>{" "}
-        {/* Overlay for better text contrast */}
+    <div className="px-4 sm:px-6 md:px-12 py-16 bg-gradient-to-b from-blue-50 to-white">
+      {/* Hero Section */}
+      <div className="relative bg-[url('/Images/bg.png')] bg-cover bg-center text-white h-[70vh] w-full rounded-3xl overflow-hidden">
+        <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-6 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight drop-shadow-lg">
-            Plan Your <span className="text-[#3b82f6]"> Holiday Packages</span>
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight drop-shadow-lg">
+            Plan Your <span className="text-[#3b82f6]">Holiday Packages</span>
           </h1>
-
-          <p className="text-lg md:text-xl font-medium drop-shadow-sm">
+          <p className="text-base md:text-xl font-medium drop-shadow-sm">
             Customize & Book Amazing Tours
           </p>
 
-          {/* Search input */}
+          {/* Search Box */}
           <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 w-full max-w-md shadow-md">
             <svg
               className="h-5 w-5 text-gray-500"
@@ -65,8 +62,8 @@ const BestPakages = () => {
                 fill="none"
                 stroke="currentColor"
               >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
               </g>
             </svg>
             <input
@@ -80,85 +77,79 @@ const BestPakages = () => {
             </button>
           </div>
 
-          {/* Destinations */}
+          {/* Top Destinations */}
           <div className="text-sm md:text-base mt-2">
             <span className="font-bold text-[#3b82f6]">Top Destinations: </span>
-            <span>
-              Shimla, Manali, Goa, Kashmir, Kerala, Jaipur, Singapore, Thailand,
-              Malaysia
-            </span>
+            Shimla, Manali, Goa, Kashmir, Kerala, Jaipur, Singapore, Thailand, Malaysia
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center px-12">
-        <div className="h-[70vh] w-full  flex gap-8  bg-blue-200  bg-center bg-cover  my-12 rounded-2xl px-12 ">
-          <div className="px-24 py-12">
-            <p className="text-sm mt-6">Powered by Generative Ai</p>
-            <span className="md:text-4xl text-2xl  font-bold mt-6 text-[#3b82f6]">
-              {" "}
-              Crift your trif in minutes
-            </span>
-            <p className="mt-6">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-              necessitatibus eius, doloribus, quidem rem provident optio esse
-              quod suscipit numquam omnis? Nam temporibus quae porro! Laboriosam
-              labore unde eaque tempore repellat, odio voluptate. Consequuntur
-              accusamus rem repudiandae eius ad sit.
-            </p>
-            <button className="w-60 mt-6 btn text-lg bg-[#3b82f6] hover:bg-white hover:text-[#3b82f6] hover:border-[#3b82f6] text-white">
-              Start a Trip Now
-            </button>
-          </div>
-          <img src="/Images/phone.png" alt="img" />
+
+      {/* Promo Banner Section */}
+      <div className="flex flex-col-reverse lg:flex-row justify-center items-center gap-6 mt-16 bg-blue-100 rounded-2xl px-6 py-12">
+        <div className="lg:w-1/2">
+          <p className="text-sm text-gray-600">Powered by Generative AI</p>
+          <h2 className="text-2xl md:text-4xl font-bold text-[#3b82f6] mt-2">
+            Craft your trip in minutes
+          </h2>
+          <p className="mt-4 text-gray-700">
+            We provide a seamless experience for planning your next travel adventure.
+            Personalize your itinerary with confidence and ease, powered by smart AI insights.
+          </p>
+          <button className="mt-6 px-6 py-3 btn bg-[#3b82f6] text-white rounded-md hover:bg-white hover:text-[#3b82f6] hover:border hover:border-[#3b82f6] transition-all">
+            Start a Trip Now
+          </button>
+        </div>
+        <div className="lg:w-1/2 flex justify-center">
+          <img src="/Images/phone.png" alt="Phone" className="w-[200px] md:w-[250px] lg:w-[300px]" />
         </div>
       </div>
-      <h3 className="text-3xl md:text-4xl font-bold text-center text-blue-800 mb-12">
-         Explore Best Popular Tour Packages
+
+      {/* Tour Package Heading */}
+      <h3 className="text-3xl md:text-4xl font-bold text-center text-blue-800 mt-20 mb-12">
+        Explore Best Popular Tour Packages
       </h3>
 
-<Card/>
+      {/* Package Cards Component */}
+      <Card />
 
-     
-      <div className="bg-[url(/Images/flightImg.jpg)] bg-cover bg-center text-white h-[60vh] sm:h-[70vh] w-full mt-20 rounded-3xl flex items-center justify-center shadow-xl relative overflow-hidden">
-        <div className="bg-black/50 backdrop-blur-sm p-6 md:p-10 rounded-xl text-center max-w-xl z-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4"> Fly Anywhere with Confidence</h2>
-          <p className="text-lg">Book flights, hotels, and experiences at exclusive prices. Your dream journey starts today!</p>
+      {/* Flight Offer Banner */}
+      <div className="relative bg-[url(/Images/flightImg.jpg)] bg-cover bg-center text-white h-[60vh] sm:h-[70vh] w-full mt-20 rounded-3xl flex items-center justify-center shadow-xl overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-30 rounded-3xl" />
+        <div className="z-10 text-center px-6 max-w-xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Fly Anywhere with Confidence</h2>
+          <p className="text-lg">
+            Book flights, hotels, and experiences at exclusive prices. Your dream journey starts today!
+          </p>
           <button className="mt-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-md hover:from-orange-500 hover:to-pink-500 transition-all">
             Discover Offers
           </button>
         </div>
-
-        {/* Optional overlay */}
-        <div className="absolute inset-0 bg-black opacity-20 rounded-3xl" />
       </div>
-      <div className=" mt-8">
-   <div className="overflow-x-auto px-4">
-  <div className="flex space-x-6 min-w-max">
-    {cardData.map((card, index) => (
-      <div
-        key={index}
-        className="min-w-[250px] bg-white/70 backdrop-blur-md shadow-xl hover:shadow-2xl rounded-2xl overflow-hidden transition-all transform hover:-translate-y-1 hover:scale-[1.02]"
-      >
-        <div className="relative">
-          <img
-            src={card.img}
-            alt={card.place}
-            className="w-full h-48 object-cover"
-          />
-          {/* <span className="absolute top-3 left-3 bg-gradient-to-r from-orange-400 to-pink-500 text-white px-3 py-1 text-sm font-semibold rounded-full shadow-md">
-            Featured
-          </span> */}
-        </div>
 
-        <div className="p-5 space-y-2">
-          <h4 className="text-xl font-bold text-gray-800">{card.place}</h4>
+      {/* Scrollable Card Section */}
+      <div className="mt-12">
+        <div className="overflow-x-auto px-2 sm:px-6">
+          <div className="flex space-x-6 min-w-max pb-4">
+            {cardData.map((card, index) => (
+              <div
+                key={index}
+                className="min-w-[250px] bg-white/80 backdrop-blur-md shadow-xl hover:shadow-2xl rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:scale-105"
+              >
+                <img
+                  src={card.img}
+                  alt={card.place}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h4 className="text-xl font-bold text-gray-800">{card.place}</h4>
+                  <p className="text-gray-500 text-sm">Starting from ₹{card.price.toLocaleString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    ))}
-  </div>
-</div>
-</div>
-
 
     </div>
   );

@@ -11,7 +11,8 @@ import TermsAndConditions from './Routes/TermsAndCondtions';
 import PrivacyPolicy from './Routes/PrivacyPolicy';
 import LoginPage from './LoginAndSignup/Login';
 import Registration from './LoginAndSignup/Registration';
-import Agent from './Routes/Agent/Agent';
+import Agent from './Agent/Agent';
+
 function App() {
 
   const location = useLocation()

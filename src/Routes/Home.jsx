@@ -12,7 +12,8 @@ const Home = () => {
       <BestPakages/>
       <TrendingPackages/>
       <PackageMarketplace/>
-      <WnatToGOForm/>
+      <div className="mx-80">
+      <WnatToGOForm/></div>
     </div>
   );
 };

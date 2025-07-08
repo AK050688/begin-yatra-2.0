@@ -1,5 +1,7 @@
 import React from 'react';
-import Card from '../../components/card';
+
+import { useNavigate } from 'react-router-dom';
+import Card from '../../components/Card';
 
 const cardData = [
   {
@@ -35,10 +37,15 @@ const cardData = [
 ];
 
 const BestPakages = () => {
+  const navigate = useNavigate()
+
+  const navigateHandler =()=>{
+    navigate("/*location")
+  }
   return (
     <div className="px-4 sm:px-6 md:px-12 py-16 bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
-      <div className="relative bg-[url('/Images/bg.png')] bg-cover bg-center text-white h-[70vh] w-full rounded-3xl overflow-hidden">
+      <div className="relative bg-[url('/Images/bgImg.avif')] bg-no-repeat bg-cover bg-center text-white h-[70vh] w-full rounded-3xl overflow-hidden">
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-6 px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold leading-tight drop-shadow-lg">
@@ -72,7 +79,7 @@ const BestPakages = () => {
               placeholder="Search destinations..."
               className="flex-1 px-2 py-1 outline-none text-gray-700"
             />
-            <button className="bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-700 transition">
+            <button className="bg-blue-600 cursor-pointer text-white px-4 py-1 rounded-full hover:bg-blue-700 transition">
               Search
             </button>
           </div>
@@ -86,7 +93,7 @@ const BestPakages = () => {
       </div>
 
       {/* Promo Banner Section */}
-      <div className="flex flex-col-reverse lg:flex-row justify-center items-center gap-6 mt-16 bg-blue-100 rounded-2xl px-6 py-12">
+      <div onClick={navigateHandler} className="flex cursor-pointer flex-col-reverse lg:flex-row justify-center items-center gap-6 mt-16 bg-blue-100 rounded-2xl px-6 py-12">
         <div className="lg:w-1/2">
           <p className="text-sm text-gray-600">Powered by Generative AI</p>
           <h2 className="text-2xl md:text-4xl font-bold text-[#3b82f6] mt-2">
@@ -114,7 +121,7 @@ const BestPakages = () => {
       <Card />
 
       {/* Flight Offer Banner */}
-      <div className="relative bg-[url(/Images/flightImg.jpg)] bg-cover bg-center text-white h-[60vh] sm:h-[70vh] w-full mt-20 rounded-3xl flex items-center justify-center shadow-xl overflow-hidden">
+      {/* <div className="relative bg-[url(/Images/flightImg.jpg)] bg-cover bg-center text-white h-[60vh] sm:h-[70vh] w-full mt-20 rounded-3xl flex items-center justify-center shadow-xl overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-30 rounded-3xl" />
         <div className="z-10 text-center px-6 max-w-xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Fly Anywhere with Confidence</h2>
@@ -125,10 +132,10 @@ const BestPakages = () => {
             Discover Offers
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Scrollable Card Section */}
-      <div className="mt-12">
+      {/* <div className="mt-12">
         <div className="overflow-x-auto px-2 sm:px-6">
           <div className="flex space-x-6 min-w-max pb-4">
             {cardData.map((card, index) => (
@@ -149,7 +156,7 @@ const BestPakages = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

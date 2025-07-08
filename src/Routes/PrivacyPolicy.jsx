@@ -109,7 +109,7 @@ const PrivacyPolicy = () => {
           <p className="text-gray-700">
             If you have questions or concerns about this Privacy Policy, please contact us at:
           </p>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-10 text-gray-700">
             <strong>BeginYatra</strong> <br />
             <a href="mailto:info@beginyatra.com" className="text-blue-600 underline">
               info@beginyatra.com

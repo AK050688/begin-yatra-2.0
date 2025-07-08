@@ -58,12 +58,12 @@ const cardData = [
 
         <div className="p-5 space-y-2">
           <h4 className="text-xl font-bold text-gray-800">{card.place}</h4>
-          <p className="text-sm text-gray-500">Starting from</p>
-          <p className="text-xl text-green-600 font-bold">₹{card.price}</p>
-
+          {/* <p className="text-sm text-gray-500">Starting from</p> */}
+          {/* <p className="text-xl text-green-600 font-bold">₹{card.price}</p> */}
+{/* 
           <button className="mt-3 w-full cursor-pointer px-4 py-2 bg-[#3b82f6] text-white font-semibold rounded-md hover:bg-[#3b83f6ab] transition-all">
             Book Now
-          </button>
+          </button> */}
         </div>
       </div>
     ))}

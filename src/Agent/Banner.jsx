@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FaArrowLeft } from "react-icons/fa6"
 
 const Banner = () => {
   const navigate=useNavigate()
@@ -41,8 +42,8 @@ const Banner = () => {
 
           {/* CTA */}
           <div className="flex gap-4">
-          <button onClick={()=>navigate('/')} className="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
-           back 
+          <button onClick={()=>navigate('/')} className="bg-red-500 flex gap-2 items-center hover:bg-red-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
+        <FaArrowLeft />   back 
           </button>
           <button className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
             Get Travel Leads

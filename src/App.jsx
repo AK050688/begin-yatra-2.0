@@ -47,7 +47,7 @@ function App() {
 <Route path='/*peoples' element={<WhoIsComeingWithYou/>}/>
 <Route path='/*spend-time' element={<SpendTime/>}/>
 <Route path='/*trip-itinerary' element={<TripItinerary/>}/>
-<Route path='/*get-quote' element={<WnatToGOForm/>}/>
+<Route path='/get-quote' element={<WnatToGOForm/>}/>
 
 
   {/*Agent*/}

@@ -20,7 +20,7 @@ const Navbar = () => {
       : "text-gray-700 hover:text-blue-500 transition duration-200"
 
   return (
-    <div className="navbar bg-white shadow-md px-4 lg:px-12">
+    <div className="navbar fixed z-50 bg-white shadow-md px-4 lg:px-12">
       {/* Start */}
       <div className="navbar-start">
         <div className="dropdown">

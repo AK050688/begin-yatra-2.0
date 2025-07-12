@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import Card from '../../components/Card';
+
 
 const cardData = [
   {
@@ -36,7 +36,7 @@ const cardData = [
   },
 ];
 
-const BestPakages = () => {
+const HeroSection = () => {
   const navigate = useNavigate()
 
   const navigateHandler =()=>{
@@ -93,7 +93,7 @@ const BestPakages = () => {
       </div>
 
       {/* Promo Banner Section */}
-      <div onClick={navigateHandler} className="flex cursor-pointer flex-col-reverse lg:flex-row justify-center items-center gap-6 mt-16 bg-blue-100 rounded-2xl px-6 py-12">
+      {/* <div onClick={navigateHandler} className="flex cursor-pointer flex-col-reverse lg:flex-row justify-center items-center gap-6 mt-16 bg-blue-100 rounded-2xl px-6 py-12">
         <div className="lg:w-1/2">
           <p className="text-sm text-gray-600">Powered by Generative AI</p>
           <h2 className="text-2xl md:text-4xl font-bold text-[#3b82f6] mt-2">
@@ -110,56 +110,19 @@ const BestPakages = () => {
         <div className="lg:w-1/2 flex justify-center">
           <img src="/Images/phone.png" alt="Phone" className="w-[200px] md:w-[250px] lg:w-[300px]" />
         </div>
-      </div>
+      </div> */}
 
       {/* Tour Package Heading */}
-      <h3 className="text-3xl md:text-4xl font-bold text-center text-blue-800 mt-20 mb-12">
+      {/* <h3 className="text-3xl md:text-4xl font-bold text-center text-blue-800 mt-20 mb-12">
         Explore Best Popular Tour Packages
-      </h3>
+      </h3> */}
 
-      {/* Package Cards Component */}
-      <Card />
+      
 
-      {/* Flight Offer Banner */}
-      {/* <div className="relative bg-[url(/Images/flightImg.jpg)] bg-cover bg-center text-white h-[60vh] sm:h-[70vh] w-full mt-20 rounded-3xl flex items-center justify-center shadow-xl overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-30 rounded-3xl" />
-        <div className="z-10 text-center px-6 max-w-xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Fly Anywhere with Confidence</h2>
-          <p className="text-lg">
-            Book flights, hotels, and experiences at exclusive prices. Your dream journey starts today!
-          </p>
-          <button className="mt-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-md hover:from-orange-500 hover:to-pink-500 transition-all">
-            Discover Offers
-          </button>
-        </div>
-      </div> */}
-
-      {/* Scrollable Card Section */}
-      {/* <div className="mt-12">
-        <div className="overflow-x-auto px-2 sm:px-6">
-          <div className="flex space-x-6 min-w-max pb-4">
-            {cardData.map((card, index) => (
-              <div
-                key={index}
-                className="min-w-[250px] bg-white/80 backdrop-blur-md shadow-xl hover:shadow-2xl rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:scale-105"
-              >
-                <img
-                  src={card.img}
-                  alt={card.place}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h4 className="text-xl font-bold text-gray-800">{card.place}</h4>
-                  <p className="text-gray-500 text-sm">Starting from ₹{card.price.toLocaleString()}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
+    
 
     </div>
   );
 };
 
-export default BestPakages;
+export default HeroSection;

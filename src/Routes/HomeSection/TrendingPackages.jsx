@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Star } from 'lucide-react';
-import Card from '../../components/card';
+import Card from '../../components/PopularPackages';
 
 const packages = [
   {
@@ -13,7 +13,7 @@ const packages = [
     reviews: 106,
   },
   {
-    img: '/Images/bali.jpg',
+    img: '/Images/rajastan.png',
     title: 'Experience Bali in 6 Nights of Tropical Beauty & Adventures!',
     location: 'Kuta, Ubud',
     duration: '6 Nights / 7 Days',
@@ -21,8 +21,18 @@ const packages = [
     rating: 5.0,
     reviews: 9,
   },
+   {
+    img: '/Images/rajastan.png',
+    title: 'Experience Bali in 6 Nights of Tropical Beauty & Adventures!',
+    location: 'Kuta, Ubud',
+    duration: '6 Nights / 7 Days',
+    price: 28500,
+    rating: 5.0,
+    reviews: 9,
+  },
+  
   {
-    img: '/Images/sikkim.jpg',
+    img: '/Images/kashmir.jpg',
     title: 'Gangtok Sikkim Package 4 N 5 D - (RATES APPLICABLE...)',
     location: 'Sikkim',
     duration: '4 Nights / 5 Days',
@@ -33,39 +43,16 @@ const packages = [
 ];
 
 
-const StoriesData=[
-  {
-    img:"/Images/goa.jpeg",
-    reviews:"Top 10 Thins to do Durgapur",
-    numOfView:325
-  },
-  {
-    img:"/Images/goa.jpeg",
-    reviews:"Top 10 Thins to do Durgapur",
-    numOfView:325
-  },  
-  {
-    img:"/Images/goa.jpeg",
-    reviews:"Top 10 Thins to do Durgapur",
-    numOfView:325
-  },
-    {
-    img:"/Images/goa.jpeg",
-    reviews:"Top 10 Thins to do Durgapur",
-    numOfView:325
-  },
-]
-const placeByMonth =["Aug","Sep","Oct","Nov","Dec","Jan","Fab","Mar","Apr","May","Jun","Jul"]
+
 const TrendingPackages = () => {
   return (
     <>
    <section className="px-4 md:px-12 py-10 bg-white">
-  {/* Header */}
+
   <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
-    <span className="text-[#3b82f6]">Trending Tour Packages</span> on Tripclap
+  Trending Tour Packages <span className="text-[#3b82f6]">on Begin Yatra</span>   
   </h2>
 
-  {/* Tour Packages */}
   <div className="flex gap-6 overflow-x-auto pb-4">
     {packages.map((pkg, index) => (
       <div
@@ -107,63 +94,7 @@ const TrendingPackages = () => {
   </div>
 </section>
 
-{/* Trending Stories */}
-<section className="px-4 md:px-12 py-10">
-  <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
-    <span>Our Trending </span>
-    <span className="text-[#3b82f6]">Stories </span> on Tripclap
-  </h2>
 
-  <div className="flex flex-col lg:flex-row gap-6">
-    {/* Left: Main image */}
-    <img
-      src="/Images/img.webp"
-      alt="img"
-      className="w-full lg:w-1/2 h-64 sm:h-96 lg:h-auto object-cover rounded-lg"
-    />
-
-    {/* Right: Stories */}
-    <div className="flex flex-col gap-4 w-full">
-      {StoriesData.map((data, index) => (
-        <div key={index} className="flex bg-white shadow-sm rounded-lg overflow-hidden">
-          <img src={data.img} alt="Story" className="h-36 w-36 object-cover" />
-          <div className="p-4 flex flex-col justify-between">
-            <h2 className="text-md font-semibold">{data.reviews}</h2>
-            <p className="text-sm text-gray-600">Number of viewers: <span className="font-medium">{data.numOfView}</span></p>
-          </div>
-        </div>
-      ))}
-      <div className="flex justify-end mt-2">
-        <button className="text-sm text-[#3b82f6] underline">View more story</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-{/* Top Countries */}
-<section className="px-4 md:px-12 py-10">
-  <h1 className="text-2xl md:text-3xl font-bold mb-6">
-    Top <span className="text-[#3b82f6]">Countries</span> you can explore
-  </h1>
-  <Card />
-</section>
-
-{/* Best places by month */}
-<section className="px-4 md:px-12 py-10">
-  <h1 className="text-2xl md:text-3xl font-bold mb-6">
-    Best places to visit in India by month
-  </h1>
-  <div className="flex flex-wrap gap-3">
-    {placeByMonth.map((data, index) => (
-      <span
-        key={index}
-        className="rounded-full border border-gray-300 py-2 px-4 text-sm hover:bg-[#3b82f6] hover:text-white transition cursor-pointer"
-      >
-        {data}
-      </span>
-    ))}
-  </div>
-</section>
 
     </>
   );

@@ -9,15 +9,18 @@ import TrandingStories from "./HomeSection/TrandingStories";
 import TopCountries from "./HomeSection/TopCountries";
 import OfferCards from "./HomeSection/OfferCard";
 import HowItWork from "./HomeSection/HowItWork";
+import Banner from "./HomeSection/Banner";
+import AboutSection from "./HomeSection/AboutSection";
 
 const Home = () => {
   return (
-    <div className="mt-12">
-      <HeroSection />
+    <div className="">
+      {/* <HeroSection /> */}
+      <Banner/>
       <div className="md:mx-80">
         <WnatToGOForm />
       </div>
-
+<AboutSection/>
       <OfferCards />
       <PopularPackages />
       <TopDestinations />

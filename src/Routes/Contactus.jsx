@@ -2,15 +2,14 @@ import React from "react";
 import { MdOutlineCall } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineMail } from "react-icons/md";
+import BackgroundImg from "../components/BackgroundImg";
 
 const Contactus = () => {
   return (
+    <>
+      <BackgroundImg contact={{title:"Contact us",dis:"Resume your travel journey — we're crafting your next adventure and delightful vacation with family & friends. Have a question or need inspiration? We're here to help."}}/>
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4 text-center">Contact Us</h1>
       
-      <p className="text-gray-700 mb-10 text-center max-w-3xl mx-auto">
-        Resume your travel button — we're planning your next adventure & delightful vacation with your family & friends. Have a question for us, or need inspiration? We're here to help.
-      </p>
       <div className="min-h-screen bg-white px-4 py-12 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">Contact Us</h2>
@@ -97,7 +96,7 @@ const Contactus = () => {
       
       <div className="grid md:grid-cols-3 gap-6 text-gray-800">
        
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white  hover:shadow-2xl p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Address</h2>
           <div className="mb-3">
             <p className="font-medium">Regd Address:</p>
@@ -110,7 +109,7 @@ const Contactus = () => {
         </div>
 
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white  hover:shadow-2xl p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Contact Info</h2>
           <div className="mb-3">
             <p className="font-medium">Email:</p>
@@ -123,7 +122,7 @@ const Contactus = () => {
         </div>
 
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white  hover:shadow-2xl p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Stay Connected</h2>
           <div className="mb-3">
             <p className="font-medium">Website:</p>
@@ -139,7 +138,7 @@ const Contactus = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 };
 

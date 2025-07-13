@@ -1,4 +1,5 @@
 import React from "react";
+import BackgroundImg from "../components/BackgroundImg";
 
 const TermsAndConditions = () => {
   const terms = [
@@ -281,6 +282,9 @@ const TermsAndConditions = () => {
   ];
 
   return (
+    <>
+      <BackgroundImg contact={{title:"Term & Conditions",dis:""}}/>
+
     <div className="max-w-5xl mx-auto px-4 py-10 text-gray-800">
       <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-6">
         Terms and Conditions
@@ -327,7 +331,7 @@ const TermsAndConditions = () => {
             <br />
            Mandar Hill, Banka, Bihar, India 813104
           </p>
-    </div>
+    </div></>
   );
 };
 

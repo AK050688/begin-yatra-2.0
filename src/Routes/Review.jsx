@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaStar } from 'react-icons/fa';
+import BackgroundImg from '../components/BackgroundImg';
 
 const reviews = [
   {
@@ -30,6 +31,8 @@ const reviews = [
 
 const Review = () => {
   return (
+    <>
+      <BackgroundImg contact={{title:"Reviews",dis:""}}/>
     <div className="bg-white min-h-screen px-4 py-10">
       <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-500 mb-4">
         What Our Customers Say
@@ -64,7 +67,7 @@ const Review = () => {
           </div>
         ))}
       </div>
-    </div>
+    </div></>
   );
 };
 

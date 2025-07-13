@@ -3,6 +3,7 @@ import WnatToGOForm from '../components/WnatToGOForm';
 import PackageMarketplace from '../components/PackageMarketplace';
 import { FaInstagram } from 'react-icons/fa';
 import { CiFacebook, CiLinkedin } from 'react-icons/ci';
+import BackgroundImg from '../components/BackgroundImg';
 
 const teamInfo = [
   {
@@ -24,6 +25,8 @@ const teamInfo = [
 
 const Aboutus = () => {
   return (
+    <>
+      <BackgroundImg contact={{title:"About us",dis:"Resume your travel journey — we're crafting your next adventure and delightful vacation with family & friends. Have a question or need inspiration? We're here to help."}}/>
     <div className="bg-white">
       {/* Header Section */}
       <section className="text-center py-10 px-4">
@@ -82,7 +85,7 @@ const Aboutus = () => {
       </section>
 
 
-    </div>
+    </div></>
   );
 };
 

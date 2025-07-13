@@ -73,7 +73,7 @@ const PopularPackages = () => {
         <Slider {...settings}>
           {cardData.map((card, index) => (
             <div key={index} className="px-2">
-              <div className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+              <div className="relative hover:scale-105 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
                 <img
                   src={card.img}
                   alt={card.place}

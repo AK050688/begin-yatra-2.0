@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const PopularPackages = () => {
   const cardData = [
@@ -63,6 +64,8 @@ const PopularPackages = () => {
     ],
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="py-6 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-full mx-8 px-4">
@@ -73,7 +76,10 @@ const PopularPackages = () => {
         <Slider {...settings}>
           {cardData.map((card, index) => (
             <div key={index} className="px-2">
-              <div className="relative hover:scale-105 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+              <div
+                onClick={() => navigate("/destination")}
+                className="relative hover:scale-105 cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
                 <img
                   src={card.img}
                   alt={card.place}

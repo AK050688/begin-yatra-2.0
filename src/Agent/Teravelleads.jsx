@@ -22,7 +22,7 @@ const Teravelleads = ({ title }) => {
       icon: <FaHotel className="text-white text-3xl" />,
       description:
         "Hotel Only Lead – is a travel lead where a traveler wants to book only accommodation like a hotel, hostel, or lodge.",
-      bgColor: "bg-gradient-to-br from-pink-500 to-pink-700",
+      bgColor: "bg-gradient-to-br from-teal-500 to-teal-700",
     },
     {
       title: "Hotel Only",
@@ -46,7 +46,9 @@ const Teravelleads = ({ title }) => {
             key={index}
             className="relative bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-in-out border border-gray-100 group"
           >
-            <div className={`w-full h-2 ${lead.bgColor} transition-all duration-300 group-hover:h-3`} />
+            <div
+              className={`w-full h-2 ${lead.bgColor} transition-all duration-300 group-hover:h-3`}
+            />
             <div className="p-6 flex flex-col items-center text-center">
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${lead.bgColor} transform group-hover:scale-110 transition-transform duration-300`}

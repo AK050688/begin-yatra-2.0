@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Facebook,
   Instagram,
@@ -7,7 +7,8 @@ import {
   Mail,
   MapPin,
   Phone,
-} from 'lucide-react';
+} from "lucide-react";
+import { Whatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -17,7 +18,8 @@ const Footer = () => {
         <div>
           <h2 className="text-xl font-bold text-white mb-4">BeginYatra</h2>
           <p className="text-sm">
-            Discover amazing destinations and plan your perfect trip with BeginYatra. Your adventure starts here.
+            Discover amazing destinations and plan your perfect trip with
+            BeginYatra. Your adventure starts here.
           </p>
         </div>
 
@@ -25,11 +27,32 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white">Home</a></li>
-            <li><a href="#" className="hover:text-white">Contact us</a></li>
-            <li><a href="#" className="hover:text-white">About us</a></li>
-            <li><a href="#" className="hover:text-white">Terms & Conditons</a></li>
-            <li><a href="#" className="hover:text-white"> Privancy Policy </a></li>
+            <li>
+              <a href="#" className="hover:text-white">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white">
+                Contact us
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white">
+                About us
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white">
+                Terms & Conditons
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white">
+                {" "}
+                Privancy Policy{" "}
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -37,7 +60,10 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
           <ul className="space-y-3 text-sm">
-            <a href='mailto:info@beginyatra.com' className="flex items-center gap-2">
+            <a
+              href="mailto:info@beginyatra.com"
+              className="flex items-center gap-2"
+            >
               <Mail className="w-4 h-4" /> info@beginyatra.com
             </a>
             <li className="flex items-center gap-2">
@@ -53,10 +79,18 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
           <div className="flex gap-4">
-            <a href="#"><Facebook className="w-5 h-5 hover:text-white" /></a>
-            <a href="#"><Instagram className="w-5 h-5 hover:text-white" /></a>
-            <a href="#"><Twitter className="w-5 h-5 hover:text-white" /></a>
-            <a href="#"><Youtube className="w-5 h-5 hover:text-white" /></a>
+            <a href="https://www.facebook.com/Beginyatra?mibextid=ZbWKwL">
+              <Facebook className="w-5 h-5 hover:text-white" />
+            </a>
+            <a href="https://www.instagram.com/beginyatra?igsh=YnlnOXExYWluY25h">
+              <Instagram className="w-5 h-5 hover:text-white" />
+            </a>
+            {/* <a href="#">
+              <Twitter className="w-5 h-5 hover:text-white" />
+            </a>
+            <a href="#">
+              <Youtube className="w-5 h-5 hover:text-white" />
+            </a> */}
           </div>
         </div>
       </div>

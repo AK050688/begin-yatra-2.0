@@ -105,11 +105,14 @@ const TravelForm = () => {
         },
       });
       console.log("Lead submitted successfully:", res);
-      
-      if (res.data.statusCode === 200 || res.data.statusCode === 201) {
-        alert(res.data.statusCode.messsage || "Lead submitted successfully! Our experts will contact you soon.");
+
+      if (
+        (res.status === 200 || res.status === 201) &&
+        (res.data.statusCode === 200 || res.data.statusCode === 201)
+      ) {
+        alert(res.data.message || "Lead submitted successfully! Our experts will contact you soon.");
       } else {
-        alert("Error submitting lead");
+        alert(res.data.message || "Error submitting lead");
       }
       setForm(defaultForm);
       setErrors({});
@@ -325,14 +328,14 @@ const TravelForm = () => {
             </div>
             <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center gap-4">
               <div>
-                <label htmlFor="leadType">Select Inquery Type*</label>
+                <label htmlFor="leadType">Select Inquiry Type*</label>
                 <select
                   id="leadType"
                   name="leadType"
                   value={form.leadType}
                   onChange={handleChange}
                   className="w-full border rounded px-4 py-2">
-                  <option value="">Select Inquery Type</option>
+                  <option value="">Select Inquiry Type</option>
                   <option value="domestic">Domestic</option>
                   <option value="international">International</option>
                 </select>

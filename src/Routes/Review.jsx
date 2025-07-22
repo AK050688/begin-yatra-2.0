@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import BackgroundImg from "../components/BackgroundImg";
+import api from "../Api/ApiService";
 
 const Review = () => {
   const [reviews, setReviews] = useState([
@@ -46,7 +47,7 @@ const Review = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (
       !formData.name ||
@@ -55,6 +56,19 @@ const Review = () => {
       !formData.review
     )
       return;
+
+    try {
+      const res = await api.post("/api/review/addReview", formData);
+      if (res.status !== 200) {
+        console.error("Failed to submit review:", res.data);
+        return;
+      }
+      console.log("Review submitted successfully:", res.data);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      return;
+      
+    }
 
     setReviews((prev) => [
       {
@@ -188,6 +202,7 @@ const Review = () => {
               ></textarea>
               <button
                 type="submit"
+
                 className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1"
               >
                 Submit Review

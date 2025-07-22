@@ -18,18 +18,22 @@ export const destinations = [
     image: "/Images/Andaman.jpg",
   },
   {
+    id: "3",
     name: "Manali",
     image: "/Images/rajastan.png",
   },
   {
+    id: "4",
     name: "Rajasthan",
     image: "/Images/kashmir.jpg",
   },
   {
+    id: "5",
     name: "Kashmir",
     image: "/Images/Andaman.jpg",
   },
   {
+    id: "6",
     name: "Andaman",
     image: "/Images/rajastan.png",
   },

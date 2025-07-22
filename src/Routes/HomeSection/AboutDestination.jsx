@@ -62,7 +62,7 @@ const AboutDestination = () => {
       <section>
         <div className="">
           <h1 className="font-medium pt-5 text-3xl mx-20">
-            Kashmir <span className="text-sky-500">Tour Guide</span>
+            {data.name} <span className="text-sky-500">Tour Guide</span>
           </h1>
           <p className="mx-20 pt-3">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt

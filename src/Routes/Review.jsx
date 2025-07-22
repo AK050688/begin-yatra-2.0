@@ -34,6 +34,7 @@ const Review = () => {
     name: "",
     location: "",
     rating: 5,
+    Email: "",
     review: "",
   });
 
@@ -47,7 +48,13 @@ const Review = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.location || !formData.review) return;
+    if (
+      !formData.name ||
+      !formData.location ||
+      !formData.Email ||
+      !formData.review
+    )
+      return;
 
     setReviews((prev) => [
       {
@@ -62,6 +69,7 @@ const Review = () => {
       name: "",
       location: "",
       rating: 5,
+      Email: "",
       review: "",
     });
   };
@@ -144,18 +152,31 @@ const Review = () => {
                   required
                 />
               </div>
-              <select
-                name="rating"
-                value={formData.rating}
-                onChange={handleChange}
-                className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              >
-                {[5, 4, 3, 2, 1].map((num) => (
-                  <option key={num} value={num}>
-                    {num} Star{num > 1 && "s"}
-                  </option>
-                ))}
-              </select>
+              <div className="grid md:grid-cols-2 gap-4">
+                <select
+                  name="rating"
+                  value={formData.rating}
+                  onChange={handleChange}
+                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer focus:border-blue-500 transition"
+                >
+                  {[5, 4, 3, 2, 1].map((num) => (
+                    <option key={num} value={num}>
+                      {num} Star{num > 1 && "s"}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  type="Email"
+                  name="Email"
+                  placeholder="Email"
+                  value={formData.Email}
+                  onChange={handleChange}
+                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  required
+                />
+              </div>
+
               <textarea
                 name="review"
                 rows="5"
@@ -167,7 +188,7 @@ const Review = () => {
               ></textarea>
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition duration-300 ease-in-out transform hover:-translate-y-1"
+                className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1"
               >
                 Submit Review
               </button>

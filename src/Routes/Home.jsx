@@ -24,7 +24,7 @@ const Home = () => {
       <TrandingStories />
       <TopCountries />
       <TrendingPackages />
-      <div className="md:mx-80">
+      <div className="mx-auto lg:max-w-6xl md:max-w-4xl max-w-2xl xs:max-w-xs">
         <WnatToGOForm />
       </div>
       <PackageMarketplace />

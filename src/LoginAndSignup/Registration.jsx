@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AgentRegistrationForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     phone: "",
@@ -8,8 +10,10 @@ const AgentRegistrationForm = () => {
     company: "",
     city: "",
     password: "",
-    kyc: null,
+    // kyc: null,
   });
+
+  
 
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
@@ -24,22 +28,38 @@ const AgentRegistrationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // try {
+    //   const { username, phone, email, company, city, password } = formData;
+    //   if (!username || !phone || !email || !company || !city || !password) {
+    //     throw new Error("All fields are required");
+    //   }
 
+      
+    // }
     console.log("Form Submitted:", formData);
     alert("Registration Submitted!");
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center relative">
-      <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-10 z-0"></div>
-      <div className="bg-white/80 p-8 rounded-lg shadow-md w-full max-w-2xl">
-        <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">
-          Agent Registration
-        </h2>
+    <div className="min-h-screen bg-black/30 flex items-center justify-center relative">
+      <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-50 z-0"></div>
+
+      <div className="bg-white/80 p-8 rounded-lg shadow-md w-full max-w-4xl z-100 ">
+        <div className="flex justify-between items-center align-middle my-4">
+          <h2 className="text-2xl font-bold text-blue-600 text-center">
+            Agent Registration
+          </h2>
+          <div className="flex justify-end align-middle">
+            <button
+              onClick={() => navigate(`/agent`)}
+              className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer">
+              Back to Agent page
+            </button>
+          </div>
+        </div>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 md:grid-cols-2 gap-4"
-        >
+          className="grid grid-cols-2 md:grid-cols-2 gap-4">
           {/* Basic Inputs */}
           <input
             type="text"
@@ -132,8 +152,8 @@ const AgentRegistrationForm = () => {
           <div className="col-span-1 md:col-span-2 mt-4">
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold"
-            >
+              onClick={handleSubmit}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold">
               Register Now
             </button>
           </div>

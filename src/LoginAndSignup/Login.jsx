@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative">
       {/* Background Logo */}
@@ -9,8 +10,13 @@ const LoginPage = () => {
 
       {/* Login Box */}
       <div className="bg-white/70 px-8 md:px-12 py-10 w-[90%] max-w-md rounded-lg shadow-lg z-10 relative">
-        <h4 className="text-3xl font-bold text-center text-blue-600 mb-6">Begin Yatra</h4>
-
+        
+        <div className="flex justify-between items-center align-middle ">
+        <h2 className="text-3xl font-bold text-center text-blue-600">Begin Yatra</h2>
+        <div className="flex justify-end align-middle items-center">
+        <button onClick={()=>navigate(`/agent`)} className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer">Back to Agent page</button>
+          </div>
+          </div>
         <form className="space-y-5">
           <div>
             <label className="block text-gray-700 font-medium mb-1" htmlFor="email">Email</label>

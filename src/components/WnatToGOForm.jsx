@@ -3,18 +3,123 @@ import { FiPhoneCall } from "react-icons/fi";
 import { GrGallery } from "react-icons/gr";
 import { HiDevicePhoneMobile } from "react-icons/hi2";
 import { TbMessages } from "react-icons/tb";
+import api from "../Api/ApiService";
 
+const defaultForm = {
+  leadId: "",
+  name: "",
+  phone: "",
+  email: "",
+  city: "",
+  destination: "",
+  travelDate: "",
+  adult: "0",
+  children: "0",
+  infant: "0",
+  tripType: "",
+  leadType: "",
+  totalMembers: {
+    adult: "0",
+    children: "0",
+    infant: "0",
+  },
+  travelDays: "",
+  travelNights: "",
+};
 const TravelForm = () => {
-  const [formData, setFormData] = useState({
-    to: "",
-    from: "Noida",
-    departure: "",
-    adults: "",
-    infant: 0,
-    children: 0,
-    email: "",
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState(defaultForm);
+  const [errors, setErrors] = useState({
+    name: "",
     phone: "",
+    email: "",
+    city: "",
+    destination: "",
   });
+  const handleGroupChange = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      totalMembers: {
+        ...form.totalMembers,
+        [name]: value,
+      },
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (["name", "phone", "email", "city", "destination"].includes(name)) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+      isValid = false;
+    }
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+    }
+    if (!form.city.trim()) {
+      newErrors.city = "City is required";
+      isValid = false;
+    }
+    if (!form.destination.trim()) {
+      newErrors.destination = "Destination is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const leadData = {
+        ...form,
+        travelTime: `${form.travelDays} (days) - ${form.travelNights} (nights)`,
+        totalMembers: form.totalMembers,
+      };
+      const res = await api.post("/api/leads", leadData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Lead submitted successfully:", res);
+      
+      if (res.data.statusCode === 200 || res.data.statusCode === 201) {
+        alert(res.data.statusCode.messsage || "Lead submitted successfully! Our experts will contact you soon.");
+      } else {
+        alert("Error submitting lead");
+      }
+      setForm(defaultForm);
+      setErrors({});
+    } catch (error) {
+      console.error("Failed to submit lead:", error);
+      alert("An error occurred while saving the lead.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-[640px] w-full px-4 py-8 sm:px-6 md:px-10 lg:px-16 bg-white text-gray-700 font-sans">
@@ -56,7 +161,7 @@ const TravelForm = () => {
 
           {/* Stats */}
           <div className="mt-10 text-center text-blue-600">
-            <h3 className="font-semibold text-sm mb-2">
+            <h3 className="font-semibold text-center text-sm mb-2">
               We're a growing company
             </h3>
             <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-600">
@@ -100,98 +205,80 @@ const TravelForm = () => {
 
         {/* Right Section - Form */}
         <div>
-          <h2 className="text-xl font-semibold text-blue-600 mb-6">
+          <h2 className="text-xl text-center font-semibold text-blue-600 mb-6">
             Where do you want to go?
           </h2>
 
-          <form className="space-y-4 text-sm">
-            <div>
-              <label htmlFor="to">To*</label>
-              <input
-                type="text"
-                id="to"
-                placeholder="Enter Destination"
-                value={formData.to}
-                onChange={(e) =>
-                  setFormData({ ...formData, to: e.target.value })
-                }
-                className="w-full border rounded px-4 py-2"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="from">From*</label>
-              <input
-                type="text"
-                id="from"
-                value={formData.from}
-                readOnly
-                className="w-full border rounded px-4 py-2 bg-gray-100"
-              />
-            </div>
-
-            {/* Departure Date Selection */}
-            <div>
-              <label htmlFor="departureDate">
-                Departure Date <small>(Choose Any)*</small>
+          <form className="space-y-4 text-sm" onSubmit={handleSubmit}>
+            <div className="">
+              <label htmlFor="name" className="block mb-2">
+                Name
               </label>
-              <div className="flex gap-2 my-2">
-                <button
-                  type="button"
-                  className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition"
-                >
-                  Fixed
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition"
-                >
-                  Flexible
-                </button>
-              </div>
               <input
-                type="date"
-                id="departureDate"
-                value={formData.departure}
-                onChange={(e) =>
-                  setFormData({ ...formData, departure: e.target.value })
-                }
-                className="w-full border rounded px-4 py-2"
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                value={form.name || ""}
+                onChange={handleChange}
+                className="w-full border rounded px-4 py-2 "
               />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 grid-cols-1 justify-center align-middle gap-4 mb-4">
+              <div className="w-full ">
+                <label htmlFor="city">From*</label>
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="City..."
+                  value={form.city}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                />
+                {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+              </div>
+
+              <div className="w-full ">
+                <label htmlFor="destination">To*</label>
+                <input
+                  type="text"
+                  id="destination"
+                  name="destination"
+                  placeholder="Destination..."
+                  value={form.destination}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2 "
+                />
+                {errors.destination && <p className="text-red-500 text-xs mt-1">{errors.destination}</p>}
+              </div>
             </div>
 
             {/* Guests */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="adults">Adults</label>
-                <select
-                  id="adults"
-                  className="w-full border rounded px-2 py-1"
-                  value={formData.adults}
-                  onChange={(e) =>
-                    setFormData({ ...formData, adults: e.target.value })
-                  }
-                >
-                  <option>Select</option>
-                  {[
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-                    18, 19, 20,
-                  ].map((n) => (
-                    <option key={n}>{n}</option>
-                  ))}
-                </select>
+                <label htmlFor="adult">Adults</label>
+                <input
+                  type="number"
+                  id="adult"
+                  name="adult"
+                  value={form?.totalMembers?.adult}
+                  min="0"
+                  onChange={handleGroupChange}
+                  className="w-full border rounded px-4 py-2"
+                />
               </div>
               <div>
                 <label htmlFor="infant">Infant</label>
                 <input
                   type="number"
                   id="infant"
-                  className="w-full border rounded px-2 py-1"
-                  value={formData.infant}
-                  onChange={(e) =>
-                    setFormData({ ...formData, infant: e.target.value })
-                  }
+                  name="infant"
                   min="0"
+                  value={form?.totalMembers?.infant}
+                  onChange={handleGroupChange}
+                  className="w-full border rounded px-4 py-2"
                 />
               </div>
               <div>
@@ -199,11 +286,10 @@ const TravelForm = () => {
                 <input
                   type="number"
                   id="children"
-                  className="w-full border rounded px-2 py-1"
-                  value={formData.children}
-                  onChange={(e) =>
-                    setFormData({ ...formData, children: e.target.value })
-                  }
+                  name="children"
+                  value={form?.totalMembers?.children}
+                  onChange={handleGroupChange}
+                  className="w-full border rounded px-4 py-2"
                   min="0"
                 />
               </div>
@@ -214,34 +300,109 @@ const TravelForm = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                value={form.email}
+                onChange={handleChange}
                 className="w-full border rounded px-4 py-2"
               />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
 
             <div>
               <label htmlFor="phone">Phone Number*</label>
               <input
-                type="text"
+                type="tel"
                 id="phone"
+                name="phone"
                 placeholder="+91 Enter your mobile number"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
+                value={form.phone}
+                onChange={handleChange}
                 className="w-full border rounded px-4 py-2"
+                required
               />
+              {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+            </div>
+            <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center gap-4">
+              <div>
+                <label htmlFor="leadType">Select Inquery Type*</label>
+                <select
+                  id="leadType"
+                  name="leadType"
+                  value={form.leadType}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2">
+                  <option value="">Select Inquery Type</option>
+                  <option value="domestic">Domestic</option>
+                  <option value="international">International</option>
+                </select>
+              </div>
+              <div className="">
+                <label htmlFor="tripType">Select Trip Type*</label>
+                <select
+                  name="tripType"
+                  id="tripType"
+                  value={form.tripType}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2">
+                  <option value="">Select Trip Type</option>
+                  <option value="Family">Family</option>
+                  <option value="Friends">Friends</option>
+                  <option value="Couples">Couples</option>
+                  <option value="Business">Business</option>
+                  <option value="Senior_Citizen">Senior_Citizen</option>
+                  <option value="Group">Group</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center gap-2">
+              <div className="flex gap-2">
+                <div className="">
+                  <label htmlFor="travelDays">Travel days</label>
+                  <input
+                    type="number"
+                    id="travelDays"
+                    name="travelDays"
+                    placeholder="Enter days"
+                    value={form.travelDays}
+                    onChange={handleChange}
+                    className="w-full px-4  py-3 border rounded-xl "
+                  />
+                </div>
+                <div className="">
+                  <label htmlFor="travelNights">Travel Night</label>
+                  <input
+                    type="number"
+                    id="travelNights"
+                    name="travelNights"
+                    placeholder="Enter nights"
+                    value={form.travelNights}
+                    onChange={handleChange}
+                    className="w-full px-4  py-3 border  rounded-xl focus:ring-2   focus:border-transparent transition-all duration-200 "
+                  />
+                </div>
+              </div>
+              <div className="">
+                <label htmlFor="travelDate">Date</label>
+                <input
+                  type="date"
+                  id="travelDate"
+                  name="travelDate"
+                  placeholder="Select date"
+                  value={form.travelDate}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3 border  rounded-xl focus:ring-2   focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                />
+              </div>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded shadow-md"
-            >
-              Plan My Holidays →
+              disabled={isLoading}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded shadow-md">
+              {isLoading ? "Submitting..." : "Plan My Holidays →"}
             </button>
           </form>
         </div>

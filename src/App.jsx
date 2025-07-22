@@ -20,7 +20,7 @@ import TripItinerary from "./components/Booking/TripItinerary";
 import WnatToGOForm from "./components/WnatToGOForm";
 import AboutDestination from "./Routes/HomeSection/AboutDestination";
 import BackgroundImg from "./components/BackgroundImg";
-
+import ScrollToTop from "./components/ScrollToTop";
 function App() {
   const location = useLocation();
 
@@ -30,6 +30,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       {!shouldHideNavbarFooter && <Navbar />}
 
       <Routes>
@@ -48,7 +49,7 @@ function App() {
           path="/get-qurey"
           element={
             <div>
-              <BackgroundImg contact={{ title: "Get qurey" }} />
+              <BackgroundImg contact={{ title: "Get Qurey" }} />
               <WnatToGOForm />
             </div>
           }

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
   { name: "Goa", image: "/Images/banner.jpg" },
-  { name: "Kerala", image: "/Images/banner1.webp" },
+  { name: "Kerala", image: "/Images/bannerke.jpg" },
   { name: "Manali", image: "/Images/bannerImg.jpg" },
 ];
 

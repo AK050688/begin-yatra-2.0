@@ -81,7 +81,8 @@ const Review = () => {
             What Our Customers Say
           </h1>
           <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12 text-lg">
-            Hear directly from our happy travelers who’ve experienced memorable vacations with us!
+            Hear directly from our happy travelers who’ve experienced memorable
+            vacations with us!
           </p>
 
           {/* Review Cards */}
@@ -98,7 +99,9 @@ const Review = () => {
                     className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
                   />
                   <div>
-                    <h3 className="font-semibold text-xl text-gray-800">{review.name}</h3>
+                    <h3 className="font-semibold text-xl text-gray-800">
+                      {review.name}
+                    </h3>
                     <p className="text-sm text-gray-500">{review.location}</p>
                   </div>
                 </div>
@@ -117,7 +120,9 @@ const Review = () => {
 
           {/* Add Review Form */}
           <div className="mt-12 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <h2 className="text-2xl font-bold mb-6 text-blue-600">Share Your Experience</h2>
+            <h2 className="text-2xl font-bold mb-6 text-blue-600">
+              Share Your Experience
+            </h2>
             <form onSubmit={handleSubmit} className="grid gap-5">
               <div className="grid md:grid-cols-2 gap-4">
                 <input

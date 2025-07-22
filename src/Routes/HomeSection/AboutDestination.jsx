@@ -1,10 +1,15 @@
 import React from "react";
 import { IoLocation } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { destinations } from "./TopDestionation";
 const AboutStory = [];
 
 const AboutDestination = () => {
+  const { id } = useParams();
+
+  const data = destinations.find((item) => item.id === id);
+  console.log(data);
+
   const navigate = useNavigate();
   return (
     <div>
@@ -14,10 +19,10 @@ const AboutDestination = () => {
             <img src="/Images/kashmir.jpg" alt="image" />
           </div>
           <div className="mx-10 w-1/2">
-            <h1 className="font-medium pl-4 text-4xl">Kashmir</h1>
+            <h1 className="font-medium pl-4 text-4xl">{data.name}</h1>
             <h1 className="flex items-center gap-2 pl-4">
               <IoLocation className="" />
-              Kashmir,India
+              {data.name},India
             </h1>
             <div className="grid grid-cols-2 gap-8 p-5 ">
               <div className="text-center mx-5 border-gray-200 border shadow-lg p-5 w-80">

@@ -8,8 +8,6 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-import { Whatsapp } from "react-icons/fa";
-
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300 px-6 md:px-16 py-10">

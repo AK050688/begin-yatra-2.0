@@ -5,12 +5,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 
-const destinations = [
+export const destinations = [
   {
+    id: "1",
     name: "Goa",
     image: "/Images/kashmir.jpg",
   },
   {
+    id: "2",
+
     name: "Kerala",
     image: "/Images/Andaman.jpg",
   },
@@ -73,6 +76,9 @@ const TopDestinations = () => {
     ],
   };
 
+  const send = (id) => {
+    navigate(`/destination/${id}`);
+  };
   return (
     <div className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
@@ -80,10 +86,10 @@ const TopDestinations = () => {
       </h2>
       <div className="relative">
         <Slider {...settings}>
-          {destinations.map((dest, index) => (
-            <div key={index} className="px-3">
+          {destinations.map((dest) => (
+            <div key={dest.id} className="px-3">
               <div
-                onClick={() => navigate("/destination")}
+                onClick={() => send(dest.id)}
                 className="overflow-hidden cursor-pointer rounded-xl shadow-lg group"
               >
                 <img

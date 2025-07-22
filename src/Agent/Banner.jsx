@@ -27,10 +27,10 @@ const Banner = () => {
               100% Mobile Verified Leads
             </span>
             <span className="bg-blue-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
-              ISO Certified
+              Non Shareable
             </span>
             <span className="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
-              TAAI Member
+              Replacement Policy
             </span>
           </div>
 
@@ -44,7 +44,7 @@ const Banner = () => {
           </p>
 
           <p className="text-sm text-gray-200 mb-6">
-            Free Registration | Pay per Travel Lead | No Hidden Costs
+            Free Registration | No Hidden Costs
           </p>
 
           {/* CTA */}

@@ -48,13 +48,13 @@ function App() {
           path="/get-qurey"
           element={
             <div>
-              <BackgroundImg contact={{title:"Get qurey"}} />
+              <BackgroundImg contact={{ title: "Get qurey" }} />
               <WnatToGOForm />
             </div>
           }
         />
         <Route
-          path="/destination"
+          path="/destination/:id"
           element={
             <div>
               <BackgroundImg contact={{ title: "Get Ready for Trip" }} />

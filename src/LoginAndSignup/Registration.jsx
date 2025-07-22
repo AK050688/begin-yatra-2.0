@@ -9,7 +9,6 @@ const AgentRegistrationForm = () => {
     city: "",
     password: "",
     kyc: null,
-    message: "",
   });
 
   const handleChange = (e) => {
@@ -32,10 +31,15 @@ const AgentRegistrationForm = () => {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative">
-        <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-10 z-0"></div>
+      <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-10 z-0"></div>
       <div className="bg-white/80 p-8 rounded-lg shadow-md w-full max-w-2xl">
-        <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">Agent Registration</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">
+          Agent Registration
+        </h2>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-2 md:grid-cols-2 gap-4"
+        >
           {/* Basic Inputs */}
           <input
             type="text"
@@ -110,8 +114,10 @@ const AgentRegistrationForm = () => {
           </div> */}
 
           {/* Textarea */}
-          <div className="col-span-1 md:col-span-2">
-            <label className="block mb-1 font-medium text-sm text-gray-700">Message</label>
+          {/* <div className="col-span-1 md:col-span-2">
+            <label className="block mb-1 font-medium text-sm text-gray-700">
+              Message
+            </label>
             <textarea
               name="message"
               rows={4}
@@ -120,7 +126,7 @@ const AgentRegistrationForm = () => {
               placeholder="Your message or query"
               className="w-full border rounded px-4 py-2 resize-none"
             />
-          </div>
+          </div> */}
 
           {/* Submit */}
           <div className="col-span-1 md:col-span-2 mt-4">

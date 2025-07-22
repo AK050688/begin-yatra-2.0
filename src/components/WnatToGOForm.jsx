@@ -18,12 +18,16 @@ const TravelForm = () => {
 
   return (
     <div className="min-h-[640px] w-full px-4 py-8 sm:px-6 md:px-10 lg:px-16 bg-white text-gray-700 font-sans">
-      <h3 className="text-2xl text-center mb-12 font-bold">Our experts would love to create a package just for you
-Fill in your requirements here</h3>
+      <h3 className="text-2xl text-center mb-12 font-bold">
+        Our experts would love to create a package just for you Fill in your
+        requirements here
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Left Section - How We Work */}
         <div>
-          <h2 className="text-xl font-semibold text-blue-600 mb-6">How we work?</h2>
+          <h2 className="text-xl font-semibold text-blue-600 mb-6">
+            How we work?
+          </h2>
           <div className="space-y-6 text-sm">
             <div className="flex items-start gap-4">
               <GrGallery className="mt-1 text-xl text-blue-600" />
@@ -36,7 +40,9 @@ Fill in your requirements here</h3>
               <TbMessages className="mt-1 text-xl text-blue-600" />
               <div>
                 <p className="font-medium">Get Multiple Free Quotes</p>
-                <p className="text-gray-500">From our verified travel experts</p>
+                <p className="text-gray-500">
+                  From our verified travel experts
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -50,20 +56,34 @@ Fill in your requirements here</h3>
 
           {/* Stats */}
           <div className="mt-10 text-center text-blue-600">
-            <h3 className="font-semibold text-sm mb-2">We're a growing company</h3>
+            <h3 className="font-semibold text-sm mb-2">
+              We're a growing company
+            </h3>
             <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-600">
               <div className="text-center">
-                <img src="/Images/verified.png" alt="Verified" className="w-14 mx-auto" />
+                <img
+                  src="/Images/verified.png"
+                  alt="Verified"
+                  className="w-14 mx-auto"
+                />
                 <p className="font-bold">1500+</p>
                 <p>Verified Agents</p>
               </div>
               <div className="text-center">
-                <img src="/Images/happy.png" alt="Happy" className="w-14 mx-auto" />
+                <img
+                  src="/Images/happy.png"
+                  alt="Happy"
+                  className="w-14 mx-auto"
+                />
                 <p className="font-bold">100k+</p>
                 <p>Happy Travellers</p>
               </div>
               <div className="text-center">
-                <img src="/Images/destination.png" alt="Destinations" className="w-14 mx-auto" />
+                <img
+                  src="/Images/destination.png"
+                  alt="Destinations"
+                  className="w-14 mx-auto"
+                />
                 <p className="font-bold">190+</p>
                 <p>Destinations</p>
               </div>
@@ -80,7 +100,9 @@ Fill in your requirements here</h3>
 
         {/* Right Section - Form */}
         <div>
-          <h2 className="text-xl font-semibold text-blue-600 mb-6">Where do you want to go?</h2>
+          <h2 className="text-xl font-semibold text-blue-600 mb-6">
+            Where do you want to go?
+          </h2>
 
           <form className="space-y-4 text-sm">
             <div>
@@ -88,9 +110,11 @@ Fill in your requirements here</h3>
               <input
                 type="text"
                 id="to"
-                placeholder="Search Destination"
+                placeholder="Enter Destination"
                 value={formData.to}
-                onChange={(e) => setFormData({ ...formData, to: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, to: e.target.value })
+                }
                 className="w-full border rounded px-4 py-2"
               />
             </div>
@@ -112,10 +136,16 @@ Fill in your requirements here</h3>
                 Departure Date <small>(Choose Any)*</small>
               </label>
               <div className="flex gap-2 my-2">
-                <button type="button" className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition">
+                <button
+                  type="button"
+                  className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition"
+                >
                   Fixed
                 </button>
-                <button type="button" className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition">
+                <button
+                  type="button"
+                  className="flex-1 px-4 py-2 rounded bg-gray-200 hover:bg-blue-500 hover:text-white transition"
+                >
                   Flexible
                 </button>
               </div>
@@ -123,7 +153,9 @@ Fill in your requirements here</h3>
                 type="date"
                 id="departureDate"
                 value={formData.departure}
-                onChange={(e) => setFormData({ ...formData, departure: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, departure: e.target.value })
+                }
                 className="w-full border rounded px-4 py-2"
               />
             </div>
@@ -136,10 +168,15 @@ Fill in your requirements here</h3>
                   id="adults"
                   className="w-full border rounded px-2 py-1"
                   value={formData.adults}
-                  onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, adults: e.target.value })
+                  }
                 >
                   <option>Select</option>
-                  {[1, 2, 3, 4, 5].map((n) => (
+                  {[
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+                    18, 19, 20,
+                  ].map((n) => (
                     <option key={n}>{n}</option>
                   ))}
                 </select>
@@ -151,7 +188,9 @@ Fill in your requirements here</h3>
                   id="infant"
                   className="w-full border rounded px-2 py-1"
                   value={formData.infant}
-                  onChange={(e) => setFormData({ ...formData, infant: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, infant: e.target.value })
+                  }
                   min="0"
                 />
               </div>
@@ -162,7 +201,9 @@ Fill in your requirements here</h3>
                   id="children"
                   className="w-full border rounded px-2 py-1"
                   value={formData.children}
-                  onChange={(e) => setFormData({ ...formData, children: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, children: e.target.value })
+                  }
                   min="0"
                 />
               </div>
@@ -175,7 +216,9 @@ Fill in your requirements here</h3>
                 id="email"
                 placeholder="Enter your email address"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 className="w-full border rounded px-4 py-2"
               />
             </div>
@@ -187,7 +230,9 @@ Fill in your requirements here</h3>
                 id="phone"
                 placeholder="+91 Enter your mobile number"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
                 className="w-full border rounded px-4 py-2"
               />
             </div>

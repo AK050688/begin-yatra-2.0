@@ -8,7 +8,7 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-import { Whatsapp } from "react-icons/fa";
+// import { Whatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (

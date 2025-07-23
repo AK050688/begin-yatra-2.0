@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
 
 // Custom Arrows
 const NextArrow = ({ onClick }) => (
@@ -23,7 +24,7 @@ const PrevArrow = ({ onClick }) => (
   </button>
 );
 
-const countries = [
+export const countries = [
   {
     name: "India",
     image: "/Images/rajastan.png",
@@ -61,6 +62,7 @@ const countries = [
 ];
 
 const TopCountries = () => {
+  const navigate = useNavigate();
   const settings = {
     dots: false,
     infinite: true,
@@ -81,6 +83,10 @@ const TopCountries = () => {
     ],
   };
 
+  const send = (name) => {
+    navigate(`/countries/${name}`);
+  };
+
   return (
     <div className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12 relative">
       <h4 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 ">
@@ -88,8 +94,8 @@ const TopCountries = () => {
       </h4>
 
       <Slider {...settings}>
-        {countries.map((country, index) => (
-          <div key={index} className="px-3">
+        {countries.map((country) => (
+          <div key={country.name} className="px-3">
             <div
               className="h-64 rounded-xl overflow-hidden bg-cover bg-center relative group transition-all duration-300 shadow-lg"
               style={{ backgroundImage: `url(${country.image})` }}
@@ -100,7 +106,10 @@ const TopCountries = () => {
                 <p className="text-sm text-gray-200 mt-1">
                   {country.description}
                 </p>
-                <button className="mt-3 text-sm px-4 py-1 rounded bg-blue-600 hover:bg-blue-700 transition">
+                <button
+                  onClick={() => send(country.name)}
+                  className="mt-3 text-sm px-4 py-1 rounded bg-blue-600 hover:bg-blue-700 transition"
+                >
                   Explore →
                 </button>
               </div>

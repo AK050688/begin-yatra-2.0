@@ -3,11 +3,15 @@ import { IoLocation } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { destinations } from "./TopDestionation";
 const AboutStory = [];
+import { countries } from "./TopCountries";
 
 const AboutDestination = () => {
-  const { id } = useParams();
+  const { id, name } = useParams();
 
-  const data = destinations.find((item) => item.id === id);
+  const data =
+    destinations.find((item) => item.id === id) ||
+    countries.find((item) => item.name === name);
+
   console.log(data);
 
   const navigate = useNavigate();
@@ -22,7 +26,7 @@ const AboutDestination = () => {
             <h1 className="font-medium pl-4 text-4xl">{data.name}</h1>
             <h1 className="flex items-center gap-2 pl-4">
               <IoLocation className="" />
-              {data.name},India
+              {data.name}
             </h1>
             <div className="grid grid-cols-2 gap-8 p-5 ">
               <div className="text-center mx-5 border-gray-200 border shadow-lg p-5 w-80">
@@ -73,12 +77,13 @@ const AboutDestination = () => {
             aliquid. Vitae, libero aliquam reprehenderit itaque doloremque porro
             ullam magnam molestias placeat tempora eos eaque aperiam. Quia unde
             est placeat ea corporis. Nam harum officiis magnam ex porro numquam
-            soluta nostrum .
+            soluta nostrum.
           </p>
 
           <ol className=" pt-8 list-decimal">
             <p className="mx-18 text-2xl">
-              <span className="text-sky-600">Top Attractions</span> in Kashmir
+              <span className="text-sky-600">Top Attractions</span> in{" "}
+              {data.name}
             </p>
             <li className="mx-25 pt-3">Coringa Wildlife Sanctuary.</li>
             <li className="mx-25">Hope Island.</li>
@@ -87,7 +92,7 @@ const AboutDestination = () => {
             <li className="mx-25">Patnitop.</li>
           </ol>
           <h3 className="mx-20 pt-5 text-2xl">
-            Kashmir is <span className="text-sky-600">Famous for</span>
+            {data.name} is <span className="text-sky-600">Famous for</span>
           </h3>
           <p className="mx-20">
             its stunning natural beauty, including picturesque valleys, serene
@@ -96,7 +101,8 @@ const AboutDestination = () => {
 
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
-              <span className="text-sky-600">What's Great</span> about Kashmir?
+              <span className="text-sky-600">What's Great</span> about{" "}
+              {data.name}?
             </p>
             <li className="mx-25 pt-3">Stunning natural beauty.</li>
             <li className="mx-25">Snow-capped Mountains.</li>
@@ -107,7 +113,7 @@ const AboutDestination = () => {
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
               Cultural Experiences in
-              <span className="text-sky-600"> Kashmir?</span>
+              <span className="text-sky-600"> {data.name}?</span>
             </p>
             <li className="mx-25 pt-3">Rich Handicrafts.</li>
             <li className="mx-25">Delicious Cuisine.</li>
@@ -118,7 +124,7 @@ const AboutDestination = () => {
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
               Tips for
-              <span className="text-sky-600"> Kashmir</span>
+              <span className="text-sky-600"> {data.name}</span>
             </p>
             <li className="mx-25 pt-3">
               Know When To Visit Kashmir As Per Weather.
@@ -147,7 +153,7 @@ const AboutDestination = () => {
           <div>
             <p className="mx-18 text-2xl pt-8">
               Top <span className="text-sky-600">6 Places</span> to visit in{" "}
-              <span className="text-sky-600">Kashmir</span>
+              <span className="text-sky-600">{data.name}</span>
             </p>
             <div className="grid grid-cols-3 gap-2 p-5 w-250 mx-20">
               <div className="pt-5 text-left mx-5 border-gray-200 border shadow-lg p-5 w-80">

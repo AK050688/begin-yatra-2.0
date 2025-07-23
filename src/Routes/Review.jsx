@@ -30,12 +30,13 @@ const Review = () => {
         "Affordable, well-organized and very friendly team. Totally worth it!",
     },
   ]);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     location: "",
     rating: 5,
-    Email: "",
+    email: "",
     review: "",
   });
 
@@ -47,12 +48,13 @@ const Review = () => {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (
       !formData.name ||
       !formData.location ||
-      !formData.Email ||
+      !formData.email ||
       !formData.review
     )
       return;
@@ -67,25 +69,9 @@ const Review = () => {
     } catch (error) {
       console.error("Error submitting review:", error);
       return;
-      
+    } finally {
+      setLoading(false);
     }
-
-    setReviews((prev) => [
-      {
-        ...formData,
-        image: "/Images/gojo.jpg",
-        rating: parseInt(formData.rating),
-      },
-      ...prev,
-    ]);
-
-    setFormData({
-      name: "",
-      location: "",
-      rating: 5,
-      Email: "",
-      review: "",
-    });
   };
 
   return (
@@ -112,8 +98,7 @@ const Review = () => {
             {reviews.map((review, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-              >
+                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="flex items-center gap-4 mb-4">
                   <img
                     src={review.image}
@@ -171,8 +156,7 @@ const Review = () => {
                   name="rating"
                   value={formData.rating}
                   onChange={handleChange}
-                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer focus:border-blue-500 transition"
-                >
+                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer focus:border-blue-500 transition">
                   {[5, 4, 3, 2, 1].map((num) => (
                     <option key={num} value={num}>
                       {num} Star{num > 1 && "s"}
@@ -181,10 +165,10 @@ const Review = () => {
                 </select>
 
                 <input
-                  type="Email"
-                  name="Email"
-                  placeholder="Email"
-                  value={formData.Email}
+                  type="email"
+                  name="email"
+                  placeholder="email"
+                  value={formData.email}
                   onChange={handleChange}
                   className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   required
@@ -198,14 +182,12 @@ const Review = () => {
                 value={formData.review}
                 onChange={handleChange}
                 className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none"
-                required
-              ></textarea>
+                required></textarea>
               <button
+                disabled={loading}
                 type="submit"
-
-                className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1"
-              >
-                Submit Review
+                className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1">
+                {loading ? "Submitting..." : "Submit Review"}
               </button>
             </form>
           </div>

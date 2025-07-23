@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 const PopularPackages = () => {
   const cardData = [
@@ -66,10 +67,17 @@ const PopularPackages = () => {
   return (
     <div className="py-6 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-full mx-8 px-4">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 ">
+        <div className="flex justify-between align-middle">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 ">
           Popular Travel <span className="text-[#3b82f6]"> Destination</span>
-        </h2>
+          </h2>
+          
+          <Link to="/all-packages" className="text-blue-600 hover:underline">
+            View All
+          </Link>
+          
 
+        </div>
         <Slider {...settings}>
           {cardData.map((card, index) => (
             <div key={index} className="px-2">

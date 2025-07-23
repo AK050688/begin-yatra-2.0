@@ -21,6 +21,7 @@ import WnatToGOForm from "./components/WnatToGOForm";
 import AboutDestination from "./Routes/HomeSection/AboutDestination";
 import BackgroundImg from "./components/BackgroundImg";
 import ScrollToTop from "./components/ScrollToTop";
+import AllPackages from "./pages/AllPackages";
 function App() {
   const location = useLocation();
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/terms&condition" element={<TermsAndConditions />} />
         <Route path="/privacy&policy" element={<PrivacyPolicy />} />
         <Route path="/agent/login-agent" element={<LoginPage />} />
+        <Route path="/all-packages" element={<AllPackages />} />
         <Route
           path="/agent/login-agent-registration"
           element={<Registration />}

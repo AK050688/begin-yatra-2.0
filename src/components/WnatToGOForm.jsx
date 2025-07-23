@@ -105,7 +105,6 @@ const TravelForm = () => {
         },
       });
       console.log("Lead submitted successfully:", res);
-
       if (
         (res.status === 200 || res.status === 201) &&
         (res.data.statusCode === 200 || res.data.statusCode === 201)
@@ -132,11 +131,11 @@ const TravelForm = () => {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Left Section - How We Work */}
-        <div>
-          <h2 className="text-xl font-semibold text-blue-600 mb-6">
+        <div className="flex flex-col  justify-center bg-gray-50 rounded-lg shadow-md">
+          <h2 className="text-xl text-center font-semibold text-blue-600 mb-6">
             How we work?
           </h2>
-          <div className="space-y-6 text-sm">
+          <div className="space-y-6 text-sm mx-auto">
             <div className="flex items-start gap-4">
               <GrGallery className="mt-1 text-xl text-blue-600" />
               <div>
@@ -207,7 +206,7 @@ const TravelForm = () => {
         </div>
 
         {/* Right Section - Form */}
-        <div>
+        <div className="flex flex-col justify-center bg-gray-50 rounded-lg shadow-md p-6">
           <h2 className="text-xl text-center font-semibold text-blue-600 mb-6">
             Where do you want to go?
           </h2>

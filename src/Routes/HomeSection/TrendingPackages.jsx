@@ -1,6 +1,7 @@
 import React from "react";
 import { MapPin, Star } from "lucide-react";
 import Card from "../../components/PopularPackages";
+import { Link, useNavigate } from "react-router-dom";
 
 const packages = [
   {
@@ -61,13 +62,19 @@ const packages = [
 ];
 
 const TrendingPackages = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section className="px-4 md:px-12 py-10 bg-white">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
+      <div className="flex justify-between align-middle">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
           Trending Tour Packages{" "}
           <span className="text-[#3b82f6]">on Begin Yatra</span>
-        </h2>
+          </h2>
+          <Link to="/packages" className="text-blue-600 hover:underline">
+            View All
+          </Link>
+      </div>
 
         <div className="flex gap-6 overflow-x-auto pb-4">
           {packages.map((pkg, index) => (
@@ -105,7 +112,7 @@ const TrendingPackages = () => {
                   <span className="text-gray-400">({pkg.reviews} Reviews)</span>
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <button className="flex-1 bg-[#3b82f6] hover:bg-[#3b83f698] text-white text-sm py-2 rounded-md">
+                  <button onClick={()=> navigate('/get-qurey')} className="flex-1 bg-[#3b82f6] hover:bg-[#3b83f698] text-white text-sm py-2 rounded-md">
                     Get Quotes
                   </button>
                   <button className="flex-1 border border-gray-300 text-sm text-gray-700 py-2 rounded-md hover:bg-gray-50">

@@ -5,12 +5,12 @@ import { FaArrowLeft } from "react-icons/fa6";
 const LoginPage = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center relative">
+    <div className="min-h-screen bg-black/30 flex items-center justify-center relative">
       {/* Background Logo */}
-      <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-10 z-0"></div>
+      <div className="absolute inset-0 bg-[url('/Logo/Logo.png')] bg-center bg-no-repeat bg-contain opacity-50 z-0"></div>
 
       {/* Login Box */}
-      <div className="bg-white/70 px-8 md:px-12 py-10 w-[90%] max-w-md rounded-lg shadow-lg z-10 relative">
+      <div className="bg-white/60 px-8 md:px-12 py-10 w-[90%] max-w-md rounded-lg shadow-lg z-10 relative">
         <div className="flex justify-between items-center align-middle ">
           <h2 className="text-3xl font-bold text-center text-blue-600">
             Begin Yatra

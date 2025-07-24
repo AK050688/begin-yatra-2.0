@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 export const axiosWithCredentials = axios.create({
-  baseURL: getEnv || "http://103.205.142.244:8055",
+  baseURL: getEnv,
   withCredentials: true,
 });
 

@@ -104,13 +104,13 @@ const TrendingPackages = () => {
                     *Excluding Applicable Taxes
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-yellow-500 text-sm">
+                {/* <div className="flex items-center gap-1 text-yellow-500 text-sm">
                   <Star className="w-4 h-4 fill-yellow-400" />
                   <span className="text-gray-700 font-medium">
                     {pkg.rating}
                   </span>
                   <span className="text-gray-400">({pkg.reviews} Reviews)</span>
-                </div>
+                </div> */}
                 <div className="mt-3 flex gap-2">
                   <button onClick={()=> navigate('/get-qurey')} className="flex-1 bg-[#3b82f6] hover:bg-[#3b83f698] text-white text-sm py-2 rounded-md">
                     Get Quotes

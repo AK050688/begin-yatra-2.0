@@ -13,7 +13,6 @@ export const destinations = [
   },
   {
     id: "2",
-
     name: "Kerala",
     image: "/Images/Andaman.jpg",
   },

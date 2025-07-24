@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const AgentRegistrationForm = () => {
   const navigate = useNavigate();
@@ -12,8 +13,6 @@ const AgentRegistrationForm = () => {
     password: "",
     // kyc: null,
   });
-
-  
 
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
@@ -34,7 +33,6 @@ const AgentRegistrationForm = () => {
     //     throw new Error("All fields are required");
     //   }
 
-      
     // }
     console.log("Form Submitted:", formData);
     alert("Registration Submitted!");
@@ -52,14 +50,16 @@ const AgentRegistrationForm = () => {
           <div className="flex justify-end align-middle">
             <button
               onClick={() => navigate(`/agent`)}
-              className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer">
-              Back to Agent page
+              className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer"
+            >
+              <FaArrowLeft />
             </button>
           </div>
         </div>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 md:grid-cols-2 gap-4">
+          className="grid grid-cols-2 md:grid-cols-2 gap-4"
+        >
           {/* Basic Inputs */}
           <input
             type="text"
@@ -153,7 +153,8 @@ const AgentRegistrationForm = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold">
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold"
+            >
               Register Now
             </button>
           </div>

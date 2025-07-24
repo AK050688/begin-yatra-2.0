@@ -91,6 +91,15 @@ function App() {
             </div>
           }
         />
+        <Route
+          path="/countries/:name"
+          element={
+            <div>
+              <BackgroundImg contact={{ title: "Get Ready for Trip" }} />
+              <AboutDestination />
+            </div>
+          }
+        />
 
         {/*Booking Routes */}
         <Route path="/*location" element={<Wheredoyouwant />} />

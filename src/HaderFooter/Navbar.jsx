@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { logout, selectUser } from "../store/userSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  console.log("user in navbar", user);
+  
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -56,8 +62,11 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Button */}
-        <button
+       
+
+        {/* Agent Login Button */}
+        {!user ? (
+          <button
           onClick={() => navigate("/agent")}
           className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300 ${
             isScrolled
@@ -67,6 +76,59 @@ const Navbar = () => {
         >
           Agent Login
         </button>
+        ) : user?.role === "admin" ? (
+            <div className="flex gap-4">
+              <button
+            onClick={() => navigate("/dashboard")}
+              className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
+              ${isScrolled
+                ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                : "border-white text-white hover:bg-white hover:text-blue-600"
+              }`}
+            >
+              Dashboard
+              </button>
+        
+              <button
+                onClick={() => dispatch(logout())}
+                className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
+                ${isScrolled
+                  ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  : "border-white text-white hover:bg-white hover:text-blue-600"
+                  }`}
+              >
+                Logout
+              </button>
+            
+            </div>
+        ) : (
+              <div className="flex gap-4">
+                <button
+            onClick={() => navigate("/dashboard")}
+            className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
+              ${isScrolled
+                ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                : "border-white text-white hover:bg-white hover:text-blue-600"
+              }`}
+              >
+                My Leads
+              </button>
+              
+              <button
+                onClick={() => dispatch(logout())}
+                className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
+                ${isScrolled
+                  ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  : "border-white text-white hover:bg-white hover:text-blue-600"
+                  }`}
+              >
+                Logout
+              </button>
+          </div>
+              
+        )
+          }
+        
 
         {/* Mobile Menu */}
         <div className="lg:hidden dropdown dropdown-end">

@@ -1,9 +1,50 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { useDispatch } from "react-redux";
+import axiosWithCredentials from "../Api/ApiService";
+import { toast } from "react-toastify";
+import { loginRequest, loginSuccess } from "../store/userSlice";
 const LoginPage = () => {
   const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginRequest(true));
+
+    try {
+      setIsLoading(true);
+      const response = await axiosWithCredentials.post(`/api/auth/login`, {
+        emailOrPhone: email,
+        password,
+      });
+      const user = response.data.data.user;
+      const accessToken = response.data.data.accessToken;
+      dispatch(
+        loginSuccess({
+          user,
+          accessToken,
+        })
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(
+        "Error during login:",
+        error?.response?.data || error?.message
+      );
+      toast("Invalid email or password");
+    } finally {
+      dispatch(loginRequest(false));
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-black/30 flex items-center justify-center relative">
       {/* Background Logo */}
@@ -33,8 +74,11 @@ const LoginPage = () => {
               Email
             </label>
             <input
+              type="text"
               id="email"
-              type="email"
+              value={email}
+                            required
+              onChange={(e) => setEmail(e.target.value.trim())}
               placeholder="Enter your email"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
@@ -48,35 +92,41 @@ const LoginPage = () => {
               Password
             </label>
             <input
-              id="password"
               type="password"
+              id="password"
+                required
+              value={password}
+              onChange={(e) => setPassword(e.target.value.trim())}
               placeholder="Enter your password"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
 
-          <div className="flex justify-between text-sm text-gray-600">
-            <label className="flex items-center gap-1">
+          <div className="flex justify-end text-sm text-gray-600">
+            {/* <label className="flex items-center gap-1">
               <input type="checkbox" className="accent-blue-500" />
               Remember me
-            </label>
-            <a href="#" className="text-blue-500 hover:underline">
+            </label> */}
+              <Link
+              to={"/agent/forgot-password"} className="text-blue-500 hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <button
-            type="submit"
+          type="submit"
+            onClick={handleLogin}
+            disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition"
           >
-            Login
+            {isLoading ?"Processing...": "Sign In"}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-600 mt-6">
           Don't have an account?{" "}
           <Link
-            to="/agent/login-agent-registration"
+            to="/agent/registration"
             className="text-blue-500 hover:underline"
           >
             Registration

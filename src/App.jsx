@@ -56,7 +56,7 @@ function App() {
       {!shouldHideNavbarFooter && <Navbar />}
 
       <Routes>
-      
+        
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contactus />} />
         <Route path="/about" element={<Aboutus />} />
@@ -66,11 +66,8 @@ function App() {
         <Route path="/agent/login-agent" element={<LoginPage />} />
         <Route path="/all-packages" element={<AllPackages />} />
 
-        <Route
-          path="/agent/login-agent-registration"
-          element={<Registration />}
-        />
-          <Route path="/agent/forgot-password" element={<ForgotPassword />} />
+        <Route path="/agent/registration" element={<Registration />} />
+        <Route path="/agent/forgot-password" element={<ForgotPassword />} />
         <Route path="/agent/verify-otp" element={<VerifyOTP />} />
         <Route path="/agent/add-new-password" element={<ChangePassword />} />
         <Route
@@ -113,29 +110,29 @@ function App() {
         <Route path="/agent" element={<Agent />} />
 
         {/*Dashboard Routes*/}
-          <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<Dashboard />} />
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
 
-        <Route element={<CheckAuth roles={adminUser} />}>
-          <Route path="users" element={<Users />} />
-          <Route path={"admin-profile"} element={<AdminProfile />} />
-          <Route path="add-leads" element={<AddLeads />} />
-          <Route path="lead-cost" element={<LeadCost />} />
-          <Route path="transactions" element={<AllTransactions />} />
-          <Route path="add-new-plans" element={<AddNewPlan />} />
-          <Route path="website/reviews" element={<AdminReviews />} />
-          <Route path="website/destinations/*" >
-            <Route index element={<Destinations />} />
-            <Route path="packages" element={<AdminPackages />} />  
+          <Route element={<CheckAuth roles={adminUser} />}>
+            <Route path="users" element={<Users />} />
+            <Route path={"admin-profile"} element={<AdminProfile />} />
+            <Route path="add-leads" element={<AddLeads />} />
+            <Route path="lead-cost" element={<LeadCost />} />
+            <Route path="transactions" element={<AllTransactions />} />
+            <Route path="add-new-plans" element={<AddNewPlan />} />
+            <Route path="website/reviews" element={<AdminReviews />} />
+            <Route path="website/destinations/*">
+              <Route index element={<Destinations />} />
+              <Route path="packages" element={<AdminPackages />} />
             </Route>
+          </Route>
+          <Route element={<CheckAuth roles={vendorUser} />}>
+            <Route path="my-leads" element={<MyLeads />} />
+            <Route path={`user-profile`} element={<UserProfile />} />
+            <Route path="purchased-leads" element={<PurchaseLeads />} />
+            <Route path="plans" element={<Plans />} />
+          </Route>
         </Route>
-        <Route element={<CheckAuth roles={vendorUser} />}>
-          <Route path="my-leads" element={<MyLeads />} />
-          <Route path={`user-profile`} element={<UserProfile />} />
-          <Route path="purchased-leads" element={<PurchaseLeads />} />
-          <Route path="plans" element={<Plans />} />
-        </Route>
-      </Route>
       </Routes>
       {!shouldHideNavbarFooter && <Footer />}
     </>

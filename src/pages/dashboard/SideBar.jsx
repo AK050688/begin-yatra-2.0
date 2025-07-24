@@ -8,7 +8,7 @@ const SideBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState({});
-
+const isMobile = window.innerWidth <= 768;
   // Helper to generate a unique key for each dropdown based on its path
   const getDropdownKey = (parentKey, label) => (parentKey ? `${parentKey} > ${label}` : label);
 

@@ -58,11 +58,12 @@ const SideBar = () => {
     user: vendorLinks,
   };
 
-  const navLinks = roleLinkMap[user.role];
+  const navLinks = user ? roleLinkMap[user.role] : [];
+
 
   const handleLogout = async () => {
     dispatch(logout());
-    navigate("/auth/login");
+    navigate("/agent/login-agent");
   };
 
   // Recursive navigation renderer

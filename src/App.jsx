@@ -42,6 +42,8 @@ import Plans from "./pages/dashboard/Plan/VendorPlan/Plans";
 import CheckAuth from "./components/auth/CheckAuth";
 import Users from "./pages/dashboard/Users";
 import PublicHomeLayout from "./components/PublicHomeLayout";
+import Unauthorized from "./pages/Unauthorized";
+import NotFound from "./pages/NotFound";
 const adminUser = ["admin"];
 const vendorUser = ["user"];
 function App() {
@@ -102,6 +104,8 @@ function App() {
 
           {/*Agent*/}
           <Route path="/agent" element={<Agent />} />
+          {/* Unauthorized route for public layout */}
+          <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
 
         {/*Dashboard Routes*/}
@@ -127,7 +131,11 @@ function App() {
             <Route path="purchased-leads" element={<PurchaseLeads />} />
             <Route path="plans" element={<Plans />} />
           </Route>
+          {/* Unauthorized route for dashboard layout */}
+          <Route path="unauthorized" element={<Unauthorized />} />
         </Route>
+        {/* Catch-all NotFound route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

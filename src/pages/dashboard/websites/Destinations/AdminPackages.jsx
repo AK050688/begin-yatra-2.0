@@ -8,13 +8,15 @@ const AdminPackages = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchPackages = async (pageNum = 1) => {
+  const getAllPackages = async (pageNum = 1) => {
     setLoading(true);
     setError("");
     try {
       const res = await api.get(`/api/package/getAllPackages?page=${pageNum}`);
-      if (res.statusCode === 200) {
-        setPackages(res.data.Package);
+      console.log("Response from getAllPackages:", res);
+      
+      if (res.data.statusCode === 200) {
+        setPackages(res.data.data.Package);
         setTotalPages(res.data.totalPages || 1);
       }
     } catch (err) {
@@ -25,14 +27,19 @@ const AdminPackages = () => {
   };
 
   useEffect(() => {
-    fetchPackages(page);
+    getAllPackages(page);
   }, [page]);
 
   return (
     <div className="p-6">
-      <button onClick={() => {}} className="mb-4 bg-blue-500 text-white px-4 py-2 rounded" disabled>
+      <div className="flex justify-between align-middle ">
+        <div className="">
+          <input type="search" name="" id="" className="border p-2" />
+        </div>
+          <button onClick={() => {}} className="mb-4 bg-blue-500 text-white px-4 py-2 rounded" disabled>
         Create New Package
       </button>
+    </div>
       {loading ? (
         <div>Loading...</div>
       ) : error ? (

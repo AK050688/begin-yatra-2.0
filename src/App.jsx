@@ -44,6 +44,7 @@ import Users from "./pages/dashboard/Users";
 import PublicHomeLayout from "./components/PublicHomeLayout";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
+import Places from "./pages/dashboard/websites/Destinations/Places";
 const adminUser = ["admin"];
 const vendorUser = ["user"];
 function App() {
@@ -120,9 +121,12 @@ function App() {
             <Route path="transactions" element={<AllTransactions />} />
             <Route path="add-new-plans" element={<AddNewPlan />} />
             <Route path="website/reviews" element={<AdminReviews />} />
+            
+
             <Route path="website/destinations/*">
               <Route index element={<Destinations />} />
               <Route path="packages" element={<AdminPackages />} />
+              <Route path="places" element={<Places />} />
             </Route>
           </Route>
           <Route element={<CheckAuth roles={vendorUser} />}>

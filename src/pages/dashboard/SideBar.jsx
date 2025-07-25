@@ -38,6 +38,7 @@ const SideBar = () => {
           subLinks: [
             { to: "/dashboard/website/destinations", label: "Destinations" },
             { to: "/dashboard/website/destinations/Packages", label: "Packages" },
+            { to: "/dashboard/website/destinations/places", label: "Places" },
           ],
         },
       

@@ -5,9 +5,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
-  { name: "Goa", image: "/Images/banner.jpg" },
-  { name: "Kerala", image: "/Images/bannerke.jpg" },
-  { name: "Manali", image: "/Images/bannerImg.jpg" },
+  { name: "Goa", image: "/BannerImages/Goa.png" },
+  { name: "Kerala", image: "/BannerImages/Darjeeling.png" },
+  { name: "Manali", image: "/BannerImages/Dubai.png" },
+  { name: "Manali", image: "/BannerImages/kashmir.png" },
+  { name: "Manali", image: "/BannerImages/kerla.png" },
+  { name: "Manali", image: "/BannerImages/manali.png" },
+  { name: "Manali", image: "/BannerImages/Sikkim.png" },
+  { name: "Manali", image: "/BannerImages/Thailand.png" },
+  { name: "Manali", image: "/BannerImages/dar.jpg" },
 ];
 
 // Custom arrow components with enhanced styling
@@ -68,12 +74,12 @@ const Banner = () => {
 
             {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-8 text-white">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif mb-8 drop-shadow-2xl animate-fadeIn tracking-tight">
+              {/* <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif mb-8 drop-shadow-2xl animate-fadeIn tracking-tight">
                 Discover {dest.name}
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl max-w-2xl mb-10 drop-shadow-md animate-fadeIn animation-delay-200">
                 Plan your dream holiday with our exclusive packages
-              </p>
+              </p> */}
               {/* Search Box */}
               <div className="flex items-center bg-white/95 rounded-full px-5 py-3 w-full max-w-lg shadow-2xl animate-slideUp transition-all duration-300 hover:shadow-xl">
                 <svg

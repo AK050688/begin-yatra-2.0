@@ -94,17 +94,17 @@ const AdminReviews = () => {
   return (
     <div className="p-2 sm:p-4 md:p-6 w-full overflow-x-auto">
       <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+        className="grid grid-cols-1 md:grid-cols-2   mb-6"
         onSubmit={handleFilterSubmit}
       >
-        <div className="flex flex-col md:flex-row gap-4 w-full">
+        <div className="flex flex-col md:grid md:grid-cols-2 md:flex-row gap-4 w-full">
           <input
             type="text"
             name="name"
             placeholder="Name"
             value={filters.name}
             onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full mb-2 md:mb-0"
+            className="border px-3 py-2 rounded  mb-2 md:mb-0"
           />
           <input
             type="email"
@@ -112,17 +112,16 @@ const AdminReviews = () => {
             placeholder="Email"
             value={filters.email}
             onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full mb-2 md:mb-0"
+            className="border px-3 py-2 rounded mb-2 md:mb-0"
           />
-        </div>
-        <div className="flex flex-col md:flex-row gap-4 w-full">
+        
           <input
             type="text"
             name="location"
             placeholder="Location"
             value={filters.location}
             onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full mb-2 md:mb-0"
+            className="border px-3 py-2 rounded  mb-2 md:mb-0"
           />
           <input
             type="number"
@@ -132,7 +131,7 @@ const AdminReviews = () => {
             max="5"
             value={filters.rating}
             onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full md:w-24"
+            className="border px-3 py-2 rounded md:w-24"
           />
         </div>
         <div className="md:col-span-2 flex justify-end">

@@ -176,32 +176,44 @@ const AllPackages = () => {
     }
   };
 
+  // Responsive sidebar state
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   return (
     <>
-      <div className="relative h-[28rem] w-full bg-[url('/Images/bg.jpg')] bg-cover bg-center bg-no-repeat overflow-hidden ">
+      <div className="relative h-[20rem] sm:h-[28rem] w-full bg-[url('/Images/bg.jpg')] bg-cover bg-center bg-no-repeat overflow-hidden ">
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-6 lg:px-12 py-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg mb-6 text-center animate-fade-in-down">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg mb-6 text-center animate-fade-in-down">
             All Packages
           </h1>
-          </div>
         </div>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-10 px-2 md:px-0">
-      
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-            {/* Sidebar Filters */}
-          <div className="">
-            <aside className="w-full md:w-80 bg-white rounded-xl shadow-lg p-6 flex flex-col gap-6 mb-8 md:mb-0">
-          
+      </div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-6 sm:py-10 px-2 md:px-0">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-4 md:gap-8">
+          {/* Mobile Filter Toggle */}
+          <div className="md:hidden mb-4 flex justify-between items-center">
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition"
+              onClick={() => setShowMobileFilters((prev) => !prev)}
+            >
+              {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
+          </div>
+          {/* Sidebar Filters */}
+          <div className={
+            `w-full md:w-auto ${showMobileFilters ? '' : 'hidden'} md:block`
+          }>
+            <aside className="w-full md:w-80 bg-white rounded-xl shadow-lg p-4 sm:p-6 flex flex-col gap-6 mb-4 md:mb-0">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl font-semibold text-gray-800">Filter by</h2>
-                <button className="text-blue-600 font-semibold cursor-pointer hover:underline" onClick={handleReset}>Reset all</button>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Filter by</h2>
+                <button className="text-blue-600 font-semibold cursor-pointer hover:underline text-sm" onClick={handleReset}>Reset all</button>
               </div>
               <div className="flex flex-col gap-4">
                 <div>
-                  <div className="font-semibold text-gray-800 mb-1">Price Range <span className="text-gray-400 text-sm">(per person)</span></div>
+                  <div className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Price Range <span className="text-gray-400 text-xs sm:text-sm">(per person)</span></div>
                   <div className="flex flex-col gap-2 mt-2">
                     {priceRanges.map((range, idx) => (
-                      <label key={range.label} className="flex items-center gap-2 text-gray-700">
+                      <label key={range.label} className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
                         <input
                           className="cursor-pointer"
                           type="checkbox"
@@ -214,10 +226,10 @@ const AllPackages = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-800 mb-1 mt-4">Duration</div>
+                  <div className="font-semibold text-gray-800 mb-1 mt-4 text-sm sm:text-base">Duration</div>
                   <div className="flex flex-col gap-2 mt-2">
                     {durationRanges.map((range, idx) => (
-                      <label key={range.label} className="flex items-center gap-2 text-gray-700">
+                      <label key={range.label} className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
                         <input
                           type="checkbox"
                           className="cursor-pointer"
@@ -230,78 +242,79 @@ const AllPackages = () => {
                   </div>
                 </div>
                 <button
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 cursor-pointer transition mt-4"
+                  className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 cursor-pointer transition mt-4 text-sm sm:text-base"
                   onClick={handleApplyFilter}
                 >
                   Apply Filter
                 </button>
               </div>
-        </aside>
-        </div>
-            {/* Package Cards */}
-            <main className="flex-1">
-              {/* Search Filter */}
-              <div className="mb-8 flex justify-end">
-                <input
-                  type="text"
-                  placeholder="Search by name, location, or description..."
-                  className="w-full md:w-96 px-4 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-8 grid-cols-1 sm:grid-cols-1">
-                {filteredPackages.length === 0 && (
-                  <div className="text-center text-gray-500 text-xl py-20">
-                    No packages found for selected filters.
-                  </div>
-                )}
-                {filteredPackages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    className="w-full flex flex-col md:flex-row bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-blue-100">
-                    <img
-                      src={pkg.image}
-                      alt={pkg.name}
-                      className="w-full md:w-72 h-60 object-cover object-center"
-                    />
-                    <div className="flex-1 p-6 flex flex-col justify-between">
-                      <div>
-                        <h2 className="text-2xl font-bold text-blue-700 mb-2">
-                          {pkg.name}
-                        </h2>
-                        <p className="text-gray-600 mb-4">{pkg.description}</p>
-                        <div className="flex flex-wrap gap-4 mb-4">
-                          <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-                            {pkg.location}
-                          </span>
-                          <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                            {pkg.duration} Days
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mt-4">
-                        <span className="text-2xl font-bold text-green-600">
-                          ₹{pkg.price}
+            </aside>
+          </div>
+          {/* Package Cards */}
+          <main className="flex-1">
+            {/* Search Filter */}
+            <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center justify-end">
+              <input
+                type="text"
+                placeholder="Search by name, location, or description..."
+                className="w-full sm:w-96 px-4 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-4 sm:gap-8 grid-cols-1">
+              {filteredPackages.length === 0 && (
+                <div className="text-center text-gray-500 text-base sm:text-xl py-10 sm:py-20">
+                  No packages found for selected filters.
+                </div>
+              )}
+              {filteredPackages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="w-full flex flex-col md:flex-row bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-blue-100"
+                >
+                  <img
+                    src={pkg.image}
+                    alt={pkg.name}
+                    className="w-full md:w-72 h-48 sm:h-60 object-cover object-center"
+                  />
+                  <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between">
+                    <div>
+                      <h2 className="text-lg sm:text-2xl font-bold text-blue-700 mb-2">
+                        {pkg.name}
+                      </h2>
+                      <p className="text-gray-600 mb-4 text-sm sm:text-base">{pkg.description}</p>
+                      <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
+                        <span className="inline-block bg-blue-100 text-blue-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                          {pkg.location}
                         </span>
-                        <button
-                          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition"
-                          onClick={() => handleViewDetails(pkg)}
-                        >
-                          View Details
-                        </button>
+                        <span className="inline-block bg-green-100 text-green-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                          {pkg.duration} Days
+                        </span>
                       </div>
                     </div>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
+                      <span className="text-lg sm:text-2xl font-bold text-green-600">
+                        ₹{pkg.price}
+                      </span>
+                      <button
+                        className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition text-sm sm:text-base"
+                        onClick={() => handleViewDetails(pkg)}
+                      >
+                        View Details
+                      </button>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </main>
-          </div>
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
       </div>
       {/* Modal for package details */}
       {modalOpen && selectedPackage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 bg-opacity-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative animate-fade-in-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 bg-opacity-50 px-2 sm:px-0 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-4 sm:p-6 relative animate-fade-in-up mx-auto my-8 sm:my-16">
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none"
               onClick={handleCloseModal}
@@ -312,24 +325,24 @@ const AllPackages = () => {
             <img
               src={selectedPackage.image}
               alt={selectedPackage.name}
-              className="w-full h-56 object-cover rounded-xl mb-4"
+              className="w-full h-40 sm:h-56 object-cover rounded-xl mb-4"
             />
-            <h2 className="text-2xl font-bold text-blue-700 mb-2">{selectedPackage.name}</h2>
-            <p className="text-gray-600 mb-4">{selectedPackage.description}</p>
-            <div className="flex flex-wrap gap-4 mb-4">
-              <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+            <h2 className="text-lg sm:text-2xl font-bold text-blue-700 mb-2">{selectedPackage.name}</h2>
+            <p className="text-gray-600 mb-4 text-sm sm:text-base">{selectedPackage.description}</p>
+            <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
+              <span className="inline-block bg-blue-100 text-blue-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                 {selectedPackage.location}
               </span>
-              <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+              <span className="inline-block bg-green-100 text-green-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                 {selectedPackage.duration} Days
               </span>
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-2xl font-bold text-green-600">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
+              <span className="text-lg sm:text-2xl font-bold text-green-600">
                 ₹{selectedPackage.price}
               </span>
               <button
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition text-sm sm:text-base"
                 onClick={handleInquiry}
               >
                 Get Inquiry

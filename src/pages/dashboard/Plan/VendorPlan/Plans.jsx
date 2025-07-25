@@ -365,28 +365,6 @@ const Plans = () => {
         </div>
       )}
 
-      {/* Header Section */}
-      <div className="bg-white p-4 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
-        <h1 className="text-xl font-bold">Plan Management</h1>
-        <div className="flex gap-2">
-          {/* <button
-            onClick={handleNewPlanOpenModal}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-sm">
-            Add New Plan
-          </button>
-          <button
-            onClick={handleLeadsCostOpenModal}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-sm">
-            Set Leads Cost
-          </button> */}
-          <Link
-            to="/"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors text-sm"
-          >
-            Back to Dashboard
-          </Link>
-        </div>
-      </div>
 
       {/* Available Plans Section */}
       <div className="bg-white p-4 rounded-lg shadow mb-6">

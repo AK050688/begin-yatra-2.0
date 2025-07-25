@@ -41,73 +41,68 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Plans from "./pages/dashboard/Plan/VendorPlan/Plans";
 import CheckAuth from "./components/auth/CheckAuth";
 import Users from "./pages/dashboard/Users";
+import PublicHomeLayout from "./components/PublicHomeLayout";
 const adminUser = ["admin"];
 const vendorUser = ["user"];
 function App() {
-  const location = useLocation();
-
-  const shouldHideNavbarFooter =
-    location.pathname.startsWith("/agent") ||
-    location.pathname.startsWith("/*");
-
   return (
     <>
       <ScrollToTop />
-      {!shouldHideNavbarFooter && <Navbar />}
 
       <Routes>
-        
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<Contactus />} />
-        <Route path="/about" element={<Aboutus />} />
-        <Route path="/reviews" element={<Review />} />
-        <Route path="/terms&condition" element={<TermsAndConditions />} />
-        <Route path="/privacy&policy" element={<PrivacyPolicy />} />
-        <Route path="/agent/login-agent" element={<LoginPage />} />
-        <Route path="/all-packages" element={<AllPackages />} />
+        <Route element={<PublicHomeLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contactus />} />
+          <Route path="/about" element={<Aboutus />} />
+          <Route path="/reviews" element={<Review />} />
+          <Route path="/terms&condition" element={<TermsAndConditions />} />
+          <Route path="/privacy&policy" element={<PrivacyPolicy />} />
+          <Route path="/agent/login-agent" element={<LoginPage />} />
+          <Route path="/all-packages" element={<AllPackages />} />
 
-        <Route path="/agent/registration" element={<Registration />} />
-        <Route path="/agent/forgot-password" element={<ForgotPassword />} />
-        <Route path="/agent/verify-otp" element={<VerifyOTP />} />
-        <Route path="/agent/add-new-password" element={<ChangePassword />} />
-        <Route
-          path="/get-qurey"
-          element={
-            <div>
-              <BackgroundImg contact={{ title: "Get Qurey" }} />
-              <WnatToGOForm />
-            </div>
-          }
-        />
-        <Route
-          path="/destination/:id"
-          element={
-            <div>
-              <BackgroundImg contact={{ title: "Get Ready for Trip" }} />
-              <AboutDestination />
-            </div>
-          }
-        />
-        <Route
-          path="/countries/:name"
-          element={
-            <div>
-              <BackgroundImg contact={{ title: "Get Ready for Trip" }} />
-              <AboutDestination />
-            </div>
-          }
-        />
+          <Route path="/agent/registration" element={<Registration />} />
+          <Route path="/agent/forgot-password" element={<ForgotPassword />} />
+          <Route path="/agent/verify-otp" element={<VerifyOTP />} />
+          <Route path="/agent/add-new-password" element={<ChangePassword />} />
+          <Route
+            path="/get-qurey"
+            element={
+              <div>
+                <BackgroundImg contact={{ title: "Get Qurey" }} />
+                <WnatToGOForm />
+              </div>
+            }
+          />
+          <Route
+            path="/destination/:id"
+            element={
+              <div>
+                <BackgroundImg contact={{ title: "Get Ready for Trip" }} />
+                <AboutDestination />
+              </div>
+            }
+          />
+          <Route
+            path="/countries/:name"
+            element={
+              <div>
+                <BackgroundImg contact={{ title: "Get Ready for Trip" }} />
+                <AboutDestination />
+              </div>
+            }
+          />
 
-        {/*Booking Routes */}
-        <Route path="/*location" element={<Wheredoyouwant />} />
-        <Route path="/*select-date" element={<SelectDate />} />
-        <Route path="/*peoples" element={<WhoIsComeingWithYou />} />
-        <Route path="/*spend-time" element={<SpendTime />} />
-        <Route path="/*trip-itinerary" element={<TripItinerary />} />
-        <Route path="/get-quote" element={<WnatToGOForm />} />
+          {/*Booking Routes */}
+          <Route path="/*location" element={<Wheredoyouwant />} />
+          <Route path="/*select-date" element={<SelectDate />} />
+          <Route path="/*peoples" element={<WhoIsComeingWithYou />} />
+          <Route path="/*spend-time" element={<SpendTime />} />
+          <Route path="/*trip-itinerary" element={<TripItinerary />} />
+          <Route path="/get-quote" element={<WnatToGOForm />} />
 
-        {/*Agent*/}
-        <Route path="/agent" element={<Agent />} />
+          {/*Agent*/}
+          <Route path="/agent" element={<Agent />} />
+        </Route>
 
         {/*Dashboard Routes*/}
         <Route path="/dashboard" element={<DashboardLayout />}>
@@ -134,7 +129,6 @@ function App() {
           </Route>
         </Route>
       </Routes>
-      {!shouldHideNavbarFooter && <Footer />}
     </>
   );
 }

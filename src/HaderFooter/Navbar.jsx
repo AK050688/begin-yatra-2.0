@@ -6,10 +6,9 @@ import { logout, selectUser } from "../store/userSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  console.log("user in navbar", user);
-  
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navList = [
     { data: "Home", path: "/" },
@@ -38,6 +37,20 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on navigation
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const closeMenu = () => setMobileMenuOpen(false);
+    window.addEventListener("resize", closeMenu);
+    return () => window.removeEventListener("resize", closeMenu);
+  }, [mobileMenuOpen]);
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0 });
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -46,10 +59,10 @@ const Navbar = () => {
     >
       <div className="flex justify-between items-center py-3 px-4 lg:px-12">
         {/* Logo */}
-        <img src="/Logo/Logo.png" alt="Logo" className="w-24 md:w-32" />
+        <img src="/Logo/Logo.png" alt="Logo" className="w-24 md:w-32 cursor-pointer" onClick={() => handleNavClick("/")} />
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex gap-6">
+        <div className="hidden lg:flex gap-6 items-center">
           {navList.map((item, index) => (
             <NavLink
               onClick={() => window.scrollTo({ top: 0 })}
@@ -60,121 +73,160 @@ const Navbar = () => {
               {item.data}
             </NavLink>
           ))}
-        </div>
-
-       
-
-        {/* Agent Login Button */}
-        {!user ? (
-          <button
-          onClick={() => navigate("/agent")}
-          className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300 ${
-            isScrolled
-              ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-              : "border-white text-white hover:bg-white hover:text-blue-600"
-          }`}
-        >
-          Agent Login
-        </button>
-        ) : user?.role === "admin" ? (
-            <div className="flex gap-4">
-              <button
-            onClick={() => navigate("/dashboard")}
-              className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
-              ${isScrolled
-                ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-                : "border-white text-white hover:bg-white hover:text-blue-600"
-              }`}
-            >
-              Dashboard
-              </button>
-        
-              <button
-                onClick={() => dispatch(logout())}
-                className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
-                ${isScrolled
+          {/* Auth Buttons */}
+          {!user ? (
+            <button
+              onClick={() => navigate("/agent")}
+              className={`ml-4 px-4 py-2 border rounded-md transition duration-300 ${
+                isScrolled
                   ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
                   : "border-white text-white hover:bg-white hover:text-blue-600"
-                  }`}
-              >
-                Logout
-              </button>
-            
-            </div>
-        ) : (
-              <div className="flex gap-4">
-                <button
-            onClick={() => navigate("/dashboard")}
-            className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
-              ${isScrolled
-                ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-                : "border-white text-white hover:bg-white hover:text-blue-600"
               }`}
-              >
-                My Leads
-              </button>
-              
-              <button
-                onClick={() => dispatch(logout())}
-                className={`hidden sm:inline-block px-4 py-2 border rounded-md transition duration-300
-                ${isScrolled
-                  ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-                  : "border-white text-white hover:bg-white hover:text-blue-600"
-                  }`}
-              >
-                Logout
-              </button>
-          </div>
-              
-        )
-          }
-        
-
-        {/* Mobile Menu */}
-        <div className="lg:hidden dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke={isScrolled ? "black" : "white"}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h12M4 18h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className={`menu menu-sm dropdown-content mt-3 p-4 shadow rounded-box w-56 ${
-              isScrolled ? "bg-white" : "bg-gray-900 text-white"
-            }`}
-          >
-            {navList.map((item, index) => (
-              <li key={index}>
-                <NavLink to={item.path} className={navLinkStyle}>
-                  {item.data}
-                </NavLink>
-              </li>
-            ))}
-            <li>
+              Agent Login
+            </button>
+          ) : user?.role === "admin" ? (
+            <>
               <button
-                onClick={() => navigate("/agent")}
-                className={`w-full mt-2 px-4 py-2 border rounded-md transition duration-300 ${
+                onClick={() => navigate("/dashboard")}
+                className={`ml-4 px-4 py-2 border rounded-md transition duration-300 ${
                   isScrolled
                     ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
                     : "border-white text-white hover:bg-white hover:text-blue-600"
                 }`}
               >
-                Agent Login
+                Dashboard
               </button>
-            </li>
-          </ul>
+              <button
+                onClick={() => dispatch(logout())}
+                className={`ml-2 px-4 py-2 border rounded-md transition duration-300 ${
+                  isScrolled
+                    ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                    : "border-white text-white hover:bg-white hover:text-blue-600"
+                }`}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => navigate("/dashboard")}
+                className={`ml-4 px-4 py-2 border rounded-md transition duration-300 ${
+                  isScrolled
+                    ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                    : "border-white text-white hover:bg-white hover:text-blue-600"
+                }`}
+              >
+                My Leads
+              </button>
+              <button
+                onClick={() => dispatch(logout())}
+                className={`ml-2 px-4 py-2 border rounded-md transition duration-300 ${
+                  isScrolled
+                    ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                    : "border-white text-white hover:bg-white hover:text-blue-600"
+                }`}
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden flex items-center justify-center p-2 rounded focus:outline-none"
+          aria-label="Open menu"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke={isScrolled ? "black" : "white"}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
+        {/* Mobile Dropdown */}
+        {mobileMenuOpen && (
+          <div className={`fixed inset-0 z-50 bg-black/40 flex flex-col items-end lg:hidden`}>
+            <div className={`w-64 bg-white h-full shadow-lg p-6 flex flex-col gap-4 animate-slide-in-right`}>
+              <button
+                className="self-end mb-4 text-gray-700 hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              {navList.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-blue-600 font-semibold border-b-2 border-blue-600 block py-2"
+                      : "text-gray-800 hover:text-blue-500 transition duration-200 block py-2"
+                  }
+                  onClick={() => handleNavClick(item.path)}
+                >
+                  {item.data}
+                </NavLink>
+              ))}
+              {/* Auth Buttons */}
+              {!user ? (
+                <button
+                  onClick={() => { handleNavClick("/agent"); }}
+                  className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                >
+                  Agent Login
+                </button>
+              ) : user?.role === "admin" ? (
+                <>
+                  <button
+                    onClick={() => handleNavClick("/dashboard")}
+                    className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => { dispatch(logout()); setMobileMenuOpen(false); }}
+                    className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => handleNavClick("/dashboard")}
+                    className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  >
+                    My Leads
+                  </button>
+                  <button
+                    onClick={() => { dispatch(logout()); setMobileMenuOpen(false); }}
+                    className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
+            {/* Click outside to close */}
+            <div className="flex-1 w-full" onClick={() => setMobileMenuOpen(false)} />
+          </div>
+        )}
       </div>
     </nav>
   );

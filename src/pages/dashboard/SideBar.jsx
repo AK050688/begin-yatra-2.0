@@ -1,14 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logout, selectUser } from "../../store/userSlice";
+import { setSidebarOpen, selectSidebar } from "../../store/sidebar";
 import { useState } from "react";
+import { StepBack } from "lucide-react";
 
 const SideBar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState({});
-const isMobile = window.innerWidth <= 768;
+  const isSidebarOpen = useSelector(selectSidebar);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   // Helper to generate a unique key for each dropdown based on its path
   const getDropdownKey = (parentKey, label) => (parentKey ? `${parentKey} > ${label}` : label);
 
@@ -104,17 +107,19 @@ const isMobile = window.innerWidth <= 768;
     });
   };
 
+  if (isMobile && !isSidebarOpen) return null;
+
   return (
     <aside
       className={`${
         isMobile
           ? "fixed inset-0 z-50 bg-white w-64 h-full shadow-lg"
-          : "w-64 h-full relative"
+          : "w-64 h-full relative scroll-y-auto"
       }`}
     >
       <div className="flex flex-col justify-between h-full border-r border-slate-200">
         <div>
-          <div className="flex justify-between items-center border-y p-4 h-20">
+          <div className="flex justify-between items-center p-4 h-20">
             <h1 className="text-2xl font-bold text-blue-400">
               <Link to="/">Begin Yatra</Link>
             </h1>

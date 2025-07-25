@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
 import axios from 'axios';
-export const api = "https://7wvxgkc8-8000.inc1.devtunnels.ms/api";
+import api from '../../../../Api/ApiService';
+
 const AddPlaceModal = ({ show, onClose, onPlaceCreated }) => {
   const [placeName, setPlaceName] = useState('');
   const [placeDescription, setPlaceDescription] = useState('');
@@ -22,7 +23,7 @@ const token  = useSelector(selectAccessToken)
       if (placeImageRef.current?.files[0]) {
         formData.append('placeImage', placeImageRef.current.files[0]);
       }
-      const res = await axios.post(`${api}/place`,  formData, {
+      const res = await api.post(`/api/place`,  formData, {
         headers: {
           'Authorization': token,
         },

@@ -212,10 +212,10 @@ const Navbar = () => {
                     onClick={() => handleNavClick("/dashboard")}
                     className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
                   >
-                    My Leads
+                    Dashboard
                   </button>
                   <button
-                    onClick={() => { dispatch(logout()); setMobileMenuOpen(false); }}
+                    onClick={() => { dispatch(logout()); setMobileMenuOpen(false); navigate("/"); }}
                     className="w-full mt-2 px-4 py-2 border rounded-md transition duration-300 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
                   >
                     Logout

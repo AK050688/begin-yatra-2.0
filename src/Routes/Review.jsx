@@ -93,39 +93,8 @@ const Review = () => {
             vacations with us!
           </p>
 
-          {/* Review Cards */}
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((review, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="flex items-center gap-4 mb-4">
-                  <img
-                    src={review.image}
-                    alt={review.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-xl text-gray-800">
-                      {review.name}
-                    </h3>
-                    <p className="text-sm text-gray-500">{review.location}</p>
-                  </div>
-                </div>
-                <div className="flex items-center text-yellow-400 mb-3">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <FaStar key={i} className="w-5 h-5" />
-                  ))}
-                  {[...Array(5 - review.rating)].map((_, i) => (
-                    <FaStar key={i} className="w-5 h-5 text-gray-300" />
-                  ))}
-                </div>
-                <p className="text-gray-600 leading-relaxed">{review.review}</p>
-              </div>
-            ))}
-          </div>
 
-          {/* Add Review Form */}
+              {/* Add Review Form */}
           <div className="mt-12 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
             <h2 className="text-2xl font-bold mb-6 text-blue-600">
               Share Your Experience
@@ -190,7 +159,46 @@ const Review = () => {
                 {loading ? "Submitting..." : "Submit Review"}
               </button>
             </form>
+          
           </div>
+
+          {/* Review Cards */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-6 lg:mt-12 md:mt-8">
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="flex items-center gap-4 mb-4">
+                  <img
+                    src={review.image}
+                    alt={review.name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
+                  />
+                  <div>
+                    <h3 className="font-semibold text-xl text-gray-800">
+                      {review.name}
+                    </h3>
+                    <p className="text-sm text-gray-500">{review.location}</p>
+                  </div>
+                </div>
+                <div className="flex items-center text-yellow-400 mb-3">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <FaStar key={i} className="w-5 h-5" />
+                  ))}
+                  {[...Array(5 - review.rating)].map((_, i) => (
+                    <FaStar key={i} className="w-5 h-5 text-gray-300" />
+                  ))}
+                </div>
+                <p className="text-gray-600 leading-relaxed">{review.review}</p>
+              </div>
+            ))}
+
+              <div className="">
+            {/* Add the review pagination */}
+            </div>
+          </div>
+
+      
         </div>
       </div>
     </>

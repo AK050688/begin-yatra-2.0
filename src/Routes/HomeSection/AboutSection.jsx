@@ -21,7 +21,7 @@ const AboutSection = () => {
           About Us
         </h3>
         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight animate-slideIn">
-          Plan Your Trip with Tours
+          Begin Your Yatra with Begin Yatra
         </h2>
         <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-lg animate-fadeIn">
          At BeginYatra, we're passionate about transforming the way people explore the world. We believe that travel is more than just visiting new places – it's about experiencing different cultures, meeting new people, and creating lifelong memories.
@@ -43,7 +43,7 @@ const AboutSection = () => {
           <li className="flex items-center group">
             <FaCheckCircle className="text-blue-500 mr-3 transform group-hover:scale-125 transition-transform duration-300" />
             <span className="group-hover:text-blue-600 transition-colors duration-300">
-              24+ Years of Experience
+              7+ Years of Experience
             </span>
           </li>
           <li className="flex items-center group">

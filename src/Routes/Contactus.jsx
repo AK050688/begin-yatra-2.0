@@ -82,7 +82,8 @@ const Contactus = () => {
             <FaLocationDot /> Address
             </h4>
             <p className="text-gray-600">
-              4th Floor, TravelHub Building, Connaught Place, New Delhi – 110001
+            <p>  Begin Yatra</p>
+<p>Mandar Hill, Banka, Bihar, India 813104</p>
             </p>
           </div>
 
@@ -91,14 +92,14 @@ const Contactus = () => {
               <MdOutlineCall/>
  Phone
             </h4>
-            <p className="text-gray-600">+91 9876543210</p>
+            <p className="text-gray-600">+91 9508241806</p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow">
             <h4 className="text-lg flex gap-2 items-center font-semibold text-gray-800 mb-2">
              <MdOutlineMail/> Email
             </h4>
-            <p className="text-gray-600">support@tripclapclone.com</p>
+            <p className="text-gray-600">info@beginyatra.com</p>
           </div>
         </div>
       </div>
@@ -109,13 +110,12 @@ const Contactus = () => {
         <div className="bg-white  hover:shadow-2xl p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Address</h2>
           <div className="mb-3">
-            <p className="font-medium">Regd Address:</p>
-            <p className="text-sm">17, Rosewood, First Floor, Malibu Towne, Sector 47, Gurugram, Haryana - 122018</p>
+            <p className="font-medium">Begin Yatra</p>
+            <p className="text-sm">
+
+Mandar Hill, Banka, Bihar, India 813104</p>
           </div>
-          <div className="mb-3">
-            <p className="font-medium">Branch Address:</p>
-            <p className="text-sm">C-4, Rayos Business Park, Block C, Sector 63, Noida, UP - 201301</p>
-          </div>
+      
         </div>
 
 
@@ -123,11 +123,11 @@ const Contactus = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Contact Info</h2>
           <div className="mb-3">
             <p className="font-medium">Email:</p>
-            <p className="text-sm break-all">help@tripclap.com</p>
+            <p className="text-sm break-all">info@beginyatra.com</p>
           </div>
           <div>
             <p className="font-medium">Mobile:</p>
-            <p className="text-sm">+91-8069145442</p>
+            <p className="text-sm">+91-9508241806</p>
           </div>
         </div>
 
@@ -136,15 +136,15 @@ const Contactus = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-500">Stay Connected</h2>
           <div className="mb-3">
             <p className="font-medium">Website:</p>
-            <p className="text-sm break-all">www.tripclap.com</p>
+            <a href="#" target="_blank" className="text-sm break-all">www.beginyatra.com</a>
           </div>
           <div className="mb-3">
             <p className="font-medium">Facebook:</p>
-            <p className="text-sm break-all">www.facebook.com/tripclapp</p>
+            <a href="#" target="_blank" className="text-sm break-all">www.facebook.com/</a>
           </div>
           <div>
             <p className="font-medium">Instagram:</p>
-            <p className="text-sm break-all">www.instagram.com/tripclapp</p>
+            <a href="#" target="_blank" className="text-sm break-all">www.instagram.com/</a>
           </div>
         </div>
       </div>

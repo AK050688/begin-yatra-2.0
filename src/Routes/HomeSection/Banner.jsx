@@ -74,7 +74,6 @@ const Banner = () => {
               <p className="text-lg md:text-xl lg:text-2xl max-w-2xl mb-10 drop-shadow-md animate-fadeIn animation-delay-200">
                 Plan your dream holiday with our exclusive packages
               </p>
-
               {/* Search Box */}
               <div className="flex items-center bg-white/95 rounded-full px-5 py-3 w-full max-w-lg shadow-2xl animate-slideUp transition-all duration-300 hover:shadow-xl">
                 <svg

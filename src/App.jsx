@@ -70,7 +70,7 @@ function App() {
             path="/get-qurey"
             element={
               <div>
-                <BackgroundImg contact={{ title: "Get Qurey" }} />
+                <BackgroundImg contact={{ title: "Get Quotes" }} />
                 <WnatToGOForm />
               </div>
             }

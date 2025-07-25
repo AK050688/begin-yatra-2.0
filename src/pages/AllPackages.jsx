@@ -5,7 +5,7 @@ const allPackages = [
   {
     id: 1,
     name: "Goa Beach Escape",
-    price: 299,
+    price: 12990,
     description: "Enjoy the sunny beaches of Goa for 3 nights and 4 days.",
     location: "Goa, India",
     duration: 4,
@@ -91,6 +91,8 @@ const AllPackages = () => {
   const [selectedDurationRanges, setSelectedDurationRanges] = useState([]);
   const [appliedPriceRanges, setAppliedPriceRanges] = useState([]);
   const [appliedDurationRanges, setAppliedDurationRanges] = useState([]);
+  // Add search state
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -102,6 +104,15 @@ const AllPackages = () => {
   // Filtering logic
   const filteredPackages = useMemo(() => {
     return allPackages.filter((pkg) => {
+      // Search filter
+      const search = searchTerm.trim().toLowerCase();
+      let searchMatch = true;
+      if (search.length > 0) {
+        searchMatch =
+          pkg.name.toLowerCase().includes(search) ||
+          pkg.location.toLowerCase().includes(search) ||
+          pkg.description.toLowerCase().includes(search);
+      }
       // Price filter
       let priceMatch = true;
       if (appliedPriceRanges.length > 0) {
@@ -118,9 +129,9 @@ const AllPackages = () => {
           return pkg.duration >= range.min && pkg.duration <= range.max;
         });
       }
-      return priceMatch && durationMatch;
+      return searchMatch && priceMatch && durationMatch;
     });
-  }, [appliedPriceRanges, appliedDurationRanges]);
+  }, [searchTerm, appliedPriceRanges, appliedDurationRanges]);
 
   // Handlers
   const handlePriceChange = (idx) => {
@@ -174,7 +185,8 @@ const AllPackages = () => {
           </h1>
           </div>
         </div>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-10 px-2 md:px-0">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-10 px-2 md:px-0">
+      
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
             {/* Sidebar Filters */}
           <div className="">
@@ -228,6 +240,16 @@ const AllPackages = () => {
         </div>
             {/* Package Cards */}
             <main className="flex-1">
+              {/* Search Filter */}
+              <div className="mb-8 flex justify-end">
+                <input
+                  type="text"
+                  placeholder="Search by name, location, or description..."
+                  className="w-full md:w-96 px-4 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                />
+              </div>
               <div className="grid gap-8 grid-cols-1 sm:grid-cols-1">
                 {filteredPackages.length === 0 && (
                   <div className="text-center text-gray-500 text-xl py-20">

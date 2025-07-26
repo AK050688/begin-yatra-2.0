@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
 import axios from 'axios';
 import api from '../../../../Api/ApiService';
+import { toast } from 'react-toastify';
 
 const AddPlaceModal = ({ show, onClose, onPlaceCreated }) => {
   const [placeName, setPlaceName] = useState('');
@@ -31,7 +32,8 @@ const token  = useSelector(selectAccessToken)
       });
       console.log("res Add place ",res);
       
-      if (res.data.statusCode=== 201) {
+      if (res.data.statusCode === 201) {
+        toast.success('Place created successfully!');
         setMessage('Place created successfully!');
         setPlaceName('');
         setPlaceDescription('');

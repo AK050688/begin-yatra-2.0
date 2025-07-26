@@ -1,106 +1,104 @@
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
+import api from "../Api/ApiService";
 
-const PopularPackages = () => {
-  const cardData = [
-    {
-      img: "/Images/rajastan.png",
-      place: "Goa",
-      price: 57758,
-      description: "Beaches & Nightlife",
-    },
-    {
-      img: "/Images/Andaman.jpg",
-      place: "Kerala",
-      price: 62499,
-      description: "Backwaters & Serenity",
-    },
-    {
-      img: "/Images/kashmir.jpg",
-      place: "Manali",
-      price: 48999,
-      description: "Mountains & Adventure",
-    },
-    {
-      img: "/Images/rajastan.png",
-      place: "Rajasthan",
-      price: 72999,
-      description: "Forts & Culture",
-    },
-    {
-      img: "/Images/kashmir.jpg",
-      place: "Kashmir",
-      price: 81999,
-      description: "Valleys & Snow",
-    },
-    {
-      img: "/Images/Andaman.jpg",
-      place: "Andaman",
-      price: 65999,
-      description: "Islands & Diving",
-    },
-  ];
+const PopularPackages = ({ popularDestinations = [] }) => {
+  const truncateText = (text, maxWords = 5) => {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(' ') + '...';
+  };
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2500,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 640,
-        settings: { slidesToShow: 1 },
-      },
-    ],
+  // Helper function to get image URL
+  const getImageUrl = (images) => {
+    if (!images || images.length === 0) {
+      return '/Images/rajastan.png'; // Default image
+    }
+    if (images[0].startsWith('http://') || images[0].startsWith('https://')) {
+      return images[0];
+    }
+    if (images[0].startsWith('/')) {
+      return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
+    }
+    // If it's just a filename, combine with base URL
+    return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
+  };
+
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 1440 },
+      items: 6
+    },
+    desktop: {
+      breakpoint: { max: 1439, min: 1024 },
+      items: 5
+    },
+    tablet: {
+      breakpoint: { max: 1023, min: 768 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 767, min: 0 },
+      items: 1
+    }
   };
 
   return (
     <div className="py-6 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-full mx-8 px-4">
-        <div className="flex justify-between align-middle">
+        <div className="flex justify-start align-middle">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 ">
-          Popular Travel <span className="text-[#3b82f6]"> Destination</span>
+            Popular <span className="text-[#3b82f6]">Packages</span>
           </h2>
-          
-          <Link to="/all-packages" className="text-blue-600 hover:underline">
-            View All
-          </Link>
-          
-
         </div>
-        <Slider {...settings}>
-          {cardData.map((card, index) => (
-            <div key={index} className="px-2">
-              <div className="relative hover:scale-105 cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                <img
-                  src={card.img}
-                  alt={card.place}
-                  className="w-full h-52 object-cover transform hover:scale-105 transition duration-300"
-                />
-                {/* Text over image */}
-                <div className="absolute inset-0 bg-black/40"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h4 className="text-xl font-bold">{card.place}</h4>
-                  <p className="text-sm">{card.description}</p>
-                  <p className="text-xs opacity-80">Starting from</p>
-                  <p className="text-lg font-semibold text-green-300">
-                    ₹{card.price.toLocaleString("en-IN")}
-                  </p>
+        <div className="relative">
+          {popularDestinations.length > 0 ? (
+            <Carousel
+              responsive={responsive}
+              infinite={true}
+              autoPlay={true}
+              autoPlaySpeed={2500}
+              keyBoardControl={true}
+              customTransition="all 0.5s"
+              transitionDuration={500}
+              containerClass="carousel-container"
+              removeArrowOnDeviceType={["tablet", "mobile"]}
+              dotListClass="custom-dot-list-style"
+              itemClass="carousel-item-padding-40-px"
+            >
+              {popularDestinations.map((destination, index) => (
+                <div key={destination._id || index} className="px-1">
+                  <div className="relative rounded-xl overflow-hidden shadow-lg bg-white max-w-[220px] w-full mx-auto hover:shadow-xl transition-all duration-300">
+                    <img
+                      src={getImageUrl(destination.destinationImage)}
+                      alt={destination.destinationName}
+                      className="w-full h-48 object-cover"
+                      onError={(e) => {
+                        e.target.src = '/Images/rajastan.png';
+                      }}
+                    />
+                    {/* Text overlay at bottom */}
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 p-3">
+                      <h4 className="text-lg font-bold text-white">{destination.destinationName}</h4>
+                      <p className="text-xs text-gray-200">{truncateText(destination.famousFor || destination.topAttraction || 'Amazing destination')}</p>
+                      <p className="text-xs text-gray-300">Starting from</p>
+                      <p className="text-sm font-semibold text-green-300">
+                        ₹{(destination.packagePrice || 50000).toLocaleString("en-IN")}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </Carousel>
+          ) : (
+            <div className="flex justify-center items-center h-52 text-gray-500 text-lg">
+              No packages found.
             </div>
-          ))}
-        </Slider>
+          )}
+        </div>
       </div>
     </div>
   );

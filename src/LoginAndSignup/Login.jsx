@@ -1,14 +1,16 @@
 import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosWithCredentials from "../Api/ApiService";
 import { toast } from "react-toastify";
-import { loginRequest, loginSuccess } from "../store/userSlice";
+import { loginRequest, loginSuccess, selectUser } from "../store/userSlice";
 const LoginPage = () => {
   const navigate = useNavigate();
-    const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  console.log("user in login page", user);
+  
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +35,11 @@ const LoginPage = () => {
           accessToken,
         })
       );
-      navigate("/");
+     if (user.role === "admin") {
+        navigate("/dashboard");
+     } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error(
         "Error during login:",

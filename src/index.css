@@ -19,6 +19,49 @@
   font-style: normal;
 }
 
+/* Custom CSS for Slick Slider to ensure horizontal layout */
+.slick-slider {
+  display: block !important;
+}
+
+.slick-track {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+}
+
+.slick-slide {
+  display: flex !important;
+  flex-direction: row !important;
+  height: auto !important;
+}
+
+.slick-slide > div {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+}
+
+.slick-list {
+  overflow: hidden !important;
+}
+
+/* Popular Packages Slider specific styles */
+.popular-packages-slider .slick-track {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.popular-packages-slider .slick-slide {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.popular-packages-slider .slick-slide > div {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
 @layer utilities {
   .animate-bg-zoom {
     animation: bg-zoom 10s ease-in-out infinite;

@@ -11,6 +11,10 @@ export const axiosWithCredentials = axios.create({
   withCredentials: true,
 });
 
+export const getDestinationById = async (id) => {
+  return api.get(`/api/destination/getDestinationById/${id}`);
+};
+
 export default api;
 
 // https://7wvxgkc8-8000.inc1.devtunnels.ms

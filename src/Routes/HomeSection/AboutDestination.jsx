@@ -1,32 +1,86 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { destinations } from "./TopDestionation";
-const AboutStory = [];
-import { countries } from "./TopCountries";
+import TopCountries from "./TopCountries";
+import { getDestinationById } from "../../Api/ApiService";
 
 const AboutDestination = () => {
   const { id, name } = useParams();
+  const [destinationData, setDestinationData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const data =
-    destinations.find((item) => item.id === id) ||
-    countries.find((item) => item.name === name);
+  useEffect(() => {
+    const fetchDestination = async () => {
+      if (id) {
+        setLoading(true);
+        setError(null);
+        try {
+          const res = await getDestinationById(id);
+          if (res.data && res.data.data) {
+            setDestinationData(res.data.data);
+          } else {
+            setDestinationData(null);
+          }
+        } catch (err) {
+          setError("Failed to fetch destination");
+          setDestinationData(null);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchDestination();
+  }, [id]);
 
-  console.log(data);
+  // Fallback to static data if no API data
+  let data = destinationData;
+  if (!data) {
+    data = destinations.find((item) => item.id === id) || { name: name };
+  }
+
+  const getImageUrl = (images) => {
+    if (!images || images.length === 0) {
+      return '/Images/kashmir.jpg'; // Default image
+    }
+    // If the image path is already a full URL, return it as is
+    if (Array.isArray(images)) {
+      if (images[0].startsWith('http://') || images[0].startsWith('https://')) {
+        return images[0];
+      }
+      if (images[0].startsWith('/')) {
+        return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
+      }
+      return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
+    } else {
+      if (images.startsWith('http://') || images.startsWith('https://')) {
+        return images;
+      }
+      if (images.startsWith('/')) {
+        return `https://begin-yatra-nq40.onrender.com/public/temp${images}`;
+      }
+      return `https://begin-yatra-nq40.onrender.com/public/temp/${images}`;
+    }
+  };
 
   const navigate = useNavigate();
+  if (loading) return <div className="p-10 text-center text-lg">Loading...</div>;
+  if (error) return <div className="p-10 text-center text-red-500">{error}</div>;
+  if (!data) return <div className="p-10 text-center text-gray-500">Destination not found.</div>;
+
   return (
     <div>
       <section>
         <div className="flex gap-4 mx-20 pt-10">
           <div className="w-1/2">
-            <img src="/Images/kashmir.jpg" alt="image" />
+            <img src={getImageUrl(data.destinationImage)} alt="image" />
           </div>
           <div className="mx-10 w-1/2">
-            <h1 className="font-medium pl-4 text-4xl">{data.name}</h1>
+            <h1 className="font-medium pl-4 text-4xl">{data.name || data.destinationName}</h1>
             <h1 className="flex items-center gap-2 pl-4">
               <IoLocation className="" />
-              {data.name}
+              {data.name || data.destinationName}
             </h1>
             <div className="grid grid-cols-2 gap-8 p-5 ">
               <div className="text-center mx-5 border-gray-200 border shadow-lg p-5 w-80">
@@ -66,10 +120,10 @@ const AboutDestination = () => {
       <section>
         <div className="">
           <h1 className="font-medium pt-5 text-3xl mx-20">
-            {data.name} <span className="text-sky-500">Tour Guide</span>
+            {(data.name || data.destinationName)} <span className="text-sky-500">Tour Guide</span>
           </h1>
           <p className="mx-20 pt-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+            {data.description || `Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
             corporis eaque veniam praesentium provident libero, quisquam cum
             fugiat harum totam voluptas odit eum sint sit eos fugit, possimus
             ipsa, vel asperiores. Itaque dicta velit ullam veritatis nam, dolor
@@ -77,13 +131,13 @@ const AboutDestination = () => {
             aliquid. Vitae, libero aliquam reprehenderit itaque doloremque porro
             ullam magnam molestias placeat tempora eos eaque aperiam. Quia unde
             est placeat ea corporis. Nam harum officiis magnam ex porro numquam
-            soluta nostrum.
+            soluta nostrum.`}
           </p>
 
           <ol className=" pt-8 list-decimal">
             <p className="mx-18 text-2xl">
               <span className="text-sky-600">Top Attractions</span> in{" "}
-              {data.name}
+              {(data.name || data.destinationName)}
             </p>
             <li className="mx-25 pt-3">Coringa Wildlife Sanctuary.</li>
             <li className="mx-25">Hope Island.</li>
@@ -92,7 +146,7 @@ const AboutDestination = () => {
             <li className="mx-25">Patnitop.</li>
           </ol>
           <h3 className="mx-20 pt-5 text-2xl">
-            {data.name} is <span className="text-sky-600">Famous for</span>
+            {(data.name || data.destinationName)} is <span className="text-sky-600">Famous for</span>
           </h3>
           <p className="mx-20">
             its stunning natural beauty, including picturesque valleys, serene
@@ -102,7 +156,7 @@ const AboutDestination = () => {
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
               <span className="text-sky-600">What's Great</span> about{" "}
-              {data.name}?
+              {(data.name || data.destinationName)}?
             </p>
             <li className="mx-25 pt-3">Stunning natural beauty.</li>
             <li className="mx-25">Snow-capped Mountains.</li>
@@ -113,7 +167,7 @@ const AboutDestination = () => {
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
               Cultural Experiences in
-              <span className="text-sky-600"> {data.name}?</span>
+              <span className="text-sky-600"> {(data.name || data.destinationName)}?</span>
             </p>
             <li className="mx-25 pt-3">Rich Handicrafts.</li>
             <li className="mx-25">Delicious Cuisine.</li>
@@ -124,7 +178,7 @@ const AboutDestination = () => {
           <ul className=" pt-8 list-disc">
             <p className="mx-18 text-2xl">
               Tips for
-              <span className="text-sky-600"> {data.name}</span>
+              <span className="text-sky-600"> {(data.name || data.destinationName)}</span>
             </p>
             <li className="mx-25 pt-3">
               Know When To Visit Kashmir As Per Weather.
@@ -153,7 +207,7 @@ const AboutDestination = () => {
           <div>
             <p className="mx-18 text-2xl pt-8">
               Top <span className="text-sky-600">6 Places</span> to visit in{" "}
-              <span className="text-sky-600">{data.name}</span>
+              <span className="text-sky-600">{(data.name || data.destinationName)}</span>
             </p>
             <div className="grid grid-cols-3 gap-2 p-5 w-250 mx-20">
               <div className="pt-5 text-left mx-5 border-gray-200 border shadow-lg p-5 w-80">

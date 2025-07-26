@@ -55,7 +55,7 @@ const Banner = () => {
             >
               <FaArrowLeft /> back
             </button>
-            <button className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
+            <button onClick={()=>navigate("/agent/registration")} className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-md text-white font-semibold shadow">
               Get Travel Leads
             </button>
           </div>

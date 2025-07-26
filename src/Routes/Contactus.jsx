@@ -97,7 +97,7 @@ const Contactus = () => {
                   <MdOutlineCall />
                   Phone
                 </h4>
-                <p className="text-gray-600">+91 9508241806</p>
+                <p className="text-gray-600">+91 98765 43210</p>
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow">
@@ -105,6 +105,7 @@ const Contactus = () => {
                   <MdOutlineMail /> Email
                 </h4>
                 <p className="text-gray-600">info@beginyatra.com</p>
+                <p className="text-gray-600">service.beginyatra@gmail.com </p>
               </div>
             </div>
           </div>

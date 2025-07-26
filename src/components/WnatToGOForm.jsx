@@ -200,7 +200,7 @@ const TravelForm = () => {
               <p className="text-gray-600 flex items-center gap-2">
                 <FiPhoneCall /> Call Us for details
               </p>
-              <p className="font-bold text-xl text-blue-600">0806 914 5442</p>
+              <p className="font-bold text-xl text-blue-600">+91 98765 43210</p>
             </div>
           </div>
         </div>

@@ -64,6 +64,12 @@ const Footer = () => {
             >
               <Mail className="w-4 h-4" /> info@beginyatra.com
             </a>
+            <a
+              href="mailto:service.beginyatra@gmail.com "
+              className="flex items-center gap-2"
+            >
+              <Mail className="w-4 h-4" /> service.beginyatra@gmail.com 
+            </a>
             <li className="flex items-center gap-2">
               <Phone className="w-4 h-4" /> +91 98765 43210
             </li>

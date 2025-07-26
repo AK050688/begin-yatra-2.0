@@ -3,6 +3,7 @@ import api from "../../../../Api/ApiService";
 import { useSelector } from "react-redux";
 import { selectAccessToken, selectUser } from "../../../../store/userSlice";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const CreateDestinationModal = ({
   show,
@@ -94,13 +95,17 @@ const CreateDestinationModal = ({
       formData.append("DestinationType", destinationType);
       formData.append("destinationName", destinationName);
       // formData.append("packageId", JSON.stringify(selectedPackages));
-      if (destinationImageRef.current?.files) {
-        Array.from(destinationImageRef.current.files).forEach((file) => {
+      
+      // Handle destination images
+      if (destinationImageRef.current?.files && destinationImageRef.current.files.length > 0) {
+        Array.from(destinationImageRef.current.files).forEach((file, index) => {
           formData.append("destinationImage", file);
         });
       }
-      if (placesImagesRef.current?.files) {
-        Array.from(placesImagesRef.current.files).forEach((file) => {
+      
+      // Handle places images
+      if (placesImagesRef.current?.files && placesImagesRef.current.files.length > 0) {
+        Array.from(placesImagesRef.current.files).forEach((file, index) => {
           formData.append("placesImages", file);
         });
       }
@@ -114,20 +119,25 @@ const CreateDestinationModal = ({
           {
             headers: {
               Authorization: token,
+              "Content-Type": "multipart/form-data",
             },
           }
         );
+        toast.success("Destination updated successfully!");
+        setMessage("Destination updated successfully!");
       } else {
         // Create
-        res = await axios.post(
-          `https://7wvxgkc8-8000.inc1.devtunnels.ms/api/destination`,
+        res = await api.post(
+          `/api/destination`,
           formData,
           {
             headers: {
               Authorization: token,
+              "Content-Type": "multipart/form-data",
             },
           }
         );
+        toast.success("Destination created successfully!");
       }
       const isSuccess =
         res.ok || res.data?.statusCode === 200 || res.data?.statusCode === 201;

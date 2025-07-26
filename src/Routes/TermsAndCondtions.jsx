@@ -335,6 +335,12 @@ const TermsAndConditions = () => {
             className="text-blue-600 underline"
           >
             info@beginyatra.com
+          </a>{", " + " "}
+          <a
+            href="mailto:service.beginyatra@gmail.com "
+            className="text-blue-600 underline"
+          >
+            service.beginyatra@gmail.com 
           </a>{" "}
           <br />
           Mandar Hill, Banka, Bihar, India 813104

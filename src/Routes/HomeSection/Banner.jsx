@@ -64,7 +64,7 @@ const Banner = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
     customPaging: () => (
       <div className="w-3 h-3 bg-white/50 rounded-full mx-1 transition-all duration-300 hover:bg-white/80" />
@@ -144,7 +144,7 @@ const Banner = () => {
               />
             </div>
             {/* Gradient Overlay */}
-            <div className="absolute w-full inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/30" />
+            <div className="absolute w-full inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
 
             {/* Search Bar - Positioned at 70% from top */}
             <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2 z-50 w-full max-w-lg px-4">

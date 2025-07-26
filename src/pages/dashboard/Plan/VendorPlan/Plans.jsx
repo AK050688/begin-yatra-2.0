@@ -1,5 +1,5 @@
 import api from "../../../../Api/ApiService";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRazorpay } from "react-razorpay";
@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { cn } from "../../../../lib/cn";
 
 const Plans = () => {
-  const setTitle = useOutletContext();
   const token = useSelector(selectAccessToken);
   const user = useSelector(selectUser);
   const [plans, setPlans] = useState([]);
@@ -192,9 +191,7 @@ const Plans = () => {
     fetchLeadsCosts();
   }, [token]);
 
-  useEffect(() => {
-    setTitle("Plan Management");
-  }, [setTitle]);
+
 
   const handleNewPlanInputChange = (e) => {
     const { name, value } = e.target;
@@ -364,6 +361,7 @@ const Plans = () => {
           {error}
         </div>
       )}
+
 
 
       {/* Available Plans Section */}

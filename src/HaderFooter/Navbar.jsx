@@ -118,7 +118,7 @@ const Navbar = () => {
                     : "border-white text-white hover:bg-white hover:text-blue-600"
                 }`}
               >
-                My Leads
+                Dashboard
               </button>
               <button
                 onClick={() => dispatch(logout())}

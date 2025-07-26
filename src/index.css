@@ -77,3 +77,16 @@
     }
   }
 }
+
+
+.red-gradient {
+  @apply bg-gradient-to-r from-red-400 to-orange-400;
+}
+
+.purple-gradient {
+  @apply bg-gradient-to-r from-purple-700 to-purple-400;
+}
+
+.green-gradient {
+  @apply bg-gradient-to-r from-green-400 to-lime-400;
+}

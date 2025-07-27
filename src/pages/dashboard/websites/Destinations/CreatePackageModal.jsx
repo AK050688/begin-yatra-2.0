@@ -153,7 +153,7 @@ const CreatePackageModal = ({ show, onClose, onPackageCreated, destinations = []
         
         <form onSubmit={handleCreate} className="p-6 space-y-6">
           {/* Package Image */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Package Image
             </label>
@@ -190,7 +190,7 @@ const CreatePackageModal = ({ show, onClose, onPackageCreated, destinations = []
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
 
           {/* Destination Selection */}
           <div>

@@ -34,19 +34,11 @@ const Home = () => {
                 
                 // Filter destinations by type
                 const domesticDestinations = allDestinations.filter(destination => 
-                {
-                    if( destination.destinationType === "domestic") {
-                        return "India";
-                    }
-                }
+                    destination.destinationType === "domestic"
                 );
                 
                 const internationalDestinations = allDestinations.filter(destination => 
-                {
-                    if (destination.destinationType === "international") {
-                        return destination.destinationName;
-                    }
-                }
+                    destination.destinationType === "international"
                 );
 
                 setHomeData({

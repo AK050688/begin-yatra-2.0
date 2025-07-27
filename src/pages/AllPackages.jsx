@@ -17,10 +17,10 @@ const durationRanges = [
   { label: "25+ Days", min: 26, max: Infinity },
 ];
 
-const getUniqueDestinations = (pkgs) => {
-  const set = new Set(pkgs.map((p) => p.location));
-  return Array.from(set);
-};
+// const getUniqueDestinations = (pkgs) => {
+//   const set = new Set(pkgs.map((p) => p.location));
+//   return Array.from(set);
+// };
 
 const AllPackages = () => {
   // API states
@@ -156,7 +156,6 @@ const AllPackages = () => {
 
   // Navigation handler
   const handleViewDetails = (pkg) => {
-    // Store package data in localStorage or state management for the inquiry page
     localStorage.setItem('selectedPackage', JSON.stringify(pkg));
     navigate('/get-qurey');
   };
@@ -164,7 +163,6 @@ const AllPackages = () => {
   // Pagination handlers
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -180,27 +178,41 @@ const AllPackages = () => {
     }
   };
 
-  // Helper function to get package image
-  const getPackageImage = (pkg) => {
-    // Use package image if available, otherwise use a default based on theme
-    if (pkg.packageImage) {
-      return pkg.packageImage;
+  // Helper function to get package image with fallback
+  const getImageUrl = (pkg) => {
+    // 1. Use packageImage if available and not empty
+    if (pkg.packageImage && pkg.packageImage.length > 0) {
+      const imagePath = Array.isArray(pkg.packageImage) ? pkg.packageImage[0] : pkg.packageImage;
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath;
+      }
+      return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
     }
-    
-    // Default images based on theme
-    const defaultImages = {
-      'beach': "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-      'mountain': "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
-      'heritage': "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=600&q=80",
-      'luxury': "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-      'adventure': "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-      'family': "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-      'romantic': "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
-    };
-    
-    const theme = pkg.theme?.toLowerCase();
-    return defaultImages[theme] || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
+
+    // 2. Use destination image if available
+    if (
+      pkg.destinationId &&
+      pkg.destinationId.destinationImage &&
+      pkg.destinationId.destinationImage.length > 0
+    ) {
+      const imagePath = pkg.destinationId.destinationImage[0];
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath;
+      }
+      return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
+    }
+
+    // 3. Fallback image
+    return '/Images/banner.jpg';
   };
+  // const getPackageImage = (pkg) => {
+  //   if (pkg.packageImage) {
+  //     return pkg.packageImage;
+  //   }
+    
+  //   const theme = pkg.theme?.toLowerCase();
+    
+  // };
 
   // Get unique themes for filter display
   const uniqueThemes = useMemo(() => {
@@ -229,12 +241,10 @@ const AllPackages = () => {
     const maxVisiblePages = 5;
     
     if (totalPages <= maxVisiblePages) {
-      // Show all pages if total is less than max visible
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Show pages around current page
       const start = Math.max(1, page - Math.floor(maxVisiblePages / 2));
       const end = Math.min(totalPages, start + maxVisiblePages - 1);
       
@@ -248,7 +258,7 @@ const AllPackages = () => {
 
   return (
     <>
-      <div className="relative h-[20rem] sm:h-[28rem] w-full bg-[url('/Images/bg.jpg')] bg-cover bg-center bg-no-repeat overflow-hidden ">
+      <div className="relative h-[20rem] sm:h-[28rem] w-full bg-[url('/Images/bg.jpg')] bg-cover bg-center bg-no-repeat overflow-hidden">
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-6 lg:px-12 py-12">
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg mb-6 text-center animate-fade-in-down">
             All Packages
@@ -265,16 +275,13 @@ const AllPackages = () => {
             >
               {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
             </button>
-            {/* Show filter stats on mobile */}
             <div className="text-sm text-gray-600">
               {filterStats.filteredPackages} of {filterStats.totalPackages} packages
             </div>
           </div>
           
           {/* Sidebar Filters */}
-          <div className={
-            `w-full md:w-auto ${showMobileFilters ? '' : 'hidden'} md:block`
-          }>
+          <div className={`w-full md:w-auto ${showMobileFilters ? '' : 'hidden'} md:block`}>
             <aside className="w-full md:w-80 bg-white rounded-xl shadow-lg p-4 sm:p-6 flex flex-col gap-6 mb-4 md:mb-0">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Filter by</h2>
@@ -286,7 +293,6 @@ const AllPackages = () => {
                 </button>
               </div>
               <div className="flex flex-col gap-4">
-              
                 {/* Price Range Filter */}
                 <div>
                   <div className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">
@@ -433,17 +439,25 @@ const AllPackages = () => {
                     key={pkg._id}
                     className="w-full flex flex-col md:flex-row bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-blue-100"
                   >
-                    <img
-                      src={getPackageImage(pkg)}
-                      alt={pkg.packageName}
-                      className="w-full md:w-72 h-48 sm:h-60 object-cover object-center"
-                    />
+                    <div className="relative w-full md:w-72 h-48 sm:h-60">
+                      <img
+                        src={getImageUrl(pkg)}
+                        alt={pkg.packageName}
+                        className="w-full h-48 sm:h-60 object-cover object-center rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/600x400?text=Image+Not+Found";
+                        }}
+                        loading="lazy"
+                      />
+                      {/* Optional: Loading placeholder */}
+                      <div className="absolute inset-0 bg-gray-200 animate-pulse hidden" />
+                    </div>
                     <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between">
                       <div>
                         <h2 className="text-lg sm:text-2xl font-bold text-blue-700 mb-2">
                           {pkg.packageName}
                         </h2>
-                        <p className="text-gray-600 mb-4  text-sm sm:text-base">
+                        <p className="text-gray-600 mb-4 text-sm sm:text-base">
                           {truncateToOneLine(pkg.AboutPackage)}
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
@@ -464,7 +478,7 @@ const AllPackages = () => {
                           )}
                         </div>
                         {/* Package Summary Preview */}
-                        {pkg.packageSummery && pkg.packageSummery.length > 0 && (
+                        {/* {pkg.packageSummery && pkg.packageSummery.length > 0 && (
                           <div className="mb-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-2">Itinerary Preview:</h4>
                             <div className="space-y-1">
@@ -481,7 +495,7 @@ const AllPackages = () => {
                               )}
                             </div>
                           </div>
-                        )}
+                        )} */}
                       </div>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
                         <div className="flex flex-col">

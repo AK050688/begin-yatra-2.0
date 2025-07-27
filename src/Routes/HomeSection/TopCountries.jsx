@@ -114,7 +114,7 @@ const TopCountries = ({
                   <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
                   <div className="absolute bottom-0 p-5 text-white w-full">
                     <h3 className="text-xl font-bold">
-                      {destination.destinationName}
+                      {destination.destinationType === "domestic" ? "India" : `${destination.destinationName} (International)`}
                     </h3>
                     <p className="text-sm text-gray-200 mt-1">
                       {truncateText(
@@ -167,7 +167,7 @@ const TopCountries = ({
                   <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
                   <div className="absolute bottom-0 p-5 text-white w-full">
                     <h3 className="text-xl font-bold">
-                      {destination.destinationName}
+                      {destination.destinationType === "domestic" ? "India" : `${destination.destinationName} (International)`}
                     </h3>
                     <p className="text-sm text-gray-200 mt-1">
                       {destination.famousFor ||

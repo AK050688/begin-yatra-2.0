@@ -472,7 +472,7 @@ const Places = () => {
       )}
 
       {/* Pagination */}
-      {!loading && !error && totalPages > 1 && (
+      {!loading && !error && totalPages > 0 && (
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
             <div className="text-sm text-gray-600">

@@ -1,10 +1,11 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../Api/ApiService";
 
 const PopularPackages = ({ popularDestinations = [] }) => {
+  const navigate = useNavigate();
   const truncateText = (text, maxWords = 5) => {
     if (!text) return '';
     const words = text.split(' ');
@@ -70,7 +71,7 @@ const PopularPackages = ({ popularDestinations = [] }) => {
               itemClass="carousel-item-padding-40-px"
             >
               {popularDestinations.map((destination, index) => (
-                <div key={destination._id || index} className="px-1">
+                <div key={destination._id || index} onClick={()=> navigate(`/destination/${destination._id}`)} className="px-1">
                   <div className="relative rounded-xl overflow-hidden shadow-lg bg-white max-w-[220px] w-full mx-auto hover:shadow-xl transition-all duration-300">
                     <img
                       src={getImageUrl(destination.destinationImage)}

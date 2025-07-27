@@ -18,60 +18,16 @@ const Review = () => {
     email: "",
     review: "",
   });
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 3;
 
-  // Custom arrow components
-  const NextArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm text-gray-800 p-3 rounded-full shadow-lg hover:bg-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400"
-      aria-label="Next slide"
-    >
-      <FaArrowRight className="w-5 h-5" />
-    </button>
+  // Calculate paginated reviews
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  const paginatedReviews = reviews.slice(
+    (currentPage - 1) * reviewsPerPage,
+    currentPage * reviewsPerPage
   );
-
-  const PrevArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm text-gray-800 p-3 rounded-full shadow-lg hover:bg-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400"
-      aria-label="Previous slide"
-    >
-      <FaArrowLeft className="w-5 h-5" />
-    </button>
-  );
-
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        }
-      }
-    ],
-    customPaging: () => (
-      <div className="w-2 h-2 bg-gray-300 rounded-full mx-1 transition-all duration-300 hover:bg-blue-500" />
-    ),
-    dotsClass: "slick-dots absolute bottom-0",
-  };
 
   const getAllReviews = async () => {
     setLoading(true);
@@ -256,83 +212,66 @@ const Review = () => {
                   <p className="text-gray-500 text-lg">No reviews available yet. Be the first to share your experience!</p>
                 </div>
               ) : (
-                <div className="relative">
-                  <Slider {...carouselSettings} className="review-carousel">
-                    {reviews.map((review, index) => (
-                      <div key={review._id || index} className="px-3">
-                        <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
-                          <div className="flex items-center gap-4 mb-4">
-                            <img
-                              src={review.image || "/Images/gojo.jpg"}
-                              alt={review.name}
-                              className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
-                              onError={(e) => {
-                                e.target.src = "/Images/gojo.jpg";
-                              }}
-                            />
-                            <div>
-                              <h3 className="font-semibold text-xl text-gray-800">
-                                {review.name}
-                              </h3>
-                              <p className="text-sm text-gray-500">{review.location}</p>
-                            </div>
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {paginatedReviews.map((review, index) => (
+                      <div key={review._id || index} className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                        <div className="flex items-center gap-4 mb-4">
+                          <img
+                            src={review.image || "/Images/gojo.jpg"}
+                            alt={review.name}
+                            className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
+                            onError={(e) => {
+                              e.target.src = "/Images/gojo.jpg";
+                            }}
+                          />
+                          <div>
+                            <h3 className="font-semibold text-xl text-gray-800">
+                              {review.name}
+                            </h3>
+                            <p className="text-sm text-gray-500">{review.location}</p>
                           </div>
-                          <div className="flex items-center text-yellow-400 mb-3">
-                            {[...Array(review.rating || 5)].map((_, i) => (
-                              <FaStar key={i} className="w-5 h-5" />
-                            ))}
-                            {[...Array(5 - (review.rating || 5))].map((_, i) => (
-                              <FaStar key={i} className="w-5 h-5 text-gray-300" />
-                            ))}
-                          </div>
-                          <p className="text-gray-600 leading-relaxed">{review.review}</p>
                         </div>
+                        <div className="flex items-center text-yellow-400 mb-3">
+                          {[...Array(review.rating || 5)].map((_, i) => (
+                            <FaStar key={i} className="w-5 h-5" />
+                          ))}
+                          {[...Array(5 - (review.rating || 5))].map((_, i) => (
+                            <FaStar key={i} className="w-5 h-5 text-gray-300" />
+                          ))}
+                        </div>
+                        <p className="text-gray-600 leading-relaxed">{review.review}</p>
                       </div>
                     ))}
-                  </Slider>
-                </div>
+                  </div>
+                  {/* Pagination Controls */}
+                  <div className="flex justify-center items-center gap-4 mt-8">
+                    <button
+                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold disabled:opacity-50 hover:bg-blue-700 transition"
+                    >
+                      <FaArrowLeft className="inline mr-2" /> Previous
+                    </button>
+                    <span className="text-gray-700 font-medium">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold disabled:opacity-50 hover:bg-blue-700 transition"
+                    >
+                      Next <FaArrowRight className="inline ml-2" />
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           )}
         </div>
       </div>
 
-      {/* Custom CSS for carousel */}
-      <style jsx>{`
-        .review-carousel .slick-slide {
-          padding: 0 10px;
-        }
-        
-        .review-carousel .slick-dots {
-          bottom: -40px;
-        }
-        
-        .review-carousel .slick-dots li.slick-active div {
-          background-color: #3b82f6 !important;
-          transform: scale(1.2);
-        }
-        
-        .review-carousel .slick-dots li {
-          margin: 0 4px;
-        }
-        
-        .review-carousel .slick-track {
-          display: flex;
-          align-items: stretch;
-        }
-        
-        .review-carousel .slick-slide {
-          height: auto;
-        }
-        
-        .review-carousel .slick-slide > div {
-          height: 100%;
-        }
-        
-        .review-carousel .slick-slide > div > div {
-          height: 100%;
-        }
-      `}</style>
+      {/* Carousel CSS removed */}
     </>
   );
 };

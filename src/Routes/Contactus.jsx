@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useRef } from "react";
 import { MdOutlineCall } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineMail } from "react-icons/md";
 import BackgroundImg from "../components/BackgroundImg";
-
+import emailjs from "@emailjs/browser";
 const Contactus = () => {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
+        "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+        form.current,
+        "YOUR_PUBLIC_KEY" // Replace with your EmailJS public key
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          alert("Message sent successfully!");
+          form.current.reset(); // optional: reset form after submission
+        },
+        (error) => {
+          console.log(error.text);
+          alert("Failed to send message, please try again.");
+        }
+      );
+  };
+
   return (
     <>
       <BackgroundImg
@@ -27,13 +52,17 @@ const Contactus = () => {
 
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* Contact Form */}
-            <form className="space-y-5 bg-gray-50 p-6 rounded-xl shadow">
+            <form
+              ref={form}
+              onSubmit={sendEmail}
+              className="space-y-5 bg-gray-50 p-6 rounded-xl shadow">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Full Name
                 </label>
                 <input
                   type="text"
+                  name="user_name"
                   placeholder="Your name"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
@@ -46,27 +75,32 @@ const Contactus = () => {
                 </label>
                 <input
                   type="email"
+                  name="user_email"
                   placeholder="you@example.com"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
+
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Phone Number
                 </label>
                 <input
                   type="text"
+                  name="user_phone"
                   placeholder="91+XXXXXXXXXX"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
+
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Message
                 </label>
                 <textarea
+                  name="message"
                   rows="4"
                   placeholder="Type your message here..."
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -79,7 +113,6 @@ const Contactus = () => {
                 Send Message
               </button>
             </form>
-
             {/* Contact Info */}
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-xl shadow">
@@ -148,13 +181,19 @@ const Contactus = () => {
             </div>
             <div className="mb-3">
               <p className="font-medium">Facebook:</p>
-              <a href="https://www.facebook.com/Beginyatra?mibextid=ZbWKwL" target="_blank" className="text-sm break-all">
+              <a
+                href="https://www.facebook.com/Beginyatra?mibextid=ZbWKwL"
+                target="_blank"
+                className="text-sm break-all">
                 https://www.facebook.com/Beginyatra
               </a>
             </div>
             <div>
               <p className="font-medium">Instagram:</p>
-              <a href="https://www.instagram.com/beginyatra?igsh=YnlnOXExYWluY25h" target="_blank" className="text-sm break-all">
+              <a
+                href="https://www.instagram.com/beginyatra?igsh=YnlnOXExYWluY25h"
+                target="_blank"
+                className="text-sm break-all">
                 https://www.instagram.com/beginyatra
               </a>
             </div>

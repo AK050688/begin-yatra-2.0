@@ -12,7 +12,7 @@ const defaultForm = {
   email: "",
   city: "",
   destination: "",
-  travelDate: "",
+  travelDate: Date.now(),
   adult: "0",
   children: "0",
   infant: "0",
@@ -258,7 +258,7 @@ const TravelForm = () => {
             </div>
 
             {/* Guests */}
-            <div className="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
               <div>
                 <label htmlFor="adult">Adults</label>
                 <input
@@ -271,29 +271,33 @@ const TravelForm = () => {
                   className="w-full border rounded px-4 py-2"
                 />
               </div>
-              <div>
-                <label htmlFor="infant">Infant</label>
-                <input
-                  type="number"
-                  id="infant"
-                  name="infant"
-                  min="0"
-                  value={form?.totalMembers?.infant}
-                  onChange={handleGroupChange}
-                  className="w-full border rounded px-4 py-2"
-                />
-              </div>
-              <div>
-                <label htmlFor="children">Children (2-12 yrs)</label>
-                <input
-                  type="number"
-                  id="children"
-                  name="children"
-                  value={form?.totalMembers?.children}
-                  onChange={handleGroupChange}
-                  className="w-full border rounded px-4 py-2"
-                  min="0"
-                />
+              <div className="flex gap-2">
+                <div className="">
+                  <label htmlFor="travelDays">Travel days</label>
+                  <input
+                    type="number"
+                    id="travelDays"
+                    name="travelDays"
+                    placeholder="Enter days"
+                    min={0}
+                    value={form.travelDays}
+                    onChange={handleChange}
+                    className="w-full px-4  py-3 border rounded-xl "
+                  />
+                </div>
+                <div className="">
+                  <label htmlFor="travelNights">Travel Night</label>
+                  <input
+                    type="number"
+                    id="travelNights"
+                    name="travelNights"
+                    min={0}
+                    placeholder="Enter nights"
+                    value={form.travelNights}
+                    onChange={handleChange}
+                    className="w-full px-4  py-3 border  rounded-xl focus:ring-2   focus:border-transparent transition-all duration-200 "
+                  />
+                </div>
               </div>
             </div>
 
@@ -334,8 +338,8 @@ const TravelForm = () => {
                   value={form.leadType}
                   onChange={handleChange}
                   className="w-full border rounded px-4 py-2">
-                  <option value="">Select Inquiry Type</option>
-                  <option value="domestic">Domestic</option>
+                
+                  <option value="domestic" selected>Domestic</option>
                   <option value="international">International</option>
                 </select>
               </div>
@@ -360,33 +364,8 @@ const TravelForm = () => {
             </div>
 
             <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center gap-2">
-              <div className="flex gap-2">
-                <div className="">
-                  <label htmlFor="travelDays">Travel days</label>
-                  <input
-                    type="number"
-                    id="travelDays"
-                    name="travelDays"
-                    placeholder="Enter days"
-                    value={form.travelDays}
-                    onChange={handleChange}
-                    className="w-full px-4  py-3 border rounded-xl "
-                  />
-                </div>
-                <div className="">
-                  <label htmlFor="travelNights">Travel Night</label>
-                  <input
-                    type="number"
-                    id="travelNights"
-                    name="travelNights"
-                    placeholder="Enter nights"
-                    value={form.travelNights}
-                    onChange={handleChange}
-                    className="w-full px-4  py-3 border  rounded-xl focus:ring-2   focus:border-transparent transition-all duration-200 "
-                  />
-                </div>
-              </div>
-              <div className="">
+             
+              {/* <div className="">
                 <label htmlFor="travelDate">Date</label>
                 <input
                   type="date"
@@ -397,7 +376,7 @@ const TravelForm = () => {
                   onChange={handleChange}
                   className="w-full pl-11 pr-4 py-3 border  rounded-xl focus:ring-2   focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                 />
-              </div>
+              </div> */}
             </div>
 
             <button

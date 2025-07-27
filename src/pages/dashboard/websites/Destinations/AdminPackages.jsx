@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../../Api/ApiService";
-import { FaEdit, FaEye, FaPlus, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaEye, FaPlus, FaTimes, FaSearch, FaTrash } from 'react-icons/fa';
 import CreatePackageModal from './CreatePackageModal';
+import UpdatePackageModal from './UpdatePackageModal';
 
 const AdminPackages = () => {
   const [packages, setPackages] = useState([]);
@@ -18,6 +19,7 @@ const AdminPackages = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showCreatePackageModal, setShowCreatePackageModal] = useState(false);
+  const [showUpdatePackageModal, setShowUpdatePackageModal] = useState(false);
   const [destinations, setDestinations] = useState([]);
 
   // Helper function to truncate text
@@ -41,6 +43,37 @@ const AdminPackages = () => {
     setShowDetailsModal(true);
   };
 
+  // Handle edit package
+  const handleEditPackage = (pkg) => {
+    setSelectedPackage(pkg);
+    setShowUpdatePackageModal(true);
+  };
+
+  // Handle delete package
+  const handleDeletePackage = async (packageId) => {
+    if (!window.confirm('Are you sure you want to delete this package?')) return;
+
+    setLoading(true);
+    setError("");
+    try {
+      const res = await api.delete(`/api/package/deletePackage/${packageId}`);
+      if (res.data.statusCode === 200) {
+        // Refresh package list
+        await getAllPackages(page);
+        // Adjust page if necessary
+        if (packages.length === 1 && page > 1) {
+          setPage(page - 1);
+        }
+      } else {
+        setError("Failed to delete package: " + (res.data.message || "Unknown error"));
+      }
+    } catch (err) {
+      setError("Failed to delete package: " + (err.response?.data?.message || err.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Format price to Indian currency
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-IN', {
@@ -51,18 +84,39 @@ const AdminPackages = () => {
     }).format(price);
   };
 
-  // Get image URL helper
-  const getImageUrl = (image) => {
-    if (!image) {
-      return '/public/Images/banner.jpg'; // Default image
+  // Helper function to get destination name from nested structure
+  const getDestinationName = (packageData) => {
+    if (packageData.destinationId && typeof packageData.destinationId === 'object') {
+      return packageData.destinationId.destinationName || 'Unknown Destination';
     }
-    return image;
+    if (packageData.destinationId && typeof packageData.destinationId === 'string') {
+      return 'Destination ID: ' + packageData.destinationId;
+    }
+    return 'No Destination';
   };
+
+  // Helper function to check if destination is popular
+  // const isDestinationPopular = (packageData) => {
+  //   if (packageData.destinationId && typeof packageData.destinationId === 'object') {
+  //     return packageData.destinationId.isPopularDestination || false;
+  //   }
+  //   return false;
+  // };
+
+  // Helper function to check if destination is trending
+  // const isDestinationTrending = (packageData) => {
+  //   if (packageData.destinationId && typeof packageData.destinationId === 'object') {
+  //     return packageData.destinationId.isTrandingDestination || false;
+  //   }
+  //   return false;
+  // };
 
   // Fetch destinations for the modal
   const getDestinations = async () => {
     try {
       const res = await api.get('/api/destination/getAllDestination');
+      console.log("Response from getAllDestinations:", res);
+      
       if (res.data.statusCode === 200) {
         setDestinations(res.data.data.destinations || []);
       }
@@ -249,15 +303,15 @@ const AdminPackages = () => {
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           {/* Desktop Table */}
           <div className="hidden lg:block">
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
+            <div className="overflow-x-auto border border-gray-200 rounded-lg">
+              <table className="min-w-full whitespace-nowrap">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Image
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
+                      Package Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Package Name
+                      Destination
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Theme
@@ -272,6 +326,12 @@ const AdminPackages = () => {
                       Description
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Popular
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Trending
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -279,26 +339,14 @@ const AdminPackages = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {packages.length === 0 ? (
                     <tr>
-                      <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                      <td colSpan="9" className="px-6 py-4 text-center text-gray-500">
                         No packages found.
                       </td>
                     </tr>
                   ) : (
                     packages.map((pkg) => (
                       <tr key={pkg._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex-shrink-0 h-12 w-12">
-                            <img
-                              className="h-12 w-12 rounded-lg object-cover"
-                              src={getImageUrl(pkg.packageImage)}
-                              alt={pkg.packageName}
-                              onError={(e) => {
-                                e.target.src = '/public/Images/banner.jpg';
-                              }}
-                            />
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 sticky left-0 bg-white z-10">
                           <div className="flex items-center gap-2">
                             <span title={pkg.packageName}>
                               {truncateText(pkg.packageName)}
@@ -312,6 +360,9 @@ const AdminPackages = () => {
                               </button>
                             )}
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {getDestinationName(pkg)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
@@ -344,6 +395,24 @@ const AdminPackages = () => {
                             )}
                           </div>
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            pkg.isFeaturedForTop
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            {pkg.isFeaturedForTop ? 'Yes' : 'No'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            pkg.isTrandingPackage
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            {pkg.isTrandingPackage ? 'Yes' : 'No'}
+                          </span>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex items-center gap-2">
                             <button
@@ -355,9 +424,17 @@ const AdminPackages = () => {
                             </button>
                             <button
                               title="Edit Package"
+                              onClick={() => handleEditPackage(pkg)}
                               className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition"
                             >
                               <FaEdit className="text-sm" />
+                            </button>
+                            <button
+                              title="Delete Package"
+                              onClick={() => handleDeletePackage(pkg._id)}
+                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                            >
+                              <FaTrash className="text-sm" />
                             </button>
                           </div>
                         </td>
@@ -380,16 +457,6 @@ const AdminPackages = () => {
                 {packages.map((pkg) => (
                   <div key={pkg._id} className="p-4 hover:bg-gray-50">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-16 w-16 rounded-lg object-cover"
-                          src={getImageUrl(pkg.packageImage)}
-                          alt={pkg.packageName}
-                          onError={(e) => {
-                            e.target.src = '/public/Images/banner.jpg';
-                          }}
-                        />
-                      </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="text-sm font-medium text-gray-900" title={pkg.packageName}>
@@ -409,6 +476,25 @@ const AdminPackages = () => {
                             {pkg.theme}
                           </span>
                           <span className="text-sm text-gray-500">{pkg.totalDaysNight}</span>
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Destination: {getDestinationName(pkg)}
+                        </div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            pkg.isFeaturedForTop
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            Popular: {pkg.isFeaturedForTop ? 'Yes' : 'No'}
+                          </span>
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            pkg.isTrandingPackage
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            Trending: {pkg.isTrandingPackage ? 'Yes' : 'No'}
+                          </span>
                         </div>
                       </div>
                       <div className="text-right">
@@ -449,10 +535,19 @@ const AdminPackages = () => {
                       </button>
                       <button
                         title="Edit Package"
+                        onClick={() => handleEditPackage(pkg)}
                         className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs"
                       >
                         <FaEdit className="inline mr-1" />
                         Edit
+                      </button>
+                      <button
+                        title="Delete Package"
+                        onClick={() => handleDeletePackage(pkg._id)}
+                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs"
+                      >
+                        <FaTrash className="inline mr-1" />
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -464,7 +559,7 @@ const AdminPackages = () => {
       )}
 
       {/* Pagination */}
-      {!loading && !error && totalPages > 1 && (
+      {!loading && !error && totalPages > 0 && (
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
             <div className="text-sm text-gray-600">
@@ -542,28 +637,18 @@ const AdminPackages = () => {
             </div>
             
             <div className="p-6 space-y-4">
-              {/* Package Image */}
-              {selectedPackage.packageImage && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
-                    Package Image
-                  </h3>
-                  <img
-                    src={getImageUrl(selectedPackage.packageImage)}
-                    alt={selectedPackage.packageName}
-                    className="w-full h-48 object-cover rounded-lg"
-                    onError={(e) => {
-                      e.target.src = '/public/Images/banner.jpg';
-                    }}
-                  />
-                </div>
-              )}
-              
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Package Name
                 </h3>
                 <p className="text-gray-900">{selectedPackage.packageName}</p>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                  Destination
+                </h3>
+                <p className="text-gray-900">{getDestinationName(selectedPackage)}</p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -581,6 +666,34 @@ const AdminPackages = () => {
                     Duration
                   </h3>
                   <p className="text-gray-900">{selectedPackage.totalDaysNight}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                    Popular Destination
+                  </h3>
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    selectedPackage.isFeaturedForTop
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {selectedPackage.isFeaturedForTop ? 'Yes' : 'No'}
+                  </span>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                    Trending Destination
+                  </h3>
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    selectedPackage.isTrandingPackage
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {selectedPackage.isTrandingPackage ? 'Yes' : 'No'}
+                  </span>
                 </div>
               </div>
               
@@ -628,9 +741,22 @@ const AdminPackages = () => {
                 Close
               </button>
               <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  handleEditPackage(selectedPackage);
+                }}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
               >
                 Edit Package
+              </button>
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  handleDeletePackage(selectedPackage._id);
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Delete Package
               </button>
             </div>
           </div>
@@ -647,8 +773,24 @@ const AdminPackages = () => {
         }}
         destinations={destinations}
       />
+
+      {/* Update Package Modal */}
+      <UpdatePackageModal
+        show={showUpdatePackageModal}
+        onClose={() => {
+          setShowUpdatePackageModal(false);
+          setSelectedPackage(null);
+        }}
+        onPackageUpdated={() => {
+          getAllPackages(page);
+          setShowUpdatePackageModal(false);
+          setSelectedPackage(null);
+        }}
+        editPackage={selectedPackage}
+        destinations={destinations}
+      />
     </div>
   );
 };
 
-export default AdminPackages; 
+export default AdminPackages;

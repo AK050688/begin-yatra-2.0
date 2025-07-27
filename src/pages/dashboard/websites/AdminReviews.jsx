@@ -29,8 +29,8 @@ const AdminReviews = () => {
       Object.entries(filters).forEach(([key, value]) => {
         if (value) params.append(key, value);
       });
-      params.append('page', pageNum);
-      
+      params.append("page", pageNum);
+
       const res = await api.get(`/api/review/getAllReviews?${params.toString()}`, {
         headers: {
           "Content-Type": "application/json",
@@ -67,13 +67,14 @@ const AdminReviews = () => {
     fetchReviews(1);
   };
 
-  const handleStatusUpdate = async (reviewId) => {
+  const handleStatusUpdate = async (reviewId, currentStatus) => {
     setLoading(true);
     try {
+      const newStatus = currentStatus === "approved" ? "unapproved" : "approved";
       const res = await api.put(
         `/api/review/changeReviewStatus/${reviewId}`,
         {
-          reviewStatus: "approved",
+          reviewStatus: newStatus,
         },
         {
           headers: {
@@ -102,7 +103,7 @@ const AdminReviews = () => {
   // Pagination handlers
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNextPage = () => {
@@ -121,7 +122,7 @@ const AdminReviews = () => {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -129,12 +130,12 @@ const AdminReviews = () => {
     } else {
       const start = Math.max(1, page - Math.floor(maxVisiblePages / 2));
       const end = Math.min(totalPages, start + maxVisiblePages - 1);
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   };
 
@@ -160,7 +161,6 @@ const AdminReviews = () => {
               onChange={handleFilterChange}
               className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
-           
             <input
               type="text"
               name="location"
@@ -169,15 +169,13 @@ const AdminReviews = () => {
               onChange={handleFilterChange}
               className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
-             <button
+            <button
               type="submit"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
             >
               Apply Filters
             </button>
-           
           </div>
-         
         </form>
       </div>
 
@@ -193,7 +191,7 @@ const AdminReviews = () => {
       {error && (
         <div className="text-center py-8">
           <p className="text-red-600">{error}</p>
-          <button 
+          <button
             onClick={() => fetchReviews(page)}
             className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
@@ -269,7 +267,7 @@ const AdminReviews = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button
-                            onClick={() => handleStatusUpdate(review._id)}
+                            onClick={() => handleStatusUpdate(review._id, review.reviewStatus)}
                             className={`px-3 py-1 rounded text-xs font-medium transition ${
                               review.reviewStatus === "approved"
                                 ? "bg-red-100 text-red-700 hover:bg-red-200"
@@ -314,7 +312,7 @@ const AdminReviews = () => {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <span className="text-gray-500">Location:</span>
@@ -328,10 +326,10 @@ const AdminReviews = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="mt-4">
                       <button
-                        onClick={() => handleStatusUpdate(review._id)}
+                        onClick={() => handleStatusUpdate(review._id, review.reviewStatus)}
                         className={`w-full px-3 py-2 rounded text-sm font-medium transition ${
                           review.reviewStatus === "approved"
                             ? "bg-red-100 text-red-700 hover:bg-red-200"
@@ -350,7 +348,7 @@ const AdminReviews = () => {
       )}
 
       {/* Pagination */}
-      {!loading && !error && totalPages > 1 && (
+      {!loading && !error && totalPages > 0 && (
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
             <div className="text-sm text-gray-600">
@@ -364,7 +362,7 @@ const AdminReviews = () => {
               >
                 ← Previous
               </button>
-              
+
               {/* Page Numbers */}
               <div className="flex items-center gap-1">
                 {getPageNumbers().map((pageNum) => (
@@ -373,15 +371,15 @@ const AdminReviews = () => {
                     onClick={() => handlePageChange(pageNum)}
                     className={`px-3 py-2 rounded text-sm transition ${
                       pageNum === page
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
                     {pageNum}
                   </button>
                 ))}
               </div>
-              
+
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
@@ -391,7 +389,7 @@ const AdminReviews = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Quick Navigation */}
           <div className="flex justify-center gap-2">
             <button

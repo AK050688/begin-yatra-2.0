@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import api from "../../../../Api/ApiService";
-import { useSelector } from "react-redux";
-import { selectAccessToken, selectUser } from "../../../../store/userSlice";
+import React, { useState, useRef, useEffect } from 'react';
+import api from '../../../../Api/ApiService';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUser } from '../../../../store/userSlice';
 
 const UpdateDestinationModal = ({
   show,
@@ -14,36 +14,43 @@ const UpdateDestinationModal = ({
   const user = useSelector(selectUser);
   const token = useSelector(selectAccessToken);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
-  const [topAttraction, setTopAttraction] = useState("");
-  const [whatsGreat, setWhatsGreat] = useState("");
-  const [tourGuide, setTourGuide] = useState("");
-  const [famousFor, setFamousFor] = useState("");
-  const [culturalExperiences, setCulturalExperiences] = useState("");
-  const [tips, setTips] = useState("");
-  const [importantInformation, setImportantInformation] = useState([""]);
-  const [topPlaces, setTopPlaces] = useState([""]);
-  const [destinationType, setDestinationType] = useState("domestic");
-  const [destinationName, setDestinationName] = useState("");
+  const [topAttraction, setTopAttraction] = useState('');
+  const [whatsGreat, setWhatsGreat] = useState('');
+  const [tourGuide, setTourGuide] = useState('');
+  const [famousFor, setFamousFor] = useState('');
+  const [culturalExperiences, setCulturalExperiences] = useState('');
+  const [tips, setTips] = useState('');
+  const [importantInformation, setImportantInformation] = useState(['']);
+  const [topPlaces, setTopPlaces] = useState(['']);
+  const [destinationType, setDestinationType] = useState('domestic');
+  const [destinationName, setDestinationName] = useState('');
   const [selectedPackages, setSelectedPackages] = useState([]);
-  const destinationImageRef = useRef();
-  const placesImagesRef = useRef();
+  const [isPopularDestination, setIsPopularDestination] = useState(false);
+  const [isTrandingDestination, setIsTrandingDestination] = useState(false);
+  const [destinationImage, setDestinationImage] = useState([]); // Existing image URLs
+  const [newImages, setNewImages] = useState([]); // New files to upload
   const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
+  const fileInputRef = useRef(null); // Ref for file input
 
   useEffect(() => {
     if (editDestination) {
-      setDestinationName(editDestination.destinationName || "");
-      setDestinationType(editDestination.DestinationType || "domestic");
+      setDestinationName(editDestination.destinationName || '');
+      setDestinationType(editDestination.destinationType || 'domestic');
       setSelectedPackages(editDestination.packageId || []);
       setSelectedPlaces(editDestination.places || []);
-      setTopAttraction(editDestination.topAttraction || "");
-      setWhatsGreat(editDestination.whatsGreat || "");
-      setTourGuide(editDestination.tourGuide || "");
-      setFamousFor(editDestination.famousFor || "");
-      setCulturalExperiences(editDestination.culturalExperiences || "");
-      setTips(editDestination.Tips || "");
-      setImportantInformation(editDestination.importantInformation || [""]);
-      setTopPlaces(editDestination.topPlaces || [""]);
+      setTopAttraction(editDestination.topAttraction || '');
+      setWhatsGreat(editDestination.whatsGreat || '');
+      setTourGuide(editDestination.tourGuide || '');
+      setFamousFor(editDestination.famousFor || '');
+      setCulturalExperiences(editDestination.culturalExperiences || '');
+      setTips(editDestination.Tips || '');
+      setImportantInformation(editDestination.importantInformation || ['']);
+      setTopPlaces(editDestination.topPlaces || ['']);
+      setIsPopularDestination(editDestination.isPopularDestination || false);
+      setIsTrandingDestination(editDestination.isTrandingDestination || false);
+      setDestinationImage(editDestination.destinationImage || []);
+      setNewImages([]); // Reset new images on edit
     }
   }, [editDestination, show]);
 
@@ -52,56 +59,71 @@ const UpdateDestinationModal = ({
     newArr[idx] = value;
     setter(newArr);
   };
-  const handleAddField = (setter, values) => setter([...values, ""]);
+
+  const handleAddField = (setter, values) => setter([...values, '']);
+
   const handleRemoveField = (setter, values, idx) =>
     setter(values.filter((_, i) => i !== idx));
+
+
+
+  const handleNewImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImages((prev) => [...prev, ...files]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setMessage("");
+    setMessage('');
     try {
       const formData = new FormData();
-      formData.append("places", JSON.stringify(selectedPlaces));
-      formData.append("topAttraction", topAttraction);
-      formData.append("whatsGreat", whatsGreat);
-      formData.append("tourGuide", tourGuide);
-      formData.append("famousFor", famousFor);
-      formData.append("culturalExperiences", culturalExperiences);
-      formData.append("Tips", tips);
+      formData.append('places', JSON.stringify(selectedPlaces));
+      formData.append('topAttraction', topAttraction);
+      formData.append('whatsGreat', whatsGreat);
+      formData.append('tourGuide', tourGuide);
+      formData.append('famousFor', famousFor);
+      formData.append('culturalExperiences', culturalExperiences);
+      formData.append('Tips', tips);
       formData.append(
-        "importantInformation",
+        'importantInformation',
         JSON.stringify(importantInformation.filter(Boolean))
       );
-      formData.append("topPlaces", JSON.stringify(topPlaces.filter(Boolean)));
-      formData.append("DestinationType", destinationType);
-      formData.append("destinationName", destinationName);
-      formData.append("packageId", JSON.stringify(selectedPackages));
-      if (destinationImageRef.current?.files) {
-        Array.from(destinationImageRef.current.files).forEach((file) => {
-          formData.append("destinationImage", file);
-        });
-      }
-      if (placesImagesRef.current?.files) {
-        Array.from(placesImagesRef.current.files).forEach((file) => {
-          formData.append("placesImages", file);
-        });
-      }
-      const res = await api.put(`/api/destination/updateDestination/${editDestination._id}`, formData, {
-        headers: {
-          Authorization: token,
-        },
+      formData.append('topPlaces', JSON.stringify(topPlaces.filter(Boolean)));
+      formData.append('destinationType', destinationType);
+      formData.append('destinationName', destinationName);
+      formData.append('packageId', JSON.stringify(selectedPackages));
+      formData.append('isPopularDestination', isPopularDestination);
+      formData.append('isTrandingDestination', isTrandingDestination);
+      // Append existing image URLs
+      formData.append('destinationImage', JSON.stringify(destinationImage));
+      // Append new image files
+      newImages.forEach((image, index) => {
+        formData.append(`newImages[${index}]`, image);
       });
-      const isSuccess = res.ok || res.data?.statusCode === 200 || res.data?.statusCode === 201;
+
+      const res = await api.put(
+        `/api/destination/updateDestination/${editDestination._id}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      const isSuccess =
+        res.ok || res.data?.statusCode === 200 || res.data?.statusCode === 201;
       if (isSuccess) {
-        setMessage("Destination updated successfully!");
+        setMessage('Destination updated successfully!');
         if (onDestinationUpdated) onDestinationUpdated();
         onClose();
       } else {
-        setMessage("Failed to update destination.");
+        setMessage('Failed to update destination.');
       }
     } catch (err) {
-      setMessage("Error: " + err.message);
+      setMessage('Error: ' + err.message);
     } finally {
       setSubmitting(false);
     }
@@ -114,12 +136,11 @@ const UpdateDestinationModal = ({
       <div className="bg-white w-[90%] max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg p-6 shadow-lg relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+          className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+        >
           &times;
         </button>
-        <h2 className="text-2xl font-bold text-center mb-4">
-          Update Destination
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-4">Update Destination</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label>
@@ -127,7 +148,7 @@ const UpdateDestinationModal = ({
               <input
                 type="text"
                 value={destinationName}
-                onChange={e => setDestinationName(e.target.value)}
+                onChange={(e) => setDestinationName(e.target.value)}
                 className="w-full border rounded px-2 py-1"
                 required
               />
@@ -137,11 +158,71 @@ const UpdateDestinationModal = ({
               <select
                 value={destinationType}
                 onChange={(e) => setDestinationType(e.target.value)}
-                className="w-full border rounded px-2 py-1">
+                className="w-full border rounded px-2 py-1"
+              >
                 <option value="domestic">Domestic</option>
                 <option value="international">International</option>
               </select>
             </label>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isPopularDestination}
+                onChange={(e) => setIsPopularDestination(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+              />
+              Popular Destination
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isTrandingDestination}
+                onChange={(e) => setIsTrandingDestination(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+              />
+              Trending Destination
+            </label>
+          </div>
+          <div>
+            <label>
+              Add Destination Images:
+              <input
+                type="file"
+                ref={fileInputRef} // Fixed: Use ref for file input
+                multiple
+                accept="image/*" // Re-added to restrict to images
+                onChange={handleNewImageChange}
+                className="w-full mt-1"
+              />
+            </label>
+            {/* Preview New Images */}
+            {newImages.length > 0 && (
+              <div className="mt-2">
+                <label className="block mb-2">New Images Preview:</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {newImages.map((image, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`New Image ${index + 1}`}
+                        className="w-full h-24 object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setNewImages((prev) => prev.filter((_, i) => i !== index))
+                        }
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           {/* Packages */}
           <div>
@@ -154,12 +235,12 @@ const UpdateDestinationModal = ({
                       type="checkbox"
                       value={pkg.id || pkg._id}
                       checked={selectedPackages.includes(pkg.id || pkg._id)}
-                      onChange={e => {
+                      onChange={(e) => {
                         const value = pkg.id || pkg._id;
-                        setSelectedPackages(prev =>
+                        setSelectedPackages((prev) =>
                           e.target.checked
                             ? [...prev, value]
-                            : prev.filter(p => p !== value)
+                            : prev.filter((p) => p !== value)
                         );
                       }}
                     />
@@ -178,7 +259,8 @@ const UpdateDestinationModal = ({
                   {places.map((place) => (
                     <label
                       key={place.id || place._id}
-                      className="flex items-center gap-2">
+                      className="flex items-center gap-2"
+                    >
                       <input
                         type="checkbox"
                         value={place.id || place._id}
@@ -285,19 +367,18 @@ const UpdateDestinationModal = ({
                       )
                     }
                     disabled={importantInformation.length === 1}
-                    className="px-2">
+                    className="px-2"
+                  >
                     -
                   </button>
                   {idx === importantInformation.length - 1 && (
                     <button
                       type="button"
                       onClick={() =>
-                        handleAddField(
-                          setImportantInformation,
-                          importantInformation
-                        )
+                        handleAddField(setImportantInformation, importantInformation)
                       }
-                      className="px-2">
+                      className="px-2"
+                    >
                       +
                     </button>
                   )}
@@ -315,29 +396,24 @@ const UpdateDestinationModal = ({
                     type="text"
                     value={place}
                     onChange={(e) =>
-                      handleMultiInputChange(
-                        setTopPlaces,
-                        topPlaces,
-                        idx,
-                        e.target.value
-                      )
+                      handleMultiInputChange(setTopPlaces, topPlaces, idx, e.target.value)
                     }
                     className="flex-1 border rounded px-2 py-1"
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      handleRemoveField(setTopPlaces, topPlaces, idx)
-                    }
+                    onClick={() => handleRemoveField(setTopPlaces, topPlaces, idx)}
                     disabled={topPlaces.length === 1}
-                    className="px-2">
+                    className="px-2"
+                  >
                     -
                   </button>
                   {idx === topPlaces.length - 1 && (
                     <button
                       type="button"
                       onClick={() => handleAddField(setTopPlaces, topPlaces)}
-                      className="px-2">
+                      className="px-2"
+                    >
                       +
                     </button>
                   )}
@@ -345,24 +421,12 @@ const UpdateDestinationModal = ({
               ))}
             </label>
           </div>
-          {/* Destination Images */}
-          <div>
-            <label>
-              Destination Images:
-              <input
-                type="file"
-                ref={destinationImageRef}
-                multiple
-                accept="image/*"
-                className="w-full"
-              />
-            </label>
-          </div>
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            {submitting ? "Updating..." : "Update Destination"}
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
+            {submitting ? 'Updating...' : 'Update Destination'}
           </button>
           {message && (
             <div className="mt-2 text-center text-red-500">{message}</div>
@@ -373,4 +437,4 @@ const UpdateDestinationModal = ({
   );
 };
 
-export default UpdateDestinationModal; 
+export default UpdateDestinationModal;

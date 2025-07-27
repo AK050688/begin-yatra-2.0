@@ -6,10 +6,10 @@ import CreatePackageModal from './CreatePackageModal';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
 import api from '../../../../Api/ApiService';
-import { FaEdit, FaEye, FaPlus, FaMapMarkerAlt, FaSuitcase, FaTimes } from 'react-icons/fa';
+import { FaEdit, FaEye, FaPlus, FaMapMarkerAlt, FaSuitcase, FaTimes, FaTrash } from 'react-icons/fa';
 
 const Destinations = () => {
-  const token = useSelector(selectAccessToken)
+  const token = useSelector(selectAccessToken);
   const [showDestinationModal, setShowDestinationModal] = useState(false);
   const [showAddPlaceModal, setShowAddPlaceModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -19,14 +19,16 @@ const Destinations = () => {
   const [places, setPlaces] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [destinations, setDestinations] = useState([]);
-  const [filters, setFilters] = useState({ 
+  const [filters, setFilters] = useState({
     search: '',
     status: '',
-    destinationName: ''
+    destinationName: '',
+    isPopularDestination: '',
+    isTrandingDestination: ''
   });
-    const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDestinations, setTotalDestinations] = useState(0);
@@ -59,6 +61,31 @@ const Destinations = () => {
     setShowCreatePackageModal(true);
   };
 
+  // Handle delete destination
+  const handleDeleteDestination = async (destinationId) => {
+    if (!window.confirm('Are you sure you want to delete this destination? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const res = await api.delete(`/api/destination/deleteDestination/${destinationId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (res.data.statusCode === 200 || res.data.statusCode === 201) {
+        toast.success('Destination deleted successfully!');
+        getAllDestinations(page); // Refresh the list
+      } else {
+        alert('Failed to delete destination');
+      }
+    } catch (error) {
+      console.error('Error deleting destination:', error);
+      alert('Failed to delete destination');
+    }
+  };
+
   // Get image URL helper
   const getImageUrl = (images) => {
     if (!images || images.length === 0) {
@@ -81,41 +108,40 @@ const Destinations = () => {
     return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
   };
 
-  // all places
+  // Fetch all places
   const getAllPlaces = async () => {
     setLoading(true);
-
     try {
-      const res = await api.get("/api/place/getAllPlace", {
+      const res = await api.get('/api/place/getAllPlace', {
         headers: {
           Authorization: token,
         },
       });
-      console.log("res places", res);
+      console.log('res places', res);
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setPlaces(res.data.data.places || []);
       }
     } catch (error) {
-      console.error("Error fetching places:", error);
-      setMessage("Failed to fetch places");
+      console.error('Error fetching places:', error);
+      setMessage('Failed to fetch places');
     } finally {
       setLoading(false);
     }
   };
 
-  // Get All packages
+  // Fetch all packages
   const getAllPackages = async () => {
     setLoading(true);
-  try {
+    try {
       const res = await api.get(`/api/package`, {
-      headers: { 'Authorization': token }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setPackages(Array.isArray(data) ? data : data.packages || []);
-    }
-  } catch (error) {
-    console.error("Error fetching packages:", error);
+        headers: { 'Authorization': token }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setPackages(Array.isArray(data) ? data : data.packages || []);
+      }
+    } catch (error) {
+      console.error('Error fetching packages:', error);
     } finally {
       setLoading(false);
     }
@@ -124,11 +150,13 @@ const Destinations = () => {
   // Fetch destinations
   const getAllDestinations = async (pageNum = 1) => {
     setLoading(true);
-    setError("");
+    setError('');
     try {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
+        if (value !== '' && value !== undefined && value !== null) {
+          params.append(key, value);
+        }
       });
       params.append('page', pageNum);
       params.append('limit', PAGE_SIZE);
@@ -143,8 +171,8 @@ const Destinations = () => {
         setTotalDestinations(res.data.data.total || 0);
       }
     } catch (error) {
-      console.error("Error fetching destinations:", error);
-      setError("Failed to fetch destinations");
+      console.error('Error fetching destinations:', error);
+      setError('Failed to fetch destinations');
       setDestinations([]);
     } finally {
       setLoading(false);
@@ -155,11 +183,19 @@ const Destinations = () => {
     getAllPlaces();
     getAllPackages();
     getAllDestinations(page);
-  }, [page]);
+  }, [page, filters]); // Added filters to useEffect dependency to auto-update on filter change
 
   // Filter handlers
   const handleFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setFilters((prev) => ({
+        ...prev,
+        [name]: checked ? 'true' : ''
+      }));
+    } else {
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFilterSubmit = (e) => {
@@ -169,7 +205,13 @@ const Destinations = () => {
   };
 
   const handleReset = () => {
-    setFilters({ search: '', status: '', destinationName: '' });
+    setFilters({
+      search: '',
+      status: '',
+      destinationName: '',
+      isPopularDestination: '',
+      isTrandingDestination: ''
+    });
     setPage(1);
     getAllDestinations(1);
   };
@@ -227,11 +269,11 @@ const Destinations = () => {
       <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
         <form onSubmit={handleFilterSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <input
-            type="text"
+            <input
+              type="text"
               name="search"
               placeholder="Search destinations..."
-            value={filters.search}
+              value={filters.search}
               onChange={handleFilterChange}
               className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
@@ -254,12 +296,28 @@ const Destinations = () => {
               <option value="inactive">Inactive</option>
               <option value="pending">Pending</option>
             </select>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
-            >
-              Apply Filters
-            </button>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center text-sm text-gray-600">
+                <input
+                  type="checkbox"
+                  name="isPopularDestination"
+                  checked={filters.isPopularDestination === 'true'}
+                  onChange={handleFilterChange}
+                  className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+                />
+                Popular
+              </label>
+              <label className="flex items-center text-sm text-gray-600">
+                <input
+                  type="checkbox"
+                  name="isTrandingDestination"
+                  checked={filters.isTrandingDestination === 'true'}
+                  onChange={handleFilterChange}
+                  className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+                />
+                Trending
+              </label>
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <button
@@ -293,13 +351,13 @@ const Destinations = () => {
       {error && (
         <div className="text-center py-8">
           <p className="text-red-600">{error}</p>
-        <button
+          <button
             onClick={() => getAllDestinations(page)}
             className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
+          >
             Retry
-        </button>
-      </div>
+          </button>
+        </div>
       )}
 
       {/* Destinations Content */}
@@ -330,17 +388,23 @@ const Destinations = () => {
                       Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Popular
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Trending
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
-              </tr>
-            </thead>
+                  </tr>
+                </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {destinations.length === 0 ? (
                     <tr>
-                      <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                      <td colSpan="9" className="px-6 py-4 text-center text-gray-500">
                         No destinations found.
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
                   ) : (
                     destinations.map((dest) => (
                       <tr key={dest._id} className="hover:bg-gray-50">
@@ -412,15 +476,37 @@ const Destinations = () => {
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
                               dest.destinationStatus === 'active'
-                                ? "bg-green-100 text-green-800"
+                                ? 'bg-green-100 text-green-800'
                                 : dest.destinationStatus === 'inactive'
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-yellow-100 text-yellow-800'
                             }`}
                           >
                             {dest.destinationStatus}
                           </span>
-                    </td>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              dest.isPopularDestination
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {dest.isPopularDestination ? 'Yes' : 'No'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              dest.isTrandingDestination
+                                ? 'bg-purple-100 text-purple-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {dest.isTrandingDestination ? 'Yes' : 'No'}
+                          </span>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex items-center gap-2">
                             <button
@@ -430,7 +516,6 @@ const Destinations = () => {
                             >
                               <FaEye className="text-sm" />
                             </button>
-                            
                             <button
                               title="Create Package"
                               onClick={() => handleCreatePackage(dest)}
@@ -438,32 +523,39 @@ const Destinations = () => {
                             >
                               <FaSuitcase className="text-sm" />
                             </button>
-                        <button
-                          title="Edit"
-                          onClick={() => {
-                            setSelectedDestination(dest);
-                            setShowUpdateModal(true);
-                          }}
+                            <button
+                              title="Edit"
+                              onClick={() => {
+                                setSelectedDestination(dest);
+                                setShowUpdateModal(true);
+                              }}
                               className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition"
-                        >
+                            >
                               <FaEdit className="text-sm" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-                </div>
+                            </button>
+                            <button
+                              title="Delete"
+                              onClick={() => handleDeleteDestination(dest._id)}
+                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                            >
+                              <FaTrash className="text-sm" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
           {/* Mobile/Tablet Cards */}
           <div className="lg:hidden">
             {destinations.length === 0 ? (
               <div className="p-6 text-center text-gray-500">
                 No destinations found.
-            </div>
+              </div>
             ) : (
               <div className="divide-y divide-gray-200">
                 {destinations.map((dest) => (
@@ -485,7 +577,7 @@ const Destinations = () => {
                             {dest.destinationName}
                           </h3>
                         </div>
-                  <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-1">
                           <p className="text-sm text-gray-500" title={dest.topAttraction}>
                             {truncateText(dest.topAttraction)}
                           </p>
@@ -495,17 +587,17 @@ const Destinations = () => {
                         <span
                           className={`px-2 py-1 text-xs font-medium rounded-full ${
                             dest.destinationStatus === 'active'
-                              ? "bg-green-100 text-green-800"
+                              ? 'bg-green-100 text-green-800'
                               : dest.destinationStatus === 'inactive'
-                              ? "bg-red-100 text-red-800"
-                              : "bg-yellow-100 text-yellow-800"
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
                           }`}
                         >
                           {dest.destinationStatus}
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 gap-2 text-sm mb-4">
                       <div>
                         <span className="text-gray-500">Famous For:</span>
@@ -523,8 +615,36 @@ const Destinations = () => {
                           </p>
                         </div>
                       </div>
-                  </div>
-                    
+                      <div>
+                        <span className="text-gray-500">Popular:</span>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              dest.isPopularDestination
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {dest.isPopularDestination ? 'Yes' : 'No'}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Trending:</span>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              dest.isTrandingDestination
+                                ? 'bg-purple-100 text-purple-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {dest.isTrandingDestination ? 'Yes' : 'No'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="flex items-center gap-2">
                       <button
                         title="View Details"
@@ -534,7 +654,6 @@ const Destinations = () => {
                         <FaEye className="inline mr-1" />
                         View Details
                       </button>
-                      
                       <button
                         title="Create Package"
                         onClick={() => handleCreatePackage(dest)}
@@ -543,28 +662,36 @@ const Destinations = () => {
                         <FaSuitcase className="inline mr-1" />
                         Package
                       </button>
-                    <button
-                      title="Edit"
-                      onClick={() => {
-                        setSelectedDestination(dest);
-                        setShowUpdateModal(true);
-                      }}
+                      <button
+                        title="Edit"
+                        onClick={() => {
+                          setSelectedDestination(dest);
+                          setShowUpdateModal(true);
+                        }}
                         className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs"
-                    >
+                      >
                         <FaEdit className="inline mr-1" />
                         Edit
-                    </button>
+                      </button>
+                      <button
+                        title="Delete"
+                        onClick={() => handleDeleteDestination(dest._id)}
+                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs"
+                      >
+                        <FaTrash className="inline mr-1" />
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
       )}
 
       {/* Pagination */}
-      {!loading && !error && totalPages > 1 && (
+      {!loading && !error && totalPages > 0 && (
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
             <div className="text-sm text-gray-600">
@@ -578,8 +705,6 @@ const Destinations = () => {
               >
                 ← Previous
               </button>
-              
-              {/* Page Numbers */}
               <div className="flex items-center gap-1">
                 {getPageNumbers().map((pageNum) => (
                   <button
@@ -595,7 +720,6 @@ const Destinations = () => {
                   </button>
                 ))}
               </div>
-              
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
@@ -605,20 +729,18 @@ const Destinations = () => {
               </button>
             </div>
           </div>
-          
-          {/* Quick Navigation */}
           <div className="flex justify-center gap-2">
-        <button
+            <button
               onClick={() => handlePageChange(1)}
-          disabled={page === 1}
+              disabled={page === 1}
               className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
-        >
+            >
               First
-        </button>
+            </button>
             <span className="text-gray-400">|</span>
-        <button
+            <button
               onClick={() => handlePageChange(totalPages)}
-          disabled={page === totalPages}
+              disabled={page === totalPages}
               className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
             >
               Last
@@ -640,7 +762,7 @@ const Destinations = () => {
                 <FaTimes className="text-xl" />
               </button>
             </div>
-            
+
             <div className="p-6 space-y-6">
               {/* Image Section */}
               {selectedDestination.destinationImage && selectedDestination.destinationImage.length > 0 && (
@@ -664,7 +786,7 @@ const Destinations = () => {
                   </div>
                 </div>
               )}
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -672,7 +794,6 @@ const Destinations = () => {
                   </h3>
                   <p className="text-gray-900 font-medium">{selectedDestination.destinationName}</p>
                 </div>
-                
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                     Status
@@ -680,59 +801,87 @@ const Destinations = () => {
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
                       selectedDestination.destinationStatus === 'active'
-                        ? "bg-green-100 text-green-800"
+                        ? 'bg-green-100 text-green-800'
                         : selectedDestination.destinationStatus === 'inactive'
-                        ? "bg-red-100 text-red-800"
-                        : "bg-yellow-100 text-yellow-800"
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-yellow-100 text-yellow-800'
                     }`}
                   >
                     {selectedDestination.destinationStatus}
                   </span>
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                    Popular Destination
+                  </h3>
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedDestination.isPopularDestination
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {selectedDestination.isPopularDestination ? 'Yes' : 'No'}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                    Trending Destination
+                  </h3>
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedDestination.isTrandingDestination
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {selectedDestination.isTrandingDestination ? 'Yes' : 'No'}
+                  </span>
+                </div>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Top Attraction
                 </h3>
                 <p className="text-gray-900">{selectedDestination.topAttraction}</p>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Famous For
                 </h3>
                 <p className="text-gray-900">{selectedDestination.famousFor}</p>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   What's Great
                 </h3>
                 <p className="text-gray-900">{selectedDestination.whatsGreat}</p>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Tour Guide
                 </h3>
                 <p className="text-gray-900">{selectedDestination.tourGuide}</p>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Cultural Experiences
                 </h3>
                 <p className="text-gray-900">{selectedDestination.culturalExperiences}</p>
               </div>
-              
+
               <div>
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Tips
                 </h3>
                 <p className="text-gray-900">{selectedDestination.Tips}</p>
               </div>
-              
+
               {selectedDestination.importantInformation && selectedDestination.importantInformation.length > 0 && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -745,7 +894,7 @@ const Destinations = () => {
                   </ul>
                 </div>
               )}
-              
+
               {selectedDestination.topPlaces && selectedDestination.topPlaces.length > 0 && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -759,7 +908,7 @@ const Destinations = () => {
                 </div>
               )}
             </div>
-            
+
             <div className="flex justify-end gap-3 p-6 border-t">
               <button
                 onClick={() => setShowDetailsModal(false)}
@@ -776,8 +925,8 @@ const Destinations = () => {
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
               >
                 Edit Destination
-        </button>
-      </div>
+              </button>
+            </div>
           </div>
         </div>
       )}

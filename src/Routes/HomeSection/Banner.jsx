@@ -19,13 +19,13 @@ const dummyDestinations = [
 
 const destinations = [
   { name: "Goa", image: "/BannerImages/Goa.png" },
-  { name: "Kerala", image: "/BannerImages/Darjeeling.png" },
-  { name: "Manali", image: "/BannerImages/Dubai.png" },
-  { name: "Manali", image: "/BannerImages/Kashmir.png" },
-  { name: "Manali", image: "/BannerImages/kerala.png" },
+  { name: "Darjeeling", image: "/BannerImages/Darjeeling.png" },
+  { name: "Dubai", image: "/BannerImages/Dubai.png" },
+  { name: "Kashmir", image: "/BannerImages/Kashmir.png" },
+  { name: "kerala", image: "/BannerImages/kerala.png" },
   { name: "Manali", image: "/BannerImages/Manali.png" },
-  { name: "Manali", image: "/BannerImages/Sikkim.png" },
-  { name: "Manali", image: "/BannerImages/Thailand.png" },
+  { name: "Sikkim", image: "/BannerImages/Sikkim.png" },
+  { name: "Thailand", image: "/BannerImages/Thailand.png" },
 ];
 
 // Custom arrow components with enhanced styling

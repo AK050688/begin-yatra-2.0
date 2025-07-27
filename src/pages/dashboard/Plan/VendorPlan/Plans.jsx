@@ -368,7 +368,7 @@ const Plans = () => {
       <div className="bg-white p-4 rounded-lg shadow mb-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
           <h1 className="text-xl font-bold">Available Plans</h1>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setFilter("all")}
               className={`px-4 py-2 rounded text-sm ${

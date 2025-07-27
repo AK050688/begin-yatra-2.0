@@ -34,11 +34,13 @@ const CreateDestinationModal = ({
   const [message, setMessage] = useState("");
   const [destinationName, setDestinationName] = useState("");
   const [selectedPackages, setSelectedPackages] = useState([]);
+  const [isPopularDestination, setIsPopularDestination] = useState(false);
+  const [isTrandingDestination, setIsTrandingDestination] = useState(false);
   // Prefill for edit
   useEffect(() => {
     if (editDestination) {
       setDestinationName(editDestination.destinationName || "");
-      setDestinationType(editDestination.DestinationType || "domestic");
+      setDestinationType(editDestination.destinationType || "domestic");
       setSelectedPackages(editDestination.packageId || []);
       setSelectedPlaces(editDestination.places || []);
       setTopAttraction(editDestination.topAttraction || "");
@@ -49,6 +51,8 @@ const CreateDestinationModal = ({
       setTips(editDestination.Tips || "");
       setImportantInformation(editDestination.importantInformation || [""]);
       setTopPlaces(editDestination.topPlaces || [""]);
+      setIsPopularDestination(editDestination.isPopularDestination || false);
+      setIsTrandingDestination(editDestination.isTrandingDestination || false);
     } else {
       setDestinationName("");
       setDestinationType("domestic");
@@ -62,6 +66,8 @@ const CreateDestinationModal = ({
       setTips("");
       setImportantInformation([""]);
       setTopPlaces([""]);
+      setIsPopularDestination(false);
+      setIsTrandingDestination(false);
     }
   }, [editDestination, show]);
 
@@ -92,24 +98,23 @@ const CreateDestinationModal = ({
         JSON.stringify(importantInformation.filter(Boolean))
       );
       formData.append("topPlaces", JSON.stringify(topPlaces.filter(Boolean)));
-      formData.append("DestinationType", destinationType);
+      formData.append("destinationType", destinationType);
       formData.append("destinationName", destinationName);
-      // formData.append("packageId", JSON.stringify(selectedPackages));
-      
+      formData.append("packageId", JSON.stringify(selectedPackages));
+      formData.append("isPopularDestination", isPopularDestination);
+      formData.append("isTrandingDestination", isTrandingDestination);
       // Handle destination images
       if (destinationImageRef.current?.files && destinationImageRef.current.files.length > 0) {
-        Array.from(destinationImageRef.current.files).forEach((file, index) => {
+        Array.from(destinationImageRef.current.files).forEach((file) => {
           formData.append("destinationImage", file);
         });
       }
-      
-      // Handle places images
+      // Handle places images (if needed by backend)
       if (placesImagesRef.current?.files && placesImagesRef.current.files.length > 0) {
-        Array.from(placesImagesRef.current.files).forEach((file, index) => {
+        Array.from(placesImagesRef.current.files).forEach((file) => {
           formData.append("placesImages", file);
         });
       }
-
       let res;
       if (editDestination && editDestination._id) {
         // Update
@@ -175,7 +180,7 @@ const CreateDestinationModal = ({
           &times;
         </button>
         <h2 className="text-2xl font-bold text-center mb-4">
-          Create Destination
+          {editDestination ? "Update Destination" : "Create Destination"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -415,12 +420,37 @@ const CreateDestinationModal = ({
               />
             </label>
           </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isPopularDestination}
+                onChange={(e) => setIsPopularDestination(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+              />
+              Popular Destination
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isTrandingDestination}
+                onChange={(e) => setIsTrandingDestination(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+              />
+              Trending Destination
+            </label>
+          </div>
           <button
             type="submit"
             disabled={submitting}
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            {submitting ? "Creating..." : "Create Destination"}
+            {submitting
+              ? editDestination
+                ? "Updating..."
+                : "Creating..."
+              : editDestination
+              ? "Update Destination"
+              : "Create Destination"}
           </button>
           {message && (
             <div className="mt-2 text-center text-red-500">{message}</div>

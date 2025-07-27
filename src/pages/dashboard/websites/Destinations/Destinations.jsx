@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreateDestinationModal from './CreateDestinationModal';
 import AddPlaceModal from './AddPlaceModal';
-import UpdateDestinationModal from './UpdateDestinationModal';
 import CreatePackageModal from './CreatePackageModal';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
@@ -940,7 +939,7 @@ const Destinations = () => {
         onOpenAddPlace={() => setShowAddPlaceModal(true)}
         onDestinationCreated={() => getAllDestinations(page)}
       />
-      <UpdateDestinationModal
+      <CreateDestinationModal
         show={showUpdateModal}
         onClose={() => {
           setShowUpdateModal(false);

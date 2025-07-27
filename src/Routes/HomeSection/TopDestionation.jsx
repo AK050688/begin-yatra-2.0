@@ -96,7 +96,7 @@ const TopDestinations = ({ trendingDestinations = [] }) => {
   };
   
   return (
-    <div className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12">
+    <div id="top-destinations" className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
         Trending <span className="text-[#3b82f6]">Destinations</span>
       </h2>

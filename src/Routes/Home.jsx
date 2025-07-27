@@ -30,28 +30,15 @@ const Home = () => {
             console.log("res.data Home data", res.data);
 
             if (res.data.statusCode === 200) {
-                const allDestinations = res.data.data.totalPopularDestination || [];
                 
-                // Filter destinations by type
-                const domesticDestinations = allDestinations.filter(destination => 
-                    destination.destinationType === "domestic"
-                );
-                
-                const internationalDestinations = allDestinations.filter(destination => 
-                    destination.destinationType === "international"
-                );
-
                 setHomeData({
                     totalPopularDestination: res.data.data.totalPopularDestination || [],
                     totalTrandingDestination: res.data.data.totalTrandingDestination || [],
                     totalTrandingPackages: res.data.data.totalTrandingPackages || [],
-                    domesticDestinations: domesticDestinations,
-                    internationalDestinations: internationalDestinations
+                    totalTopCountries:res.data.data.totalTopCountries || [],
                 });
 
                 console.log("Home data set:", res.data.data);
-                console.log("Domestic destinations:", domesticDestinations);
-                console.log("International destinations:", internationalDestinations);
             }
         } catch (error) {
             console.error("Error fetching home data:", error);
@@ -73,7 +60,7 @@ const Home = () => {
             <PopularPackages popularDestinations={homeData.totalPopularDestination} loading={loading} />
             <TopDestinations trendingDestinations={homeData.totalTrandingDestination} loading={loading} />
             <TrandingStories/>
-            <TopCountries domesticDestinations={homeData.domesticDestinations} internationalDestinations={homeData.internationalDestinations} loading={loading} />
+            <TopCountries totalTopCountries={homeData.totalTopCountries} loading={loading} />
             <TrendingPackages trendingPackages={homeData.totalTrandingPackages} loading={loading} />
             <div className="mx-auto lg:max-w-6xl md:max-w-4xl max-w-2xl xs:max-w-xs">
                 <WnatToGOForm/>

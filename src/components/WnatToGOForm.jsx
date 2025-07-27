@@ -17,7 +17,7 @@ const defaultForm = {
   children: "0",
   infant: "0",
   tripType: "",
-  leadType: "",
+  leadType: "domestic",
   totalMembers: {
     adult: "0",
     children: "0",

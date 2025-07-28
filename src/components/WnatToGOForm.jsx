@@ -124,7 +124,7 @@ const TravelForm = () => {
   };
 
   return (
-    <div className="min-h-[640px] w-full px-4 py-8 sm:px-6 md:px-10 lg:px-16 bg-white text-gray-700 font-sans">
+    <div className="min-h-[640px] w-full px-4 lg:py-8 md:py-6 py-4  md:px-10 lg:px-16 bg-white text-gray-700 font-sans">
       <h3 className="text-2xl text-center mb-12 font-bold">
         Our experts would love to create a package just for you Fill in your
         requirements here

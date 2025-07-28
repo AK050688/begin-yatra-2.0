@@ -22,8 +22,7 @@ const NextArrow = ({ onClick }) => (
   <button
     onClick={onClick}
     className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    aria-label="Next slide"
-  >
+    aria-label="Next slide">
     <FaArrowRight className="w-6 h-6" />
   </button>
 );
@@ -32,8 +31,7 @@ const PrevArrow = ({ onClick }) => (
   <button
     onClick={onClick}
     className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    aria-label="Previous slide"
-  >
+    aria-label="Previous slide">
     <FaArrowLeft className="w-6 h-6" />
   </button>
 );
@@ -94,16 +92,24 @@ const Banner = () => {
         params.append("search", search);
       }
 
-      const res = await api.get(`/api/destination/getAllDestination?${params.toString()}`, {
-        headers: { Authorization: token },
-      });
+      const res = await api.get(
+        `/api/destination/getAllDestination?${params.toString()}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      console.log( "Search",res.data.data?.destinations);
+      
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         // Filter and map unique destination names
         const destinations = res.data.data?.destinations || [];
         const uniqueDestinations = Array.from(
-          new Map(destinations.map(dest => [dest.destinationName, dest])).values()
-        ).map(dest => ({
+          new Map(
+            destinations.map((dest) => [dest.destinationName, dest])
+          ).values()
+        ).map((dest) => ({
           id: dest._id,
           name: dest.destinationName,
         }));
@@ -147,7 +153,9 @@ const Banner = () => {
       alert("Multiple destinations found. Please select one from the list.");
     } else {
       // Show alert for no results
-      alert("No destinations found for your search. Please try a different search term.");
+      alert(
+        "No destinations found for your search. Please try a different search term."
+      );
     }
     setShowResults(false);
   };
@@ -184,70 +192,81 @@ const Banner = () => {
       </Slider>
 
       {/* Fixed Search Bar */}
-      <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2 z-20 w-full max-w-lg px-4">
-      <div className="relative z-50">
-  <div className="flex items-center bg-white/95 backdrop-blur-sm rounded-full px-5 py-3 shadow-2xl transition-all duration-300 hover:shadow-xl">
-    {isSearching ? (
-      <FaSpinner className="h-6 w-6 text-gray-600 mr-3 animate-spin" aria-hidden="true" />
-    ) : (
-      <FaSearch className="h-6 w-6 text-gray-600 mr-3" aria-hidden="true" />
-    )}
-    <input
-      type="search"
-      placeholder="Search destinations..."
-      value={searchQuery}
-      onChange={(e) => handleSearch(e.target.value)}
-      onKeyPress={handleKeyPress}
-      onFocus={() => searchQuery.trim() && setShowResults(true)}
-      className="flex-1 px-3 py-2 outline-none text-gray-800 bg-transparent text-lg font-medium placeholder-gray-500"
-      aria-label="Search destinations"
-    />
-    <button
-      onClick={handleExplore}
-      className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold text-lg"
-      aria-label="Explore destinations"
-    >
-      Explore
-    </button>
-  </div>
-
-  {/* Dropdown results */}
-  {showResults && searchResults.length > 0 && (
-    <div
-      className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto z-[9999]"
-      role="listbox"
-    >
-      {searchResults.map((dest) => (
-        <div
-          key={dest.id}
-          onClick={() => handleResultClick(dest.id)}
-          className="flex items-center p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 last:border-b-0"
-          role="option"
-          aria-selected="false"
-        >
-          <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">{dest.name}</h3>
+      <div className="absolute top-20 lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
+        <div className="relative z-50">
+          <div className="flex lg:flex-row md:flex-row  flex-col gap-3  items-stretch sm:items-center ">
+            <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-full px-4 py-1 shadow-2xl transition-all duration-300 hover:shadow-xl gap-2 sm:gap-0">
+              {isSearching ? (
+                <FaSpinner
+                  className="h-5 w-5 sm:h-6 sm:w-6 text-gray-600 animate-spin"
+                  aria-hidden="true"
+                />
+              ) : (
+                <FaSearch
+                  className="h-5 w-5 sm:h-6 sm:w-6 text-gray-600"
+                  aria-hidden="true"
+                />
+              )}
+              <input
+                type="search"
+                placeholder="Search destinations..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                onKeyPress={handleKeyPress}
+                onFocus={() => searchQuery.trim() && setShowResults(true)}
+                className="flex-1 px-3 py-2 outline-none text-gray-800 bg-transparent text-base sm:text-lg font-medium placeholder-gray-500 w-full"
+                aria-label="Search destinations"
+              />
+            </div>
+            <button
+              onClick={handleExplore}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold text-base sm:text-lg w-full sm:w-auto"
+              aria-label="Explore destinations">
+              Explore
+            </button>
           </div>
+
+          {/* Dropdown results */}
+          {/* Dropdown results */}
+{showResults && searchResults.length > 0 && (
+  <div
+    className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-gray-200 rounded-lg shadow-2xl max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+    role="listbox"
+  >
+    {searchResults.map((dest) => (
+      <div
+        key={dest.id}
+        onClick={() => handleResultClick(dest.id)}
+        className="flex items-center p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 last:border-b-0"
+        role="option"
+        aria-selected="false"
+      >
+        <div className="flex-1" onClick={()=> handleResultClick(dest.id)}>
+          <h3 className="font-semibold text-gray-900">{dest.name}</h3>
         </div>
-      ))}
-    </div>
-  )}
+      </div>
+    ))}
+  </div>
+)}
 
-  {showResults && searchQuery.trim() !== "" && searchResults.length === 0 && (
-    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-[9999]">
-      <p className="text-gray-600 text-center">
-        No destinations found for "{searchQuery}"
-      </p>
-    </div>
-  )}
-</div>
 
+          {/* No Results */}
+          {showResults &&
+            searchQuery.trim() !== "" &&
+            searchResults.length === 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-[9999]">
+                <p className="text-gray-600 text-center">
+                  No destinations found for "{searchQuery}"
+                </p>
+              </div>
+            )}
+        </div>
       </div>
 
       {/* Click outside to close search results */}
       {showResults && (
         <div
-          className="fixed"
+          className="fixed inset-0 z-10"
           onClick={() => setShowResults(false)}
           aria-hidden="true"
         />

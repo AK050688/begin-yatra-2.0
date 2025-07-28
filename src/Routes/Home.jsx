@@ -54,7 +54,8 @@ const Home = () => {
     return (
         <div className="">
             {/* <HeroSection /> */}
-            <Banner/>
+            <Banner />
+            <div className="mt-"></div>
             <AboutSection/>
             <OfferCards/>
             <PopularPackages popularDestinations={homeData.totalPopularDestination} loading={loading} />

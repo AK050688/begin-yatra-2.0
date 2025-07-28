@@ -32,8 +32,8 @@ const TrendingPackages = ({ trendingPackages = [] }) => {
   };
 
   return (
-    <section className="px-4 md:px-12 py-10 bg-white">
-      <div className="flex justify-between align-middle">
+    <section className="px-4 md:px-12 lg:py-10 md:py-8 py-4 bg-white">
+      <div className="flex flex-wrap justify-between align-middle">
         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
           Trending Tour Packages{" "}
           <span className="text-[#3b82f6]">on Begin Yatra</span>

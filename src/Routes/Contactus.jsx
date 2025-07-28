@@ -6,16 +6,14 @@ import BackgroundImg from "../components/BackgroundImg";
 import emailjs from "@emailjs/browser";
 const Contactus = () => {
   const form = useRef();
-
   const sendEmail = (e) => {
     e.preventDefault();
-
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
-        "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+        "service_2ml52xc", // Replace with your EmailJS service ID
+        "template_y40r95r", // Replace with your EmailJS template ID
         form.current,
-        "YOUR_PUBLIC_KEY" // Replace with your EmailJS public key
+        "WCgEMq-xi1C-hOZIS" // Replace with your EmailJS public key
       )
       .then(
         (result) => {

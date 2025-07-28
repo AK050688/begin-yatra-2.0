@@ -75,9 +75,9 @@ const TopCountries = ({ totalTopCountries = [], loading = false }) => {
   }
 
   return (
-    <div className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12 relative">
+    <div className="bg-gray-50 py-10  px-6 lg:px-12 md:px-12 relative">
       {totalTopCountries.length > 0 && (
-        <div className="mb-12">
+        <div className="lg:mb-12 md:6 md-4">
           <h4 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
             Top Countries <span className="text-[#3b82f6]">Destinations</span>
           </h4>

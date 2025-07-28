@@ -329,6 +329,15 @@ const Aboutus = () => {
           ))}
         </div>
       </section> */}
+
+      {/* Adding GST Number */}
+      <section className="bg-blue-50 flex justify-center px-2 py-4">
+        <h6 className="text-center lg:text-lg md:text-md text-sm text-blue-600 ">
+          GST Number : 10IFHPK7753A1ZP
+
+        </h6>
+      
+      </section>
     </div>
   );
 };

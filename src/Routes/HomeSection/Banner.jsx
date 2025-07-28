@@ -82,10 +82,8 @@ const Banner = () => {
       setLoading(false);
       return;
     }
-
     setIsSearching(true);
     setLoading(true);
-
     try {
       const params = new URLSearchParams();
       if (search) {

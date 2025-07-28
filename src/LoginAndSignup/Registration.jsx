@@ -137,7 +137,7 @@ const AgentRegistrationForm = () => {
         <p className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
           <Link
-            to="/login-agent"
+            to="/agent/login-agent"
             className="text-blue-600 font-medium hover:underline">
             Sign in
           </Link>

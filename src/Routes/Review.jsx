@@ -129,7 +129,7 @@ const Review = () => {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="p-3 border text-black border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   required
                 />
                 <input
@@ -138,7 +138,7 @@ const Review = () => {
                   placeholder="Your Location"
                   value={formData.location}
                   onChange={handleChange}
-                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="p-3 border text-black border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   required
                 />
               </div>
@@ -147,7 +147,7 @@ const Review = () => {
                   name="rating"
                   value={formData.rating}
                   onChange={handleChange}
-                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer focus:border-blue-500 transition">
+                  className="p-3 border text-black border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer focus:border-blue-500 transition">
                   {[5, 4, 3, 2, 1].map((num) => (
                     <option key={num} value={num}>
                       {num} Star{num > 1 && "s"}
@@ -161,7 +161,7 @@ const Review = () => {
                   placeholder="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="p-3 border text-black border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   required
                 />
               </div>
@@ -172,7 +172,7 @@ const Review = () => {
                 placeholder="Share your experience..."
                 value={formData.review}
                 onChange={handleChange}
-                className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none"
+                className="p-3 border text-black border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none"
                 required></textarea>
               <button
                 disabled={loading}

@@ -398,7 +398,7 @@ const AddNewPlan = () => {
       {/* Available Plans Section */}
       <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row justify-end items-center mb-3 sm:mb-4 gap-3 sm:gap-5">
-          <h1 className="text-xl sm:text-xl font-bold w-full sm:w-auto text-left sm:mr-auto">
+          <h1 className="lg:text-xl sm:text-md font-bold w-full sm:w-auto text-left text-black sm:mr-auto">
             Available Plans
           </h1>
           <button
@@ -421,14 +421,14 @@ const AddNewPlan = () => {
             <table className="w-full text-left text-sm md:text-base">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="p-2 md:p-3">Plan ID</th>
-                  <th className="p-2 md:p-3">Plan Name</th>
-                  <th className="p-2 md:p-3">Price</th>
-                  <th className="p-2 md:p-3">Description</th>
-                  <th className="p-2 md:p-3">Validity</th>
-                  <th className="p-2 md:p-3">Plan Type</th>
-                  <th className="p-2 md:p-3">No. Of Leads</th>
-                  <th className="p-2 md:p-3">Actions</th>
+                  <th className="p-2 md:p-3 text-black">Plan ID</th>
+                  <th className="p-2 md:p-3 text-black">Plan Name</th>
+                  <th className="p-2 md:p-3 text-black">Price</th>
+                  <th className="p-2 md:p-3 text-black">Description</th>
+                  <th className="p-2 md:p-3 text-black">Validity</th>
+                  <th className="p-2 md:p-3 text-black">Plan Type</th>
+                  <th className="p-2 md:p-3 text-black">No. Of Leads</th>
+                  <th className="p-2 md:p-3 text-black">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -438,25 +438,25 @@ const AddNewPlan = () => {
                     className="border-b"
                   >
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      {plan.planId || plan._id}
+                    <span className="text-black">{plan.planId || plan._id}</span>  
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      {plan.planName}
+                      <span className="text-black">{plan.planName}</span>
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      ₹{plan.price}
+                      <span className="text-black">₹{plan.price}</span>
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px] ">
-                      {plan.description}
+                      <span className="text-black">{plan.description}</span>
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      {plan.validity}
+                    <span className="text-black"> {plan.validity}</span> 
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      {plan.planType}
+                      <span className="text-black">{plan.planType}</span>
                     </td>
                     <td className="p-2 md:p-3 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                      {plan.numberOfLeads}
+                      <span className="text-black">{plan.numberOfLeads}</span>
                     </td>
                     <td className="p-2 md:p-3">
                       <button
@@ -507,32 +507,32 @@ const AddNewPlan = () => {
                 className="bg-white p-3 rounded-lg shadow mb-3 border"
               >
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Plan ID:</span>
-                  <span>{plan.planId || plan._id}</span>
+                  <span className="font-bold text-black">Plan ID:</span>
+                  <span className="text-black">{plan.planId || plan._id}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Plan Name:</span>
-                  <span>{plan.planName}</span>
+                  <span className="font-bold text-black">Plan Name:</span>
+                  <span className="text-black">{plan.planName}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Price:</span>
-                  <span>₹{plan.price}</span>
+                  <span className="font-bold text-black">Price:</span>
+                  <span className="text-black">₹{plan.price}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Description:</span>
-                  <span>{plan.description}</span>
+                  <span className="font-bold text-black">Description:</span>
+                  <span className="text-black">{plan.description}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Validity:</span>
-                  <span>{plan.validity}</span>
+                  <span className="font-bold text-black">Validity:</span>
+                  <span className="text-black">{plan.validity}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">No. Of Leads:</span>
-                  <span>{plan.numberOfLeads}</span>
+                  <span className="font-bold text-black">No. Of Leads:</span>
+                  <span className="text-black">{plan.numberOfLeads}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-bold">Plan Type:</span>
-                  <span>{plan.planType}</span>
+                  <span className="font-bold text-black">Plan Type:</span>
+                  <span className="text-black">{plan.planType}</span>
                 </div>
                 <div className="flex justify-end space-x-2 mt-2">
                   <button
@@ -560,17 +560,17 @@ const AddNewPlan = () => {
               <button
                 onClick={handlePrev}
                 disabled={currentPage === 1}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                className="px-3 py-1 bg-gray-500 rounded disabled:opacity-50"
               >
                 ←
               </button>
-              <span className="text-sm font-medium">
+              <span className="text-sm font-medium text-black">
                 Page {currentPage} of {totalPages}
               </span>
               <button
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                className="px-3 py-1 bg-gray-500 rounded disabled:opacity-50"
               >
                 →
               </button>

@@ -17,6 +17,8 @@ const AboutDestination = () => {
         setError(null);
         try {
           const res = await api.get(`/api/destination/getDestinationById/${id}`);
+          console.log("Destination ??????",res);
+          
           if (res.data && res.data.data) {
             setDestinationData(res.data.data);
           } else {
@@ -25,6 +27,8 @@ const AboutDestination = () => {
         } catch (err) {
           setError("Failed to fetch destination");
           setDestinationData(null);
+          console.error(err);
+          
         } finally {
           setLoading(false);
         }
@@ -89,7 +93,7 @@ const AboutDestination = () => {
   if (!data) return <div className="p-6 text-center text-gray-500">Destination not found.</div>;
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12">
         <div className="w-full lg:w-1/2">
@@ -101,7 +105,7 @@ const AboutDestination = () => {
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-2">
+            <h1 className="text-2xl sm:text-3xl text-blue-500 lg:text-4xl font-semibold mb-2">
               {capitalizeFirstLetter(data.destinationName || data.name)}
             </h1>
             <h2 className="flex items-center gap-2 text-lg sm:text-xl text-gray-600 mb-6">
@@ -115,12 +119,12 @@ const AboutDestination = () => {
                 { label: "Best Time to Visit", value: data.importantInformation?.[0]?.includes("Best Time") ? data.importantInformation[0].match(/Best Time To Visit: ([^.+]+)/)?.[1] || "N/A" : "N/A" },
                 { label: "Theme", value: packageInfo.theme }
               ].map((item, index) => (
-                <div 
+                <div
                   key={index}
                   className="text-center p-4 border border-gray-200 rounded-lg shadow-md"
                 >
                   <p className="text-sm text-gray-600">{item.label}</p>
-                  <p className="font-semibold">{item.value}</p>
+                  <p className="font-semibold text-blue-500">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -137,9 +141,9 @@ const AboutDestination = () => {
       {/* Details Section */}
       <section className="space-y-8">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-4">
+          <h2 className="text-2xl sm:text-3xl text-blue-500  font-semibold mb-4">
             {capitalizeFirstLetter(data.destinationName || data.name)} 
-            <span className="text-blue-500"> Tour Guide</span>
+            <span className=" text-black"> Tour Guide</span>
           </h2>
           <p className="text-gray-700 leading-relaxed">
             {data.tourGuide || "No tour guide information available."}
@@ -147,8 +151,8 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
-            <span className="text-blue-600">Package Itinerary</span> for{" "}
+          <h3 className="text-xl sm:text-2xl text-blue-600 font-semibold mb-3">
+            <span className="text-black">Package Itinerary</span> for{" "}
             {capitalizeFirstLetter(data.destinationName || data.name)}
           </h3>
           <div className="space-y-4">
@@ -176,11 +180,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             <span className="text-blue-600">Top Attractions</span> in{" "}
             {capitalizeFirstLetter(data.destinationName || data.name)}
           </h3>
-          <ol className="list-decimal pl-6 space-y-2">
+          <ol className="list-decimal text-black pl-6 space-y-2">
             {data.topAttraction ? (
               <li>{data.topAttraction}</li>
             ) : (
@@ -190,7 +194,7 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             {capitalizeFirstLetter(data.destinationName || data.name)} is 
             <span className="text-blue-600"> Famous for</span>
           </h3>
@@ -200,11 +204,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             <span className="text-blue-600">What's Great</span> about{" "}
             {capitalizeFirstLetter(data.destinationName || data.name)}?
           </h3>
-          <ul className="list-disc pl-6 space-y-2">
+          <ul className="list-disc text-black  pl-6 space-y-2">
             {data.whatsGreat ? (
               <li>{data.whatsGreat}</li>
             ) : (
@@ -214,11 +218,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Cultural Experiences in
             <span className="text-blue-600"> {capitalizeFirstLetter(data.destinationName || data.name)}</span>
           </h3>
-          <ul className="list-disc pl-6 space-y-2">
+          <ul className="list-disc text-black pl-6 space-y-2">
             {data.culturalExperiences ? (
               <li>{data.culturalExperiences}</li>
             ) : (
@@ -228,11 +232,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Tips for
             <span className="text-blue-600"> {capitalizeFirstLetter(data.destinationName || data.name)}</span>
           </h3>
-          <ul className="list-disc pl-6 space-y-2">
+          <ul className="list-disc text-black pl-6 space-y-2">
             {data.Tips ? (
               <li>{data.Tips}</li>
             ) : (
@@ -242,11 +246,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Important Information
             <span className="text-blue-600"> About Trip</span>
           </h3>
-          <ul className="list-disc pl-6 space-y-2">
+          <ul className="list-disc pl-6 text-black space-y-2">
             {data.importantInformation && data.importantInformation.length > 0 ? (
               data.importantInformation.map((info, index) => (
                 <li key={index}>{info}</li>
@@ -258,11 +262,11 @@ const AboutDestination = () => {
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-semibold mb-3">
+          <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Top <span className="text-blue-600">Places</span> to visit in{" "}
             {capitalizeFirstLetter(data.destinationName || data.name)}
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 text-black sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.topPlaces && data.topPlaces.length > 0 ? (
               data.topPlaces.slice(0, 6).map((place, index) => (
                 <div 

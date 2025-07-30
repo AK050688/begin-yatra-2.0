@@ -62,10 +62,12 @@ const SideBar = () => {
   const navLinks = user ? roleLinkMap[user.role] : [];
 
 
-  const handleLogout = async () => {
-    dispatch(logout());
-    navigate("/agent/login-agent");
-  };
+  // const handleLogout = async () => {
+  //   dispatch(logout());
+  //   navigate("/agent/login-agent");
+  //   console.log("/agent/login-agent");
+    
+  // };
 
   // Recursive navigation renderer
   const renderNavLinks = (links, parentKey = "") => {
@@ -76,7 +78,7 @@ const SideBar = () => {
           <div key={dropdownKey} className="">
             <button
               type="button"
-              className="flex items-center justify-between w-full font-semibold px-4 py-2 text-gray-700 focus:outline-none"
+              className="flex items-center justify-between w-full  font-semibold px-4 py-2 text-gray-700 focus:outline-none"
               onClick={() => handleDropdownToggle(dropdownKey)}
             >
               <span>{link.label}</span>
@@ -97,7 +99,7 @@ const SideBar = () => {
             key={link.to}
             to={link.to}
             className={({ isActive }) =>
-              `block w-full cursor-pointer text-left px-4 py-2 rounded ${
+              `block w-full cursor-pointer text-gray-700 text-left px-4 py-2 rounded ${
                 isActive ? "bg-blue-400 text-white" : "hover:bg-gray-100"
               }`
             }
@@ -141,7 +143,10 @@ const SideBar = () => {
 
         <div className="p-4">
           <button
-            onClick={handleLogout}
+            onClick={() => {
+              dispatch(logout());
+    navigate("/agent/login-agent");
+            }}
             className="w-full px-4 py-2 text-red-600 border border-red-300 rounded hover:bg-red-50"
           >
             Logout

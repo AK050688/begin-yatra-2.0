@@ -543,7 +543,7 @@ const UserCard = () => {
           Add New User
         </button>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 w-full sm:w-auto">
-          <h3 className="text-lg font-semibold mb-4">Filter Users</h3>
+          <h3 className="text-lg text-gray-700 font-semibold mb-4">Filter Users</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
@@ -551,7 +551,7 @@ const UserCard = () => {
               value={filters.name}
               onChange={handleFilterChange}
               placeholder="Filter by Name"
-              className="p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border border-gray-700 text-black rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -559,7 +559,7 @@ const UserCard = () => {
               value={filters.email}
               onChange={handleFilterChange}
               placeholder="Filter by Email"
-              className="p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border rounded border-gray-700 text-black  text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
@@ -568,7 +568,7 @@ const UserCard = () => {
               value={filters.city}
               onChange={handleFilterChange}
               placeholder="Filter by City"
-              className="p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border rounded border-gray-700 text-black  text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -576,7 +576,7 @@ const UserCard = () => {
               value={filters.companyName}
               onChange={handleFilterChange}
               placeholder="Filter by Company"
-              className="p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border rounded text-sm border-gray-700 text-black  focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -600,16 +600,16 @@ const UserCard = () => {
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
                 <div className="flex items-center gap-4 mb-4 sm:mb-0">
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                  <div className="lg:w-12 lg:h-12 md:w-10 md:h-10 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
                     <span className="capitalize">
                       {user?.name?.[0] || "N/A"}
                     </span>
                   </div>
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-900">
+                    <h2 className="lg:text-xl md:text-md text-sm font-semibold text-gray-900">
                       {user.name || "N/A"}
                     </h2>
-                    <p className="text-gray-600">{user.email}</p>
+                    {/* <p className="text-gray-600">{user.email}</p> */}
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
@@ -636,7 +636,7 @@ const UserCard = () => {
                       <Mail className="w-4 h-4 text-gray-400 mt-1" />
                       <div>
                         <p className="text-sm text-gray-500">Email</p>
-                        <p className="text-gray-900">{user.email}</p>
+                        <p className="text-gray-900 text-sm">{user.email}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">

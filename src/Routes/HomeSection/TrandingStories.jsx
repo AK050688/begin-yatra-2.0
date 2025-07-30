@@ -27,7 +27,7 @@ const StoriesData=[
 const TrandingStories = () => {
   return (
     <div>{/* Trending Stories */}
-<section className="px-4 md:px-12 py-10">
+<section className="px-4 md:px-12 py-10 bg-white">
   <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
     <span>Our Trending </span>
     Stories on<span className="text-[#3b82f6]"> Begin Yatra </span>
@@ -47,7 +47,7 @@ const TrandingStories = () => {
         <div key={index} className="flex bg-white shadow-sm rounded-lg overflow-hidden">
           <img src={data.img} alt="Story" className="h-36 w-36 object-cover" />
           <div className="p-4 flex flex-col justify-between">
-            <h2 className="text-md font-semibold">{data.reviews}</h2>
+            <h2 className="text-md text-black font-semibold">{data.reviews}</h2>
             <p className="text-sm text-gray-600">Number of viewers: <span className="font-medium">{data.numOfView}</span></p>
           </div>
         </div>

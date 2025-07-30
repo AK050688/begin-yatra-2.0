@@ -233,14 +233,14 @@ const AdminPackages = () => {
                 placeholder="Search packages..."
                 value={filters.search}
                 onChange={handleFilterChange}
-                className="border border-gray-300 pl-10 pr-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm w-full"
+                className="border text-black border-gray-300 pl-10 pr-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm w-full"
               />
             </div>
             <select
               name="theme"
               value={filters.theme}
               onChange={handleFilterChange}
-              className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             >
               <option value="">All Themes</option>
               <option value="Adventure">Adventure</option>
@@ -481,14 +481,14 @@ const AdminPackages = () => {
                           Destination: {getDestinationName(pkg)}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          <span className={`px-2 py-1 text-xs font-medium rounded ${
                             pkg.isFeaturedForTop
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-gray-100 text-gray-800'
                           }`}>
                             Popular: {pkg.isFeaturedForTop ? 'Yes' : 'No'}
                           </span>
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          <span className={`px-2 py-1 text-xs font-medium rounded ${
                             pkg.isTrandingPackage
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-gray-100 text-gray-800'
@@ -569,7 +569,7 @@ const AdminPackages = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
               >
                 ← Previous
               </button>
@@ -594,7 +594,7 @@ const AdminPackages = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
               >
                 Next →
               </button>

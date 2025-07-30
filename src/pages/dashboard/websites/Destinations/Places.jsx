@@ -222,14 +222,14 @@ const Places = () => {
                 placeholder="Search places..."
                 value={filters.search}
                 onChange={handleFilterChange}
-                className="border border-gray-300 pl-10 pr-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm w-full"
+                className="border text-black border-gray-300 pl-10 pr-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm w-full"
               />
             </div>
             <select
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -521,7 +521,7 @@ const Places = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 ← Previous
               </button>
 
@@ -544,7 +544,7 @@ const Places = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 Next →
               </button>
             </div>

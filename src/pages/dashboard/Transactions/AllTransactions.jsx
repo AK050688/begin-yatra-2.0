@@ -224,15 +224,15 @@ const AllTransactions = () => {
           />
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white lg:p-6 md:p-4 p-3 lg:rounded-lg rounded shadow-md lg:mb-6 md:mb-4 mb-3">
           <div className="flex flex-wrap gap-4 items-center justify-between">
             {/* Search */}
-            <div className="flex items-center border rounded px-2 py-2 w-full sm:w-auto">
+            <div className="flex items-center border border-gray-500 rounded px-2 py-2 w-full sm:w-auto">
               <Search className="w-4 h-4 text-gray-500 mr-2" />
               <input
                 type="text"
                 placeholder="Search by amount, transaction id"
-                className="outline-none text-sm w-full sm:w-72"
+                className="outline-none border border-gray-400 text-sm w-full sm:w-72"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -240,7 +240,7 @@ const AllTransactions = () => {
 
             {/* Status Filter */}
             <select
-              className="border rounded px-2 py-2 text-sm w-full sm:w-auto"
+              className="border rounded px-2 py-2 text-black text-sm w-full sm:w-auto"
               value={selectedStatus}
               onChange={(e) => {
                 setPagination(defaultPagination);
@@ -254,7 +254,7 @@ const AllTransactions = () => {
 
             {/* Method Filter */}
             <select
-              className="border rounded px-2 py-2 text-sm w-full sm:w-auto"
+              className="border rounded text-black px-2 py-2 text-sm w-full sm:w-auto"
               value={selectedMethod}
               onChange={(e) => {
                 setPagination(defaultPagination);
@@ -271,7 +271,7 @@ const AllTransactions = () => {
 
             {/* Date Filter */}
             <select
-              className="border rounded px-2 py-2 text-sm w-full sm:w-auto"
+              className="border rounded text-black px-2 py-2 text-sm w-full sm:w-auto"
               value={selectedDateRange}
               onChange={(e) => {
                 setPagination(defaultPagination);
@@ -349,7 +349,7 @@ const AllTransactions = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Transaction History</h2>
+            <h2 className="text-lg font-semibold text-black">Transaction History</h2>
             {/* <button className="flex items-center text-green-600 text-sm border border-green-500 px-3 py-1.5 rounded hover:bg-green-100">
               <Download className="w-4 h-4 mr-1" /> Export Data
             </button> */}
@@ -360,7 +360,7 @@ const AllTransactions = () => {
               {[...Array(5)].map((_, index) => (
                 <div
                   key={index}
-                  className="border-t pt-4 pb-6 text-sm animate-pulse"
+                  className="border-t border-gray-400 pt-4 pb-6 text-sm animate-pulse"
                 >
                   <div className="h-4 bg-gray-300 rounded w-1/4 mb-2"></div>
                   <div className="h-3 bg-gray-200 rounded w-1/3 mb-4"></div>
@@ -399,7 +399,7 @@ const AllTransactions = () => {
                     <div className="font-semibold text-gray-600 mb-1">
                       Payment Info
                     </div>
-                    <div>ID: {t?.paymentId || "N/A"}</div>
+                    <div className="text-black">ID: {t?.paymentId || "N/A"}</div>
                     <div className="text-xs text-purple-600 capitalize mt-1">
                       {t?.method?.replaceAll("_", " ") || "N/A"}
                     </div>
@@ -408,7 +408,7 @@ const AllTransactions = () => {
                     <div className="font-semibold text-gray-600 mb-1">
                       Agent Info
                     </div>
-                    <div>ID: {t?.user?.name || "N/A"}</div>
+                    <div className="text-black">ID: {t?.user?.name || "N/A"}</div>
                     <div className="text-xs text-purple-600 mt-1">
                       {t?.user?.email || "N/A"}
                     </div>
@@ -417,13 +417,13 @@ const AllTransactions = () => {
                     <div className="font-semibold text-gray-600 mb-1">
                       Plan Info
                     </div>
-                    <div>{t?.planName || "N/A"}</div>
+                    <div className="text-black">{t?.planName || "N/A"}</div>
                   </div>
                   <div>
                     <div className="font-semibold text-gray-600 mb-1">
                       Date & Time
                     </div>
-                    <div>
+                    <div className="text-black">
                       {moment(t?.createdAt).format("DD-MM-YYYY hh:mm A") ||
                         "N/A"}
                     </div>
@@ -432,8 +432,8 @@ const AllTransactions = () => {
                     <div className="font-semibold text-gray-600 mb-1">
                       Details
                     </div>
-                    <div>Currency: {t?.currency || "N/A"}</div>
-                    <div className="truncate">
+                    <div className="text-black">Currency: {t?.currency || "N/A"}</div>
+                    <div className="truncate text-black">
                       Transaction ID: {t?._id || t?.id}
                     </div>
                   </div>
@@ -442,7 +442,7 @@ const AllTransactions = () => {
                       Status
                     </div>
                     <div
-                      className={`flex items-center justify-start w-fit uppercase px-2 py-1 rounded-full text-white font-medium ${
+                      className={`flex items-center justify-start w-fit uppercase px-2 py-1 rounded-full text-black font-medium ${
                         statusMap[t?.status]
                       }`}
                     >
@@ -450,7 +450,7 @@ const AllTransactions = () => {
                     </div>
                   </div>
                 </div>
-                <div className="text-right text-lg font-semibold mt-4">
+                <div className="text-right text-lg text-black font-semibold mt-4">
                   ₹{Number(t?.amount).toLocaleString() || 0}{" "}
                   {/* <span className="text-xs">({t?.status || "N/A"})</span> */}
                 </div>
@@ -473,7 +473,7 @@ const AllTransactions = () => {
             >
               Previous
             </button>
-            <span className="text-sm">
+            <span className="text-sm text-black">
               Page {pagination.page} of{" "}
               {Math.ceil(pagination.totalDocs / pagination.limit)}
             </span>

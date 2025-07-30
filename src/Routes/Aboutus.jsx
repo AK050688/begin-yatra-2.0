@@ -45,13 +45,13 @@ const Aboutus = () => {
         }}
       />
       {/* Travel Form Section */}
-      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 ">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-4">
               Your Travel Dreams, Our Priority
             </h2>
-            <p className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-4 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-black max-w-3xl mx-auto px-4 leading-relaxed">
               At BeginYatra, we're passionate about transforming the way people
               explore the world. We believe that travel is more than just
               visiting new places – it's about experiencing different cultures,
@@ -77,7 +77,7 @@ const Aboutus = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 font-serif">
                 Our Story
               </h2>
-              <p className="mt-6 text-base sm:text-lg md:text-xl leading-relaxed">
+              <p className="mt-6 text-base sm:text-lg text-black md:text-xl leading-relaxed">
                 BeginYatra was founded on the principle that travel should be
                 accessible, enjoyable, and stress-free. With years of experience
                 in the travel industry, our team has witnessed firsthand the
@@ -97,10 +97,10 @@ const Aboutus = () => {
                 </h2>
                 <ul className="list-disc pl-6 space-y-6">
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Personalized Travel Experiences
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We work with travel agents to craft customized itineraries
                       that meet your unique preferences and aspirations. Whether
                       you're looking for relaxation, adventure, or cultural
@@ -109,10 +109,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Unforgettable Memories
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       Our goal is to help you create lifelong memories that
                       you'll cherish forever. From trying new foods to exploring
                       hidden gems, we'll make sure your travel experience is
@@ -120,10 +120,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Effortless Planning
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We'll connect you with travel agents who have the
                       expertise and resources to make your travel planning
                       process seamless and enjoyable. No more endless research
@@ -131,10 +131,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Travel Inspiration
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       Get inspired by our travel stories, tips, and
                       recommendations. Whether you're a seasoned traveler or
                       just starting to plan your next trip, we'll provide you
@@ -168,10 +168,10 @@ const Aboutus = () => {
                 </h2>
                 <ul className="list-disc pl-6 space-y-6 mt-6">
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       High-Quality Leads
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We provide travel agents with targeted leads that help
                       grow their business and increase their customer base. Our
                       leads are carefully curated to ensure they're relevant,
@@ -179,10 +179,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Efficient Solutions
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       Our innovative solutions streamline the travel planning
                       process, allowing you to focus on delivering exceptional
                       travel experiences. From itinerary planning to booking and
@@ -191,10 +191,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Partnership Opportunities
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We believe in building strong partnerships with travel
                       agents, providing them with the tools and resources they
                       need to succeed. Whether you're a small agency or a large
@@ -203,10 +203,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Business Growth
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We'll help you grow your business and increase your
                       revenue through our targeted marketing campaigns and lead
                       generation services. Our goal is to help you succeed, and
@@ -226,10 +226,10 @@ const Aboutus = () => {
                 </h2>
                 <ul className="list-disc pl-6 space-y-6 mt-6">
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Customer-Centric Approach
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We're dedicated to understanding your needs and
                       preferences, tailoring our services to meet your unique
                       requirements. Whether you're a traveler or a travel agent,
@@ -238,8 +238,8 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">Innovation</strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <strong className="text-xl sm:text-2xl text-blue-600">Innovation</strong>
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We continuously strive to improve our services, leveraging
                       the latest technology and trends to enhance the travel
                       planning experience. From mobile apps to AI-powered
@@ -247,8 +247,8 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">Integrity</strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <strong className="text-xl sm:text-2xl text-blue-600">Integrity</strong>
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We operate with transparency, honesty, and integrity,
                       building trust with our partners and travelers. We'll
                       always be upfront and honest about our services, fees, and
@@ -256,10 +256,10 @@ const Aboutus = () => {
                     </p>
                   </li>
                   <li>
-                    <strong className="text-xl sm:text-2xl">
+                    <strong className="text-xl sm:text-2xl text-blue-600">
                       Passion for Travel
                     </strong>
-                    <p className="text-base sm:text-lg leading-relaxed">
+                    <p className="text-base sm:text-lg text-black leading-relaxed">
                       We're passionate about travel and committed to helping
                       others experience the joy of exploration. Whether you're a
                       seasoned traveler or just starting to plan your next trip,
@@ -281,7 +281,7 @@ const Aboutus = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-blue-600 font-serif">
               Our Goal
             </h2>
-            <p className="mt-6 text-base sm:text-lg md:text-xl text-center max-w-3xl mx-auto leading-relaxed">
+            <p className="mt-6 text-base sm:text-lg text-black md:text-xl text-center max-w-3xl mx-auto leading-relaxed">
               Our ultimate goal is to make travel planning effortless and
               enjoyable for all. We envision a world where travelers can focus
               on creating memories, not stressing about logistics. By bridging

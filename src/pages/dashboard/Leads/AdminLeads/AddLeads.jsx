@@ -165,7 +165,7 @@ export default function AddLeads() {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
-
+ 
   const validateForm = () => {
     const newErrors = {};
     let isValid = true;
@@ -409,12 +409,12 @@ export default function AddLeads() {
   };
 
   return (
-    <div className="min-h-screen justify-start mr-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4 py-8">
+    <div className="min-h-screen justify-start lg:mr-6 md:mr-5 mr-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <div className="max-w-4xl mx-auto mb-8">
+        <div className="max-w-4xl mx-auto lg:mb-8 md:mb-6 mb-4">
           <button
             onClick={() => setShowModal(true)}
-            className="w-full bg-blue-500 text-white py-4 px-8 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3"
+            className="w-full bg-blue-500 text-white lg:py-4 md:py-3 py-2  lg:px-8 md:px-6 px-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3"
           >
             <Plus className="w-6 h-6" />
             {editingId ? "  Edit Travel Lead" : "Add New Travel Lead"}
@@ -766,20 +766,20 @@ export default function AddLeads() {
         )}
 
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-300">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-8 flex items-center gap-3">
-              <CheckCircle className="w-8 h-8 text-green-500" />
+          <div className="bg-white/80 backdrop-blur-sm lg:rounded-2xl md:rounded-xl rounded lg:shadow-xl md:shadow-md shadow border border-white/20 lg:p-8 md:p-6 p-2 lg:hover:shadow-2xl md:hover:shadow-xl hover:shadow transition-all duration-300">
+            <h2 className="lg:text-3xl md:text-xl text-md font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent lg:mb-8 md:mb-4 md-3 flex items-center gap-3">
+              <CheckCircle className="lg:w-8 md:w-6 w-4 lg:h-8 md:h-6 h-4 text-green-500" />
               Travel Leads ({pagination.totalDocs})
             </h2>
             {savedLeads.length === 0 ? (
-              <div className="text-center py-12">
-                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 text-lg">
+              <div className="text-center lg:py-12 md:py-10 py-8">
+                <Users className="lg:w-16 md:w-12 w-8  lg:h-16 md:h-12 h-8 text-gray-300 mx-auto lg:mb-4 md:mb-4 mb-2" />
+                <p className="text-gray-500 lg:text-lg md:text-md text-sm">
                   No leads available. Add your first lead to get started!
                 </p>
               </div>
             ) : (
-              <div className="grid gap-6">
+              <div className="grid lg:gap-6 md:gap-4 gap-2">
                 {savedLeads.map((lead) => {
                   if (!lead || typeof lead !== "object") {
                     console.warn("Invalid lead:", lead);
@@ -788,9 +788,9 @@ export default function AddLeads() {
                   return (
                     <div
                       key={lead.id}
-                      className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300"
+                      className="bg-gradient-to-r from-gray-50 to-blue-50 lg:rounded-xl md:rounded rounded lg:p-6 md:p-4 p-2 border border-gray-200 hover:shadow-lg transition-all duration-300"
                     >
-                      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-6 md:gap-4 gap-2">
                         <div className="space-y-3">
                           <h4 className="font-semibold text-gray-800 flex items-center gap-2">
                             <User className="w-5 h-5 text-blue-500" />
@@ -798,24 +798,20 @@ export default function AddLeads() {
                           </h4>
                           <div className="space-y-2 text-sm">
                             <p>
-                              <span className="font-medium">Lead ID:</span>{" "}
-                              {lead.leadId || "N/A"}
+                              <span className="lg:font-medium md:font-medium font-semibold text-black">Lead ID:</span>{" "}
+                              <span className="text-black">{lead._id || "N/A"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Name:</span>{" "}
-                              {lead.name || "N/A"}
+                              <span className="lg:font-medium md:font-medium font-semibold text-black">Name:</span>{" "}
+                              <span className="text-black">{lead.name || "N/A"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Phone:</span>{" "}
-                              {lead.phone || "N/A"}
+                              <span className="lg:font-medium md:font-medium font-semibold text-black">Email:</span>{" "}
+                                <span className="text-black">{lead.email || "N/A"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Email:</span>{" "}
-                              {lead.email || "N/A"}
-                            </p>
-                            <p>
-                              <span className="font-medium">City:</span>{" "}
-                              {lead.city || "N/A"}
+                              <span className="lg:font-medium md:font-medium font-semibold text-black">City:</span>{" "}
+                                <span className="text-black">{lead.city || "N/A"}</span>
                             </p>
                           </div>
                         </div>
@@ -826,22 +822,22 @@ export default function AddLeads() {
                           </h4>
                           <div className="space-y-2 text-sm">
                             <p>
-                              <span className="font-medium">Destination:</span>{" "}
-                              {lead.destination || "Not specified"}
+                              <span className="flg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black">Destination:</span>{" "}
+                              <span className="text-black">  {lead.destination || "Not specified"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Date:</span>{" "}
-                              {lead.travelDate
+                              <span className="lg:font-medium text-blacklg:font-medium md:font-medium font-semibold text-black">Date:</span>{" "}
+                              <span className="text-black">  {lead.travelDate
                                 ? new Date(lead.travelDate).toLocaleDateString()
-                                : "Not specified"}
+                                : "Not specified"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Time:</span>{" "}
-                              {lead.travelTime || "Not specified"}
+                              <span className="lg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black">Time:</span>{" "}
+                              <span className="text-black">  {lead.travelTime || "Not specified"}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Trip Type:</span>{" "}
-                              {lead.tripType || "Not specified"}
+                              <span className="lg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black">Trip Type:</span>{" "}
+                                <span className="text-black">{lead.tripType || "Not specified"}</span>
                             </p>
                           </div>
                         </div>
@@ -852,7 +848,7 @@ export default function AddLeads() {
                           </h4>
                           <div className="space-y-2 text-sm">
                             <p>
-                              <span className="font-medium">
+                              <span className="lg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black">
                                 Total Members:
                               </span>
                               <span className="ml-2 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
@@ -860,16 +856,16 @@ export default function AddLeads() {
                               </span>
                             </p>
                             <p>
-                              <span className="font-medium">Adults:</span>{" "}
-                              {lead?.totalMembers?.adult || 0}
+                              <span className="lg:font-medium md:font-medium font-semibold text-black">Adults:</span>{" "}
+                              <span className="text-black">  {lead?.totalMembers?.adult || 0}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Children:</span>{" "}
-                              {lead?.totalMembers?.children || 0}
+                              <span className="lg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black">Children:</span>{" "}
+                                <span className="text-black">{lead?.totalMembers?.children || 0}</span>
                             </p>
                             <p>
-                              <span className="font-medium">Infants:</span>{" "}
-                              {lead?.totalMembers?.infant || 0}
+                              <span className="lg:font-medium  text-blacklg:font-medium md:font-medium font-semibold text-black ">Infants:</span>{" "}
+                                <span className="text-black">{lead?.totalMembers?.infant || 0}</span>
                             </p>
                           </div>
                         </div>

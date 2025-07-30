@@ -528,7 +528,7 @@ const AllPackages = () => {
                     <button
                       onClick={handlePrevPage}
                       disabled={page === 1}
-                      className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+                      className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
                     >
                       ← Previous
                     </button>
@@ -553,7 +553,7 @@ const AllPackages = () => {
                     <button
                       onClick={handleNextPage}
                       disabled={page === totalPages}
-                      className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+                      className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
                     >
                       Next →
                     </button>

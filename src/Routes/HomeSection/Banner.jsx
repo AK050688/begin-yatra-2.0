@@ -171,16 +171,16 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden h-screen">
+    <div className="relative w-full overflow-hidden lg:h-screen md:h-[80vh] h-[55vh]">
       {/* Carousel */}
       <Slider {...settings}>
         {destinations.map((dest, index) => (
           <div key={index} className="relative h-screen w-full">
-            <div className="absolute inset-0 w-full h-full transform scale-100 transition-transform duration-1000">
+            <div className="absolute inset-0 w-full lg:h-screen md:h-[80vh] h-[55vh] transform scale-100 transition-transform duration-1000">
               <img
                 src={dest.image}
                 alt={dest.name}
-                className="w-full h-full object-cover object-fit brightness-[0.65] transition-all duration-1000"
+                className="w-full lg:h-screen md:h-[80vh] h-[55vh]  object-cover brightness-[0.65] transition-all duration-1000"
               />
             </div>
             <div className="absolute w-full inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
@@ -189,13 +189,13 @@ const Banner = () => {
       </Slider>
 
       {/* Fixed Search Bar */}
-      <div className="absolute top-25 lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
+      <div className="absolute top-[60%] lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
         <div className="relative z-50">
           <div className="flex lg:flex-row md:flex-row  flex-col gap-3  items-stretch sm:items-center ">
             <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-full px-4 py-1 shadow-2xl transition-all duration-300 hover:shadow-xl gap-2 sm:gap-0">
               {isSearching ? (
                 <FaSpinner
-                  className="h-5 w-5 sm:h-6 sm:w-6 text-gray-600 animate-spin"
+                  className="lg:h-5 lg:w-5 h-6  sm:w-6 text-gray-600 animate-spin"
                   aria-hidden="true"
                 />
               ) : (
@@ -211,13 +211,13 @@ const Banner = () => {
                 onChange={(e) => handleSearch(e.target.value)}
                 onKeyPress={handleKeyPress}
                 onFocus={() => searchQuery.trim() && setShowResults(true)}
-                className="flex-1 px-3 py-2 outline-none text-gray-800 bg-transparent text-base sm:text-lg font-medium placeholder-gray-500 w-full"
+                className="flex-1 px-3 lg:py-2 md:py-2 py-1 outline-none text-gray-800 bg-transparent text-base sm:text-lg font-medium placeholder-gray-500 w-full"
                 aria-label="Search destinations"
               />
             </div>
             <button
               onClick={handleExplore}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold text-base sm:text-lg w-full sm:w-auto"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 lg:py-2 md:py-2 py-1 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold text-base sm:text-lg w-full sm:w-auto"
               aria-label="Explore destinations">
               Explore
             </button>

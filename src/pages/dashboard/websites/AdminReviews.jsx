@@ -186,7 +186,7 @@ const AdminReviews = () => {
               placeholder="Search by name"
               value={filters.name}
               onChange={handleFilterChange}
-              className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
             <input
               type="text"
@@ -194,7 +194,7 @@ const AdminReviews = () => {
               placeholder="Search by location"
               value={filters.location}
               onChange={handleFilterChange}
-              className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
             <button
               type="submit"
@@ -408,7 +408,7 @@ const AdminReviews = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 ← Previous
               </button>
 
@@ -431,7 +431,7 @@ const AdminReviews = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 Next →
               </button>
             </div>

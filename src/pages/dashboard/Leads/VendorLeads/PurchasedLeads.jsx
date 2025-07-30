@@ -270,7 +270,7 @@ const PurchaseLeads = () => {
             </button> */}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <BiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
               <input
@@ -278,13 +278,13 @@ const PurchaseLeads = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by name, email, destination, or city..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full pl-10 pr-4 text-black py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               />
             </div>
             <select
               value={leadTypeFilter}
               onChange={(e) => setLeadTypeFilter(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="border text-black border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
             >
               <option value="all">All Types</option>
               <option value="Domestic">Domestic</option>
@@ -295,14 +295,14 @@ const PurchaseLeads = () => {
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
               placeholder="Source City"
-              className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="border text-black border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
             />
             <input
               type="text"
               value={destinationFilter}
               onChange={(e) => setDestinationFilter(e.target.value)}
               placeholder="Destination"
-              className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="border text-black border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
             />
             <button
               onClick={fetchLeadsData}
@@ -341,7 +341,7 @@ const PurchaseLeads = () => {
                       </span>
                     </div>
                     <div>
-                      <h3 className="font-semibold capitalize text-gray-900 text-xl">
+                      <h3 className="font-semibold truncate text-justify capitalize text-gray-900 text-xl">
                         {lead?.name || "N/A"}
                       </h3>
                       <p className="text-gray-500 text-sm">
@@ -381,7 +381,7 @@ const PurchaseLeads = () => {
                       </h4>
                     </div>
                     <div className="ml-6">
-                      <p className="text-gray-900 text-base">
+                      <p className="text-gray-900 text-base text-justify truncate">
                         <span className="font-medium">Email: </span>
                         {lead?.email || maskInfo(lead?.email)}
                       </p>

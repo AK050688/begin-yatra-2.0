@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight, FaSearch, FaSpinner } from "react-icons/fa";
@@ -7,34 +7,6 @@ import "slick-carousel/slick/slick-theme.css";
 import api from "../../Api/ApiService";
 import { useSelector } from "react-redux";
 import { selectAccessToken } from "../../store/userSlice";
-
-// Custom debounce function
-const debounce = (func, wait) => {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
-
-// Custom arrow components
-// const NextArrow = ({ onClick }) => (
-//   <button
-//     onClick={onClick}
-//     className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-//     aria-label="Next slide">
-//     <FaArrowRight className="w-6 h-6" />
-//   </button>
-// );
-
-// const PrevArrow = ({ onClick }) => (
-//   <button
-//     onClick={onClick}
-//     className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-//     aria-label="Previous slide">
-//     <FaArrowLeft className="w-6 h-6" />
-//   </button>
-// );
 
 const Banner = () => {
   const navigate = useNavigate();
@@ -62,8 +34,6 @@ const Banner = () => {
     speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // nextArrow: <NextArrow />,
-    // prevArrow: <PrevArrow />,
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
@@ -74,7 +44,7 @@ const Banner = () => {
     dotsClass: "slick-dots absolute bottom-8",
   };
 
-  // API call to fetch destinations
+  // API call to fetch destinations with filtering
   const getAllDestinations = async (search = "") => {
     if (!search.trim()) {
       setSearchResults([]);
@@ -100,16 +70,22 @@ const Banner = () => {
       console.log("Search", res.data.data?.destinations);
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
-        // Filter and map unique destination names
+        // Filter destinations by destinationName
         const destinations = res.data.data?.destinations || [];
+        const filteredDestinations = destinations.filter(dest =>
+          dest.destinationName.toLowerCase().includes(search.toLowerCase())
+        );
+        
+        // Map unique destination names
         const uniqueDestinations = Array.from(
           new Map(
-            destinations.map((dest) => [dest.destinationName, dest])
+            filteredDestinations.map((dest) => [dest.destinationName, dest])
           ).values()
         ).map((dest) => ({
           id: dest._id,
           name: dest.destinationName,
         }));
+        
         setSearchResults(uniqueDestinations);
         setShowResults(true);
       } else {
@@ -126,14 +102,11 @@ const Banner = () => {
     }
   };
 
-  // Debounced search function
-  const handleSearch = useCallback(
-    debounce((query) => {
-      setSearchQuery(query);
-      getAllDestinations(query);
-    }, 300),
-    []
-  );
+  // Handle search input change
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    getAllDestinations(query);
+  };
 
   // Handle explore button click
   const handleExplore = () => {
@@ -143,13 +116,10 @@ const Banner = () => {
     }
 
     if (searchResults.length === 1) {
-      // Navigate to the single destination's page
       navigate(`/destination/${searchResults[0].id}`);
     } else if (searchResults.length > 1) {
-      // Show alert for multiple results
       alert("Multiple destinations found. Please select one from the list.");
     } else {
-      // Show alert for no results
       alert(
         "No destinations found for your search. Please try a different search term."
       );
@@ -171,7 +141,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden lg:h-screen md:h-[80vh] h-[55vh]">
+    <div className="relative w-full bg-white overflow-hidden lg:h-screen md:h-[80vh] h-[55vh]">
       {/* Carousel */}
       <Slider {...settings}>
         {destinations.map((dest, index) => (
@@ -180,7 +150,7 @@ const Banner = () => {
               <img
                 src={dest.image}
                 alt={dest.name}
-                className="w-full lg:h-screen md:h-[80vh] h-[55vh]  object-cover brightness-[0.65] transition-all duration-1000"
+                className="w-full lg:h-screen md:h-[80vh] h-[55vh] object-cover brightness-[0.65] transition-all duration-1000"
               />
             </div>
             <div className="absolute w-full inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
@@ -189,13 +159,13 @@ const Banner = () => {
       </Slider>
 
       {/* Fixed Search Bar */}
-      <div className="absolute top-[60%] lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
+      <div className="absolute top-[60%] lg:top-[65%] md:top-[60%] left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
         <div className="relative z-50">
-          <div className="flex lg:flex-row md:flex-row  flex-col gap-3  items-stretch sm:items-center ">
+          <div className="flex lg:flex-row md:flex-row flex-col gap-3 items-stretch sm:items-center">
             <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-full px-4 py-1 shadow-2xl transition-all duration-300 hover:shadow-xl gap-2 sm:gap-0">
               {isSearching ? (
                 <FaSpinner
-                  className="lg:h-5 lg:w-5 h-6  sm:w-6 text-gray-600 animate-spin"
+                  className="lg:h-5 lg:w-5 h-6 sm:w-6 text-gray-600 animate-spin"
                   aria-hidden="true"
                 />
               ) : (
@@ -218,27 +188,27 @@ const Banner = () => {
             <button
               onClick={handleExplore}
               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 lg:py-2 md:py-2 py-1 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold text-base sm:text-lg w-full sm:w-auto"
-              aria-label="Explore destinations">
+              aria-label="Explore destinations"
+            >
               Explore
             </button>
           </div>
 
           {/* Dropdown results */}
-          {/* Dropdown results */}
           {showResults && searchResults.length > 0 && (
             <div
               className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-gray-200 rounded-lg shadow-2xl max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-              role="listbox">
+              role="listbox"
+            >
               {searchResults.map((dest) => (
                 <div
                   key={dest.id}
                   onClick={() => handleResultClick(dest.id)}
                   className="flex items-center p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 last:border-b-0"
                   role="option"
-                  aria-selected="false">
-                  <div
-                    className="flex-1"
-                    onClick={() => handleResultClick(dest.id)}>
+                  aria-selected="false"
+                >
+                  <div className="flex-1" onClick={() => handleResultClick(dest.id)}>
                     <h3 className="font-semibold text-gray-900">{dest.name}</h3>
                   </div>
                 </div>
@@ -247,15 +217,13 @@ const Banner = () => {
           )}
 
           {/* No Results */}
-          {showResults &&
-            searchQuery.trim() !== "" &&
-            searchResults.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-[9999]">
-                <p className="text-gray-600 text-center">
-                  No destinations found for "{searchQuery}"
-                </p>
-              </div>
-            )}
+          {showResults && searchQuery.trim() !== "" && searchResults.length === 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-[9999]">
+              <p className="text-gray-600 text-center">
+                No destinations found for "{searchQuery}"
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

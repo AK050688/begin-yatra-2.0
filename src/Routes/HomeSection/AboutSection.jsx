@@ -4,7 +4,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 const AboutSection = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl  mx-auto px-4 md:px-8 py-16 gap-10 bg-gradient-to-b from-white to-gray-50">
+    <div className="flex flex-col md:flex-row items-center bg-white justify-between mx-auto px-4 md:px-8 py-16 gap-10 bg-gradient-to-b from-white to-gray-50">
       {/* Left Image */}
       <div className="w-full md:w-1/2 relative group">
         <img

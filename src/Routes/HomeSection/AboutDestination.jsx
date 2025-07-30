@@ -93,7 +93,7 @@ const AboutDestination = () => {
   if (!data) return <div className="p-6 text-center text-gray-500">Destination not found.</div>;
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
+    <div className=" mx-auto  px-8 lg:px-16 md:px-10 py-8 bg-white">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12">
         <div className="w-full lg:w-1/2">

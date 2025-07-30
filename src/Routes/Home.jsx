@@ -63,7 +63,7 @@ const Home = () => {
             <TrandingStories/>
             <TopCountries totalTopCountries={homeData.totalTopCountries} loading={loading} />
             <TrendingPackages trendingPackages={homeData.totalTrandingPackages} loading={loading} />
-            <div className="mx-auto lg:max-w-6xl md:max-w-4xl max-w-2xl xs:max-w-xs">
+            <div className="mx-auto  bg-white ">
                 <WnatToGOForm/>
             </div>
             <PackageMarketplace/>

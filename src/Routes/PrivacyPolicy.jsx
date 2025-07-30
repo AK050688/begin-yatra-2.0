@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
         }}
       />
 
-      <div className="max-w-5xl mx-auto px-4 py-10 text-gray-800 bg-white">
+      <div className="mx-auto px-4 lg:px-16 md:px-12 py-10 text-gray-800 bg-white">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-6">
           Privacy Policy
         </h1>

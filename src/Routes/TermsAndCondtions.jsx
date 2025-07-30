@@ -284,7 +284,7 @@ const TermsAndConditions = () => {
         }}
       />
 
-      <div className="max-w-5xl mx-auto px-4 py-10 text-gray-800 bg-white">
+      <div className="mx-auto lg:px-20 md:px-15 px-4 py-10 text-gray-800 bg-white">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-6">
           Terms and Conditions
         </h1>

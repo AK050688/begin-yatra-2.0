@@ -36,7 +36,7 @@ const Contactus = () => {
           dis: "Resume your travel journey — we're crafting your next adventure and delightful vacation with family & friends. Have a question or need inspiration? We're here to help.",
         }}
       />
-      <div className="max-w-7xl mx-auto px-4 py-10">
+      <div className="bg-white mx-auto px-4 py-10">
         <div className="min-h-screen bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -62,7 +62,7 @@ const Contactus = () => {
                   type="text"
                   name="user_name"
                   placeholder="Your name"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-black px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -75,7 +75,7 @@ const Contactus = () => {
                   type="email"
                   name="user_email"
                   placeholder="you@example.com"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 text-black py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -88,7 +88,7 @@ const Contactus = () => {
                   type="text"
                   name="user_phone"
                   placeholder="91+XXXXXXXXXX"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 text-black py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -101,7 +101,7 @@ const Contactus = () => {
                   name="message"
                   rows="4"
                   placeholder="Type your message here..."
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 text-black py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required></textarea>
               </div>
 

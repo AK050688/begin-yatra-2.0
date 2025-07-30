@@ -71,10 +71,10 @@ const Footer = () => {
               <Mail className="w-4 h-4" /> service.beginyatra@gmail.com 
             </a>
             <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4" /> +91 98765 43210
+              <Phone className="w-4 h-4" />  +91 9508241806
             </li>
             <li className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" /> Delhi, India
+              <MapPin className="w-4 h-4" /> Mandar Hill, Banka, Bihar, India
             </li>
           </ul>
         </div>

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectAccessToken } from "../../../store/userSlice";
 import { toast } from "react-toastify";
 import api from "../../../Api/ApiService";
+import { FaTrash } from "react-icons/fa";
 
 const AdminReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -31,12 +32,15 @@ const AdminReviews = () => {
       });
       params.append("page", pageNum);
 
-      const res = await api.get(`/api/review/getAllReviews?${params.toString()}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: accessToken,
-        },
-      });
+      const res = await api.get(
+        `/api/review/getAllReviews?${params.toString()}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken,
+          },
+        }
+      );
       console.log("RES REVIEW", res);
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setReviews(res?.data?.data?.reviews || []);
@@ -70,7 +74,8 @@ const AdminReviews = () => {
   const handleStatusUpdate = async (reviewId, currentStatus) => {
     setLoading(true);
     try {
-      const newStatus = currentStatus === "approved" ? "unapproved" : "approved";
+      const newStatus =
+        currentStatus === "approved" ? "pending" : "approved";
       const res = await api.put(
         `/api/review/changeReviewStatus/${reviewId}`,
         {
@@ -139,13 +144,35 @@ const AdminReviews = () => {
     return pages;
   };
 
+  const handleDelete = async (id) => {
+    setLoading(true);
+    try {
+      const response = await api.delete(`/api/review/deleteReview/${id}`, {
+        headers: {
+          "Authorization": accessToken,
+        }
+      });
+      if (response.status === 200) {
+        toast.success("Review deleted successfully");
+        await fetchReviews();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="p-2 sm:p-4 md:p-6 w-full">
       {/* Header with stats */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Reviews Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          Reviews Management
+        </h1>
         <div className="text-sm text-gray-600">
-          Showing {reviews.length} of {totalReviews} reviews (Page {page} of {totalPages})
+          Showing {reviews.length} of {totalReviews} reviews (Page {page} of{" "}
+          {totalPages})
         </div>
       </div>
 
@@ -171,8 +198,7 @@ const AdminReviews = () => {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
-            >
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium">
               Apply Filters
             </button>
           </div>
@@ -193,8 +219,7 @@ const AdminReviews = () => {
           <p className="text-red-600">{error}</p>
           <button
             onClick={() => fetchReviews(page)}
-            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Retry
           </button>
         </div>
@@ -232,7 +257,9 @@ const AdminReviews = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {reviews.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
+                      <td
+                        colSpan="6"
+                        className="px-6 py-4 text-center text-gray-500">
                         No reviews found.
                       </td>
                     </tr>
@@ -260,22 +287,33 @@ const AdminReviews = () => {
                               review.reviewStatus === "approved"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
+                            }`}>
                             {review.reviewStatus}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-2 py-4 whitespace-nowrap text-sm font-medium flex justify-center gap-2">
                           <button
-                            onClick={() => handleStatusUpdate(review._id, review.reviewStatus)}
+                            onClick={() =>
+                              handleStatusUpdate(
+                                review._id,
+                                review.reviewStatus
+                              )
+                            }
                             className={`px-3 py-1 rounded text-xs font-medium transition ${
                               review.reviewStatus === "approved"
                                 ? "bg-red-100 text-red-700 hover:bg-red-200"
                                 : "bg-green-100 text-green-700 hover:bg-green-200"
-                            }`}
-                          >
-                            {review.reviewStatus === "approved" ? "Unapprove" : "Approve"}
+                            }`}>
+                            {review.reviewStatus === "approved"
+                              ? "pending"
+                              : "Approve"}
                           </button>
+
+                            <button
+                        className="text-red-600"
+                        onClick={() => handleDelete(review._id)}>
+                        <FaTrash className="inline mr-1" />
+                      </button>
                         </td>
                       </tr>
                     ))
@@ -297,7 +335,9 @@ const AdminReviews = () => {
                   <div key={review._id} className="p-4 hover:bg-gray-50">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="text-sm font-medium text-gray-900">{review.name}</h3>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {review.name}
+                        </h3>
                         <p className="text-sm text-gray-500">{review.email}</p>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -306,8 +346,7 @@ const AdminReviews = () => {
                             review.reviewStatus === "approved"
                               ? "bg-green-100 text-green-800"
                               : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
+                          }`}>
                           {review.reviewStatus}
                         </span>
                       </div>
@@ -322,21 +361,32 @@ const AdminReviews = () => {
                         <span className="text-gray-500">Rating:</span>
                         <div className="flex items-center">
                           <span className="text-yellow-500">★</span>
-                          <span className="ml-1 text-gray-900">{review.rating}/5</span>
+                          <span className="ml-1 text-gray-900">
+                            {review.rating}/5
+                          </span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex justify-between gap-2">
                       <button
-                        onClick={() => handleStatusUpdate(review._id, review.reviewStatus)}
+                        onClick={() =>
+                          handleStatusUpdate(review._id, review.reviewStatus)
+                        }
                         className={`w-full px-3 py-2 rounded text-sm font-medium transition ${
                           review.reviewStatus === "approved"
                             ? "bg-red-100 text-red-700 hover:bg-red-200"
                             : "bg-green-100 text-green-700 hover:bg-green-200"
-                        }`}
-                      >
-                        {review.reviewStatus === "approved" ? "Unapprove" : "Approve"}
+                        }`}>
+                        {review.reviewStatus === "approved"
+                          ? "pending"
+                          : "Approve"}
+                      </button>
+
+                      <button
+                        className="text-red-600  "
+                        onClick={() => handleDelete(review._id)}>
+                        <FaTrash className="inline mr-1" />
                       </button>
                     </div>
                   </div>
@@ -358,8 +408,7 @@ const AdminReviews = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
-              >
+                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 ← Previous
               </button>
 
@@ -373,8 +422,7 @@ const AdminReviews = () => {
                       pageNum === page
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
+                    }`}>
                     {pageNum}
                   </button>
                 ))}
@@ -383,8 +431,7 @@ const AdminReviews = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
-              >
+                className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 Next →
               </button>
             </div>
@@ -395,16 +442,14 @@ const AdminReviews = () => {
             <button
               onClick={() => handlePageChange(1)}
               disabled={page === 1}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
-            >
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
               First
             </button>
             <span className="text-gray-400">|</span>
             <button
               onClick={() => handlePageChange(totalPages)}
               disabled={page === totalPages}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
-            >
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
               Last
             </button>
           </div>

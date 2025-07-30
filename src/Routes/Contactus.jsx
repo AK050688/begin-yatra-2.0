@@ -128,7 +128,7 @@ const Contactus = () => {
                   <MdOutlineCall />
                   Phone
                 </h4>
-                <p className="text-gray-600">+91 98765 43210</p>
+                <p className="text-gray-600"> +91 9508241806</p>
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow">

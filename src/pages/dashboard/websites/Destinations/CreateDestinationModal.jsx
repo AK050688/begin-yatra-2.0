@@ -36,6 +36,7 @@ const CreateDestinationModal = ({
   const [selectedPackages, setSelectedPackages] = useState([]);
   const [isPopularDestination, setIsPopularDestination] = useState(false);
   const [isTrandingDestination, setIsTrandingDestination] = useState(false);
+
   // Prefill for edit
   useEffect(() => {
     if (editDestination) {
@@ -86,6 +87,7 @@ const CreateDestinationModal = ({
     setMessage("");
     try {
       const formData = new FormData();
+      // Send only place IDs for the places field
       formData.append("places", JSON.stringify(selectedPlaces));
       formData.append("topAttraction", topAttraction);
       formData.append("whatsGreat", whatsGreat);
@@ -205,31 +207,6 @@ const CreateDestinationModal = ({
               </select>
             </label>
           </div>
-          {/* <div>
-            <label>
-              Packages:
-              <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
-                {packages.map((pkg) => (
-                  <label key={pkg.id || pkg._id} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      value={pkg.id || pkg._id}
-                      checked={selectedPackages.includes(pkg.id || pkg._id)}
-                      onChange={e => {
-                        const value = pkg.id || pkg._id;
-                        setSelectedPackages(prev =>
-                          e.target.checked
-                            ? [...prev, value]
-                            : prev.filter(p => p !== value)
-                        );
-                      }}
-                    />
-                    <span>{pkg.name || pkg.packageName}</span>
-                  </label>
-                ))}
-              </div>
-            </label>
-          </div> */}
           <div>
             <label>
               Places:

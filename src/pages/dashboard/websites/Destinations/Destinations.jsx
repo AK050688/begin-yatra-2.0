@@ -5,6 +5,7 @@ import CreatePackageModal from './CreatePackageModal';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
 import api from '../../../../Api/ApiService';
+import { toast } from 'react-toastify';
 import { FaEdit, FaEye, FaPlus, FaMapMarkerAlt, FaSuitcase, FaTimes, FaTrash } from 'react-icons/fa';
 
 const Destinations = () => {

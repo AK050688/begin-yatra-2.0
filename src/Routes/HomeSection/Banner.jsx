@@ -18,23 +18,23 @@ const debounce = (func, wait) => {
 };
 
 // Custom arrow components
-const NextArrow = ({ onClick }) => (
-  <button
-    onClick={onClick}
-    className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    aria-label="Next slide">
-    <FaArrowRight className="w-6 h-6" />
-  </button>
-);
+// const NextArrow = ({ onClick }) => (
+//   <button
+//     onClick={onClick}
+//     className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+//     aria-label="Next slide">
+//     <FaArrowRight className="w-6 h-6" />
+//   </button>
+// );
 
-const PrevArrow = ({ onClick }) => (
-  <button
-    onClick={onClick}
-    className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    aria-label="Previous slide">
-    <FaArrowLeft className="w-6 h-6" />
-  </button>
-);
+// const PrevArrow = ({ onClick }) => (
+//   <button
+//     onClick={onClick}
+//     className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-full hover:from-blue-600 hover:to-blue-700 shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+//     aria-label="Previous slide">
+//     <FaArrowLeft className="w-6 h-6" />
+//   </button>
+// );
 
 const Banner = () => {
   const navigate = useNavigate();
@@ -62,8 +62,8 @@ const Banner = () => {
     speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    // nextArrow: <NextArrow />,
+    // prevArrow: <PrevArrow />,
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
@@ -97,8 +97,7 @@ const Banner = () => {
         }
       );
 
-      console.log( "Search",res.data.data?.destinations);
-      
+      console.log("Search", res.data.data?.destinations);
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         // Filter and map unique destination names
@@ -181,7 +180,7 @@ const Banner = () => {
               <img
                 src={dest.image}
                 alt={dest.name}
-                className="w-full h-full object-cover brightness-[0.65] transition-all duration-1000"
+                className="w-full h-full object-cover object-fit brightness-[0.65] transition-all duration-1000"
               />
             </div>
             <div className="absolute w-full inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
@@ -190,7 +189,7 @@ const Banner = () => {
       </Slider>
 
       {/* Fixed Search Bar */}
-      <div className="absolute top-20 lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
+      <div className="absolute top-25 lg:top-[65%] md:top-[60%]  left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg px-4">
         <div className="relative z-50">
           <div className="flex lg:flex-row md:flex-row  flex-col gap-3  items-stretch sm:items-center ">
             <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-full px-4 py-1 shadow-2xl transition-all duration-300 hover:shadow-xl gap-2 sm:gap-0">
@@ -226,27 +225,26 @@ const Banner = () => {
 
           {/* Dropdown results */}
           {/* Dropdown results */}
-{showResults && searchResults.length > 0 && (
-  <div
-    className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-gray-200 rounded-lg shadow-2xl max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-    role="listbox"
-  >
-    {searchResults.map((dest) => (
-      <div
-        key={dest.id}
-        onClick={() => handleResultClick(dest.id)}
-        className="flex items-center p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 last:border-b-0"
-        role="option"
-        aria-selected="false"
-      >
-        <div className="flex-1" onClick={()=> handleResultClick(dest.id)}>
-          <h3 className="font-semibold text-gray-900">{dest.name}</h3>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
-
+          {showResults && searchResults.length > 0 && (
+            <div
+              className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-gray-200 rounded-lg shadow-2xl max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+              role="listbox">
+              {searchResults.map((dest) => (
+                <div
+                  key={dest.id}
+                  onClick={() => handleResultClick(dest.id)}
+                  className="flex items-center p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 last:border-b-0"
+                  role="option"
+                  aria-selected="false">
+                  <div
+                    className="flex-1"
+                    onClick={() => handleResultClick(dest.id)}>
+                    <h3 className="font-semibold text-gray-900">{dest.name}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* No Results */}
           {showResults &&
@@ -264,7 +262,7 @@ const Banner = () => {
       {/* Click outside to close search results */}
       {showResults && (
         <div
-          className="fixed inset-0 z-10"
+          className="fixed z-100"
           onClick={() => setShowResults(false)}
           aria-hidden="true"
         />

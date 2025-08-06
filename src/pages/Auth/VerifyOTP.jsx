@@ -159,7 +159,7 @@ const handleResendOtp = async () => {
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 onPaste={(e) => e.preventDefault()} // Prevent pasting
                 autoFocus={index === 0}
-                className="w-12 h-12 text-center text-xl border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-12 h-12 text-center text-xl border border-gray-500 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             ))}
           </div>

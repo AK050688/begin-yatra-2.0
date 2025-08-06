@@ -12,6 +12,7 @@ const VerifyOTP = () => {
   const [resendTimer, setResendTimer] = useState(30);
   const [isResending, setIsResending] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
   // Countdown timer effect
   useEffect(() => {
     if (resendTimer <= 0) return;
@@ -58,7 +59,7 @@ const handleVerifyOTP = async (e) => {
   e.preventDefault();
   const finalOtp = otp.join("");
   console.log("Final OTP:", finalOtp);
-
+setLoading(true)
   if (finalOtp.length !== 5) {
     toast.warn("Please enter all 5 digits of the OTP.");
     return;
@@ -75,10 +76,13 @@ const handleVerifyOTP = async (e) => {
   } catch (error) {
     console.error("OTP verification failed:", error);
     toast.error("Invalid OTP or server error.");
+  } finally {
+    setLoading(true)
   }
 };
 
-const handleResendOtp = async () => {
+  const handleResendOtp = async () => {
+  
   // Check if email exists
   if (!email) {
     toast.error("No email found. Please try again.");
@@ -166,8 +170,9 @@ const handleResendOtp = async () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition">
-            Verify OTP
+            {loading ? "Verifyig OTP":"Verify OTP"}
           </button>
         </form>
 

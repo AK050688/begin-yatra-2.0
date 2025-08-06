@@ -10,9 +10,11 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const email = localStorage.getItem("email");
+  const [loading, setLoading] = useState(false)
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     // Validate inputs
     if (!newPassword || !confirmNewPassword) {
@@ -43,8 +45,10 @@ const ChangePassword = () => {
       console.error("Password change failed:", error);
       toast.error(
         error?.response?.data?.message ||
-          "Failed to change password. Please try again."
+        "Failed to change password. Please try again."
       );
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -107,8 +111,9 @@ const ChangePassword = () => {
             </div>
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition">
-              Change Password
+              {loading ? "Changing Password":"Change Password"}
             </button>
           </form>
         </div>

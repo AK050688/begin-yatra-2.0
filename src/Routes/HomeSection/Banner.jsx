@@ -18,14 +18,14 @@ const Banner = () => {
   const token = useSelector(selectAccessToken);
 
   const destinations = [
-    { name: "Goa", image: "/BannerImages/Goa.png" },
-    { name: "Darjeeling", image: "/BannerImages/Darjeeling.png" },
-    { name: "Dubai", image: "/BannerImages/Dubai.png" },
-    { name: "Kashmir", image: "/BannerImages/Kashmir.png" },
-    { name: "Kerala", image: "/BannerImages/kerala.png" },
-    { name: "Manali", image: "/BannerImages/Manali.png" },
-    { name: "Sikkim", image: "/BannerImages/Sikkim.png" },
-    { name: "Thailand", image: "/BannerImages/Thailand.png" },
+    { name: "Discover Goa", image: "/BannerImages/Goa.png" },
+    { name: "Discover Darjeeling", image: "/BannerImages/Darjeeling.png" },
+    { name: " Discover Dubai", image: "/BannerImages/Dubai.png" },
+    { name: " Discover Kashmir", image: "/BannerImages/Kashmir.png" },
+    { name: " Discover Kerala", image: "/BannerImages/kerala.png" },
+    { name: " Discover Manali", image: "/BannerImages/Manali.png" },
+    { name: " Discover Sikkim", image: "/BannerImages/Sikkim.png" },
+    { name: " Discover Thailand", image: "/BannerImages/Thailand.png" },
   ];
 
   const settings = {
@@ -147,6 +147,9 @@ const Banner = () => {
         {destinations.map((dest, index) => (
           <div key={index} className="relative h-screen w-full">
             <div className="absolute inset-0 w-full lg:h-screen md:h-[80vh] h-[55vh] transform scale-100 transition-transform duration-1000">
+              <div className="absolute flex justify-center mx-auto w-full top-[40%] ">
+                <h1 className="absolute font-extrabold lg:text-7xl md:text-4xl text-3xl z-50 text-white ">{dest.name}</h1>
+              </div>
               <img
                 src={dest.image}
                 alt={dest.name}

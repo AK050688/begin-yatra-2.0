@@ -17,6 +17,8 @@ import { toast } from "react-toastify";
 const Places = () => {
   const token = useSelector(selectAccessToken);
   const [places, setPlaces] = useState([]);
+  console.log("Places??????????", places);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
@@ -63,6 +65,8 @@ const Places = () => {
 
   // Get image URL helper
   const getImageUrl = (image) => {
+    console.log("IMage????", image);
+    
     if (!image) {
       return "/public/Images/banner.jpg"; // Default image
     }
@@ -74,7 +78,7 @@ const Places = () => {
 
     // If it's a relative path, combine with base URL
     if (image.startsWith("/")) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${image}`;
+      return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
     }
 
     // If it's just a filename, combine with base URL

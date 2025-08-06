@@ -6,10 +6,10 @@ import { FaArrowLeft } from "react-icons/fa6";
 const ForgotPassword = () => {
  const [email, setEmail] = useState("");
  const navigate = useNavigate();
-
+const [loading, setLoading] = useState(false)
 const handleForgotPassword = async (e) => {
   e.preventDefault();
-
+  setLoading(true);
   try {
    const res = await api.post(`/api/auth/forgotPassword`, { email });
    console.log(res);
@@ -18,6 +18,8 @@ const handleForgotPassword = async (e) => {
   } catch (error) {
     console.error("Forgot password error:", error);
     alert("Something went wrong. Please try again.");
+  } finally {
+      setLoading(true);
   }
 };
 
@@ -71,8 +73,9 @@ const handleForgotPassword = async (e) => {
           
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition">
-            Send Reset Link
+            { loading ? "Sending OTP":"Send OTP"}
           </button>
         </form>
 

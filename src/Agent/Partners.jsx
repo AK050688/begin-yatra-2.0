@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import api, { imgApi } from "../Api/ApiService";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectAccessToken } from "../store/userSlice";
-
+import api, { imgApi } from "../Api/ApiService";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Partners = () => {
   const [partners, setPartners] = useState([]);
- 
-  console.log("partners",partners);
-  
-const token = useSelector(selectAccessToken);
+  const scrollRef = useRef(null);
+  const token = useSelector(selectAccessToken);
+  const [loading, setLoading] = useState(false)
   // Fetch all partners
   const fetchPartners = async (name = "") => {
+    setLoading(true);
     try {
-       // Retrieve token from auth utility
       const response = await api.get(
         `/api/leads/getAllpartners${name ? `?name=${name}` : ""}`,
         {
@@ -25,55 +21,37 @@ const token = useSelector(selectAccessToken);
           },
         }
       );
-      console.log("fetchPartners", response);
       if (response.data.statusCode === 200 || response.data.statusCode === 201) {
         setPartners(response.data.data);
       }
     } catch (error) {
       console.error("Error fetching partners:", error);
+    } finally {
+      setLoading(false)
     }
   };
+
+  if (loading) {
+    <div className="flex justify-center items-center h-32">
+  <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+</div>
+  }
 
   // Fetch partners on component mount
   useEffect(() => {
     fetchPartners();
   }, []);
 
-  // Carousel settings
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+  // Scroll handling
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
-  // Sample about data (since it wasn't provided)
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
+  // Sample about data
   const about = [
     { num: "50+", text: "Years Experience" },
     { num: "100+", text: "Partners" },
@@ -87,29 +65,49 @@ const token = useSelector(selectAccessToken);
         Partners Who Take Travel Leads
       </h1>
 
-      {/* Brand Cards Carousel */}
-      <div className="max-w-5xl mx-auto">
-        <Slider {...settings}>
-          { partners.map((brand) => (
-            <>
-              {brand?.isListed &&  (<>
+      {/* Brand Cards with Navigation */}
+      <div className="max-w-5xl mx-auto relative">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={scrollLeft}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors z-10"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-6 h-6 text-gray-600" />
+          </button>
+          
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto scroll-smooth gap-4 pb-4 scrollbar-hide"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            {partners.map((brand) =>
+              brand?.isListed ? (
                 <div
-              key={brand?._id}
-              className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 mx-2"
-            >
-              <img
-                src={imgApi+brand.image}
-                alt={brand.name}
-                className="w-full h-30  object-contain mb-3"
-              />
-              <p className="text-gray-700 font-semibold text-center">
-                {brand.name}
-              </p>
-            </div>
-              </>)}
-            </>
-          ))}
-        </Slider>
+                  key={brand?._id}
+                  className="flex-shrink-0 w-64 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                >
+                  <img
+                    src={imgApi + brand.image}
+                    alt={brand.name}
+                    className="w-full h-32 object-contain mb-4 rounded-md"
+                  />
+                  <p className="text-gray-800 font-semibold text-center text-lg truncate">
+                    {brand.name}
+                  </p>
+                </div>
+              ) : null
+            )}
+          </div>
+
+          <button
+            onClick={scrollRight}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors z-10"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-6 h-6 text-gray-600" />
+          </button>
+        </div>
       </div>
 
       {/* About Section */}

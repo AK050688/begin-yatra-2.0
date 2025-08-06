@@ -8,13 +8,17 @@ const destinations = [
   { name: "Kerala" },
   { name: "Shimla" },
   { name: "Jaipur" },
-  { name: "Andaman" },
-  { name: "Agra" },
-  { name: "Varanasi" },
+  { name: "Dubai" },
+  { name: "Bali" },
+  { name: "Thailand" },
+  { name: "Singapore" },
+  { name: "Malaysia" },
+  { name: "Bhutan" },
+  { name: "Maldives" },
+  { name: "Gangtok" },
   { name: "Darjeeling" },
-  { name: "Amritsar" },
-  { name: "Ladakh" },
   { name: "Ooty" },
+  { name: "Varanasi" },
 ];
 
 const TopDestinations = () => {

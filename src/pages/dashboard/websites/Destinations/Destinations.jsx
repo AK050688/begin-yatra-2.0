@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import CreateDestinationModal from './CreateDestinationModal';
-import AddPlaceModal from './AddPlaceModal';
-import CreatePackageModal from './CreatePackageModal';
-import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../../../store/userSlice';
-import api from '../../../../Api/ApiService';
-import { toast } from 'react-toastify';
-import { FaEdit, FaEye, FaPlus, FaMapMarkerAlt, FaSuitcase, FaTimes, FaTrash } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import CreateDestinationModal from "./CreateDestinationModal";
+import AddPlaceModal from "./AddPlaceModal";
+import CreatePackageModal from "./CreatePackageModal";
+import { useSelector } from "react-redux";
+import { selectAccessToken } from "../../../../store/userSlice";
+import api from "../../../../Api/ApiService";
+import { toast } from "react-toastify";
+import {
+  FaEdit,
+  FaEye,
+  FaPlus,
+  FaMapMarkerAlt,
+  FaSuitcase,
+  FaTimes,
+  FaTrash,
+} from "react-icons/fa";
 
 const Destinations = () => {
   const token = useSelector(selectAccessToken);
@@ -19,16 +27,16 @@ const Destinations = () => {
   const [places, setPlaces] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [destinations, setDestinations] = useState([]);
   const [filters, setFilters] = useState({
-    search: '',
-    status: '',
-    destinationName: '',
-    isPopularDestination: '',
-    isTrandingDestination: ''
+    search: "",
+    status: "",
+    destinationName: "",
+    isPopularDestination: "",
+    isTrandingDestination: "",
   });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDestinations, setTotalDestinations] = useState(0);
@@ -36,16 +44,16 @@ const Destinations = () => {
 
   // Helper function to truncate text
   const truncateText = (text, maxWords = 5) => {
-    if (!text) return '';
-    const words = text.split(' ');
+    if (!text) return "";
+    const words = text.split(" ");
     if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(' ') + '...';
+    return words.slice(0, maxWords).join(" ") + "...";
   };
 
   // Helper function to check if text needs truncation
   const needsTruncation = (text, maxWords = 5) => {
     if (!text) return false;
-    const words = text.split(' ');
+    const words = text.split(" ");
     return words.length > maxWords;
   };
 
@@ -63,47 +71,54 @@ const Destinations = () => {
 
   // Handle delete destination
   const handleDeleteDestination = async (destinationId) => {
-    if (!window.confirm('Are you sure you want to delete this destination? This action cannot be undone.')) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this destination? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
     try {
-      const res = await api.delete(`/api/destination/deleteDestination/${destinationId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await api.delete(
+        `/api/destination/deleteDestination/${destinationId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
-        toast.success('Destination deleted successfully!');
+        toast.success("Destination deleted successfully!");
         getAllDestinations(page); // Refresh the list
       } else {
-        alert('Failed to delete destination');
+        alert("Failed to delete destination");
       }
     } catch (error) {
-      console.error('Error deleting destination:', error);
-      alert('Failed to delete destination');
+      console.error("Error deleting destination:", error);
+      alert("Failed to delete destination");
     }
   };
 
   // Get image URL helper
   const getImageUrl = (images) => {
     if (!images || images.length === 0) {
-      return '/public/Images/banner.jpg'; // Default image
+      return "/public/Images/banner.jpg"; // Default image
     }
-    
+
     const imagePath = images[0]; // Get first image
-    
+
     // If the image path is already a full URL, return it as is
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
       return imagePath;
     }
-    
+
     // If it's a relative path, combine with base URL
-    if (imagePath.startsWith('/')) {
+    if (imagePath.startsWith("/")) {
       return `https://begin-yatra-nq40.onrender.com/public/temp${imagePath}`;
     }
-    
+
     // If it's just a filename, combine with base URL
     return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
   };
@@ -112,18 +127,18 @@ const Destinations = () => {
   const getAllPlaces = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/api/place/getAllPlace', {
+      const res = await api.get("/api/place/getAllPlace", {
         headers: {
           Authorization: token,
         },
       });
-      console.log('res places', res);
+      console.log("res places", res);
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setPlaces(res.data.data.places || []);
       }
     } catch (error) {
-      console.error('Error fetching places:', error);
-      setMessage('Failed to fetch places');
+      console.error("Error fetching places:", error);
+      setMessage("Failed to fetch places");
     } finally {
       setLoading(false);
     }
@@ -134,14 +149,14 @@ const Destinations = () => {
     setLoading(true);
     try {
       const res = await api.get(`/api/package`, {
-        headers: { 'Authorization': token }
+        headers: { Authorization: token },
       });
       if (res.ok) {
         const data = await res.json();
         setPackages(Array.isArray(data) ? data : data.packages || []);
       }
     } catch (error) {
-      console.error('Error fetching packages:', error);
+      console.error("Error fetching packages:", error);
     } finally {
       setLoading(false);
     }
@@ -150,29 +165,32 @@ const Destinations = () => {
   // Fetch destinations
   const getAllDestinations = async (pageNum = 1) => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== '' && value !== undefined && value !== null) {
+        if (value !== "" && value !== undefined && value !== null) {
           params.append(key, value);
         }
       });
-      params.append('page', pageNum);
-      params.append('limit', PAGE_SIZE);
-      
-      const res = await api.get(`/api/destination/getAllDestination?${params.toString()}`, {
-        headers: { 'Authorization': token }
-      });
-      
+      params.append("page", pageNum);
+      params.append("limit", PAGE_SIZE);
+
+      const res = await api.get(
+        `/api/destination/getAllDestination?${params.toString()}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setDestinations(res.data.data.destinations || []);
         setTotalPages(res.data.data.totalPages || 1);
         setTotalDestinations(res.data.data.total || 0);
       }
     } catch (error) {
-      console.error('Error fetching destinations:', error);
-      setError('Failed to fetch destinations');
+      console.error("Error fetching destinations:", error);
+      setError("Failed to fetch destinations");
       setDestinations([]);
     } finally {
       setLoading(false);
@@ -188,10 +206,10 @@ const Destinations = () => {
   // Filter handlers
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
+    if (type === "checkbox") {
       setFilters((prev) => ({
         ...prev,
-        [name]: checked ? 'true' : ''
+        [name]: checked ? "true" : "",
       }));
     } else {
       setFilters((prev) => ({ ...prev, [name]: value }));
@@ -206,11 +224,11 @@ const Destinations = () => {
 
   const handleReset = () => {
     setFilters({
-      search: '',
-      status: '',
-      destinationName: '',
-      isPopularDestination: '',
-      isTrandingDestination: ''
+      search: "",
+      status: "",
+      destinationName: "",
+      isPopularDestination: "",
+      isTrandingDestination: "",
     });
     setPage(1);
     getAllDestinations(1);
@@ -219,7 +237,7 @@ const Destinations = () => {
   // Pagination handlers
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNextPage = () => {
@@ -238,7 +256,7 @@ const Destinations = () => {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -246,12 +264,12 @@ const Destinations = () => {
     } else {
       const start = Math.max(1, page - Math.floor(maxVisiblePages / 2));
       const end = Math.min(totalPages, start + maxVisiblePages - 1);
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   };
 
@@ -259,9 +277,12 @@ const Destinations = () => {
     <div className="p-2 sm:p-4 md:p-6 w-full">
       {/* Header with stats */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Destinations Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          Destinations Management
+        </h1>
         <div className="text-sm text-gray-600">
-          Showing {destinations.length} of {totalDestinations} destinations (Page {page} of {totalPages})
+          Showing {destinations.length} of {totalDestinations} destinations
+          (Page {page} of {totalPages})
         </div>
       </div>
 
@@ -301,7 +322,7 @@ const Destinations = () => {
                 <input
                   type="checkbox"
                   name="isPopularDestination"
-                  checked={filters.isPopularDestination === 'true'}
+                  checked={filters.isPopularDestination === "true"}
                   onChange={handleFilterChange}
                   className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                 />
@@ -311,7 +332,7 @@ const Destinations = () => {
                 <input
                   type="checkbox"
                   name="isTrandingDestination"
-                  checked={filters.isTrandingDestination === 'true'}
+                  checked={filters.isTrandingDestination === "true"}
                   onChange={handleFilterChange}
                   className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                 />
@@ -401,7 +422,10 @@ const Destinations = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {destinations.length === 0 ? (
                     <tr>
-                      <td colSpan="9" className="px-6 py-4 text-center text-gray-500">
+                      <td
+                        colSpan="9"
+                        className="px-6 py-4 text-center text-gray-500"
+                      >
                         No destinations found.
                       </td>
                     </tr>
@@ -415,14 +439,17 @@ const Destinations = () => {
                               src={getImageUrl(dest.destinationImage)}
                               alt={dest.destinationName}
                               onError={(e) => {
-                                e.target.src = '/public/Images/banner.jpg';
+                                e.target.src = "/public/Images/banner.jpg";
                               }}
                             />
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center gap-2">
-                            <span title={dest.destinationName} className="font-medium">
+                            <span
+                              title={dest.destinationName}
+                              className="font-medium"
+                            >
                               {dest.destinationName}
                             </span>
                           </div>
@@ -475,11 +502,11 @@ const Destinations = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
-                              dest.destinationStatus === 'active'
-                                ? 'bg-green-100 text-green-800'
-                                : dest.destinationStatus === 'inactive'
-                                ? 'bg-red-100 text-red-800'
-                                : 'bg-yellow-100 text-yellow-800'
+                              dest.destinationStatus === "active"
+                                ? "bg-green-100 text-green-800"
+                                : dest.destinationStatus === "inactive"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
                             }`}
                           >
                             {dest.destinationStatus}
@@ -489,22 +516,22 @@ const Destinations = () => {
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
                               dest.isPopularDestination
-                                ? 'bg-blue-100 text-blue-800'
-                                : 'bg-gray-100 text-gray-800'
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isPopularDestination ? 'Yes' : 'No'}
+                            {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
                               dest.isTrandingDestination
-                                ? 'bg-purple-100 text-purple-800'
-                                : 'bg-gray-100 text-gray-800'
+                                ? "bg-purple-100 text-purple-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isTrandingDestination ? 'Yes' : 'No'}
+                            {dest.isTrandingDestination ? "Yes" : "No"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -567,18 +594,24 @@ const Destinations = () => {
                           src={getImageUrl(dest.destinationImage)}
                           alt={dest.destinationName}
                           onError={(e) => {
-                            e.target.src = '/public/Images/banner.jpg';
+                            e.target.src = "/public/Images/banner.jpg";
                           }}
                         />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-sm font-medium text-gray-900" title={dest.destinationName}>
+                          <h3
+                            className="text-sm font-medium text-gray-900"
+                            title={dest.destinationName}
+                          >
                             {dest.destinationName}
                           </h3>
                         </div>
                         <div className="flex items-center gap-2 mb-1">
-                          <p className="text-sm text-gray-500" title={dest.topAttraction}>
+                          <p
+                            className="text-sm text-gray-500"
+                            title={dest.topAttraction}
+                          >
                             {truncateText(dest.topAttraction)}
                           </p>
                         </div>
@@ -586,11 +619,11 @@ const Destinations = () => {
                       <div className="flex items-center space-x-2">
                         <span
                           className={`px-2 py-1 text-xs font-medium rounded-full ${
-                            dest.destinationStatus === 'active'
-                              ? 'bg-green-100 text-green-800'
-                              : dest.destinationStatus === 'inactive'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                            dest.destinationStatus === "active"
+                              ? "bg-green-100 text-green-800"
+                              : dest.destinationStatus === "inactive"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-yellow-100 text-yellow-800"
                           }`}
                         >
                           {dest.destinationStatus}
@@ -621,11 +654,11 @@ const Destinations = () => {
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
                               dest.isPopularDestination
-                                ? 'bg-blue-100 text-blue-800'
-                                : 'bg-gray-100 text-gray-800'
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isPopularDestination ? 'Yes' : 'No'}
+                            {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </div>
                       </div>
@@ -635,11 +668,11 @@ const Destinations = () => {
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
                               dest.isTrandingDestination
-                                ? 'bg-purple-100 text-purple-800'
-                                : 'bg-gray-100 text-gray-800'
+                                ? "bg-purple-100 text-purple-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isTrandingDestination ? 'Yes' : 'No'}
+                            {dest.isTrandingDestination ? "Yes" : "No"}
                           </span>
                         </div>
                       </div>
@@ -695,7 +728,8 @@ const Destinations = () => {
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
             <div className="text-sm text-gray-600">
-              Showing page {page} of {totalPages} ({totalDestinations} total destinations)
+              Showing page {page} of {totalPages} ({totalDestinations} total
+              destinations)
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -712,8 +746,8 @@ const Destinations = () => {
                     onClick={() => handlePageChange(pageNum)}
                     className={`px-3 py-2 rounded text-sm transition ${
                       pageNum === page
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
                     {pageNum}
@@ -754,7 +788,9 @@ const Destinations = () => {
         <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">Destination Details</h2>
+              <h2 className="text-xl font-bold text-gray-900">
+                Destination Details
+              </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
                 className="text-gray-400 hover:text-gray-600 transition"
@@ -765,34 +801,41 @@ const Destinations = () => {
 
             <div className="p-6 space-y-6">
               {/* Image Section */}
-              {selectedDestination.destinationImage && selectedDestination.destinationImage.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
-                    Destination Images
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {selectedDestination.destinationImage.map((image, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={image}
-                          alt={`${selectedDestination.destinationName} ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-lg"
-                          onError={(e) => {
-                            e.target.src = '/public/Images/banner.jpg';
-                          }}
-                        />
-                      </div>
-                    ))}
+              {selectedDestination.destinationImage &&
+                selectedDestination.destinationImage.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
+                      Destination Images
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {selectedDestination.destinationImage.map(
+                        (image, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={image}
+                              alt={`${selectedDestination.destinationName} ${
+                                index + 1
+                              }`}
+                              className="w-full h-24 object-cover rounded-lg"
+                              onError={(e) => {
+                                e.target.src = "/public/Images/banner.jpg";
+                              }}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                     Destination Name
                   </h3>
-                  <p className="text-gray-900 font-medium">{selectedDestination.destinationName}</p>
+                  <p className="text-gray-900 font-medium">
+                    {selectedDestination.destinationName}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -800,11 +843,11 @@ const Destinations = () => {
                   </h3>
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      selectedDestination.destinationStatus === 'active'
-                        ? 'bg-green-100 text-green-800'
-                        : selectedDestination.destinationStatus === 'inactive'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-yellow-100 text-yellow-800'
+                      selectedDestination.destinationStatus === "active"
+                        ? "bg-green-100 text-green-800"
+                        : selectedDestination.destinationStatus === "inactive"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-yellow-100 text-yellow-800"
                     }`}
                   >
                     {selectedDestination.destinationStatus}
@@ -817,11 +860,11 @@ const Destinations = () => {
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
                       selectedDestination.isPopularDestination
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {selectedDestination.isPopularDestination ? 'Yes' : 'No'}
+                    {selectedDestination.isPopularDestination ? "Yes" : "No"}
                   </span>
                 </div>
                 <div>
@@ -831,11 +874,11 @@ const Destinations = () => {
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
                       selectedDestination.isTrandingDestination
-                        ? 'bg-purple-100 text-purple-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? "bg-purple-100 text-purple-800"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {selectedDestination.isTrandingDestination ? 'Yes' : 'No'}
+                    {selectedDestination.isTrandingDestination ? "Yes" : "No"}
                   </span>
                 </div>
               </div>
@@ -844,7 +887,9 @@ const Destinations = () => {
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Top Attraction
                 </h3>
-                <p className="text-gray-900">{selectedDestination.topAttraction}</p>
+                <p className="text-gray-900">
+                  {selectedDestination.topAttraction}
+                </p>
               </div>
 
               <div>
@@ -858,7 +903,9 @@ const Destinations = () => {
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   What's Great
                 </h3>
-                <p className="text-gray-900">{selectedDestination.whatsGreat}</p>
+                <p className="text-gray-900">
+                  {selectedDestination.whatsGreat}
+                </p>
               </div>
 
               <div>
@@ -872,7 +919,9 @@ const Destinations = () => {
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Cultural Experiences
                 </h3>
-                <p className="text-gray-900">{selectedDestination.culturalExperiences}</p>
+                <p className="text-gray-900">
+                  {selectedDestination.culturalExperiences}
+                </p>
               </div>
 
               <div>
@@ -882,31 +931,39 @@ const Destinations = () => {
                 <p className="text-gray-900">{selectedDestination.Tips}</p>
               </div>
 
-              {selectedDestination.importantInformation && selectedDestination.importantInformation.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
-                    Important Information
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1">
-                    {selectedDestination.importantInformation.map((info, index) => (
-                      <li key={index} className="text-gray-900">{info}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {selectedDestination.importantInformation &&
+                selectedDestination.importantInformation.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                      Important Information
+                    </h3>
+                    <ul className="list-disc list-inside space-y-1">
+                      {selectedDestination.importantInformation.map(
+                        (info, index) => (
+                          <li key={index} className="text-gray-900">
+                            {info}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                )}
 
-              {selectedDestination.topPlaces && selectedDestination.topPlaces.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
-                    Top Places
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1">
-                    {selectedDestination.topPlaces.map((place, index) => (
-                      <li key={index} className="text-gray-900">{place}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {selectedDestination.topPlaces &&
+                selectedDestination.topPlaces.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                      Top Places
+                    </h3>
+                    <ul className="list-disc list-inside space-y-1">
+                      {selectedDestination.topPlaces.map((place, index) => (
+                        <li key={index} className="text-gray-900">
+                          {place}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
             </div>
 
             <div className="flex justify-end gap-3 p-6 border-t">

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   console.log("user in login page", user);
-  
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,9 +34,9 @@ const LoginPage = () => {
           accessToken,
         })
       );
-     if (user.role === "admin") {
+      if (user.role === "admin") {
         navigate("/dashboard");
-     } else {
+      } else {
         navigate("/");
       }
     } catch (error) {
@@ -65,8 +64,7 @@ const LoginPage = () => {
           <div className="flex justify-end align-middle items-center">
             <button
               onClick={() => navigate(`/agent`)}
-              className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer"
-            >
+              className="bg-blue-600 px-4 py-2 rounded-2xl text-white cursor-pointer">
               <FaArrowLeft />
             </button>
           </div>
@@ -75,15 +73,14 @@ const LoginPage = () => {
           <div>
             <label
               className="block text-gray-700 font-medium mb-1"
-              htmlFor="email"
-            >
+              htmlFor="email">
               Email
             </label>
             <input
               type="text"
               id="email"
               value={email}
-                            required
+              required
               onChange={(e) => setEmail(e.target.value.trim())}
               placeholder="Enter your email"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -93,14 +90,13 @@ const LoginPage = () => {
           <div>
             <label
               className="block text-gray-700 font-medium mb-1"
-              htmlFor="password"
-            >
+              htmlFor="password">
               Password
             </label>
             <input
               type="password"
               id="password"
-                required
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value.trim())}
               placeholder="Enter your password"
@@ -113,19 +109,19 @@ const LoginPage = () => {
               <input type="checkbox" className="accent-blue-500" />
               Remember me
             </label> */}
-              <Link
-              to={"/agent/forgot-password"} className="text-blue-500 hover:underline">
+            <Link
+              to={"/agent/forgot-password"}
+              className="text-blue-500 hover:underline">
               Forgot Password?
             </Link>
           </div>
 
           <button
-          type="submit"
+            type="submit"
             onClick={handleLogin}
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition"
-          >
-            {isLoading ?"Processing...": "Sign In"}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition">
+            {isLoading ? "Processing..." : "Sign In"}
           </button>
         </form>
 
@@ -133,8 +129,7 @@ const LoginPage = () => {
           Don't have an account?{" "}
           <Link
             to="/agent/registration"
-            className="text-blue-500 hover:underline"
-          >
+            className="text-blue-500 hover:underline">
             Registration
           </Link>
         </p>

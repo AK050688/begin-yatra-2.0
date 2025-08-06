@@ -187,7 +187,7 @@ const CreateDestinationModal = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label>
-              Destination Name:
+              Destination Name: <span className="text-red-500">*</span>
               <input
                 type="text"
                 value={destinationName}
@@ -197,7 +197,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              Destination Type:
+              Destination Type:<span className="text-red-500">*</span>
               <select
                 value={destinationType}
                 onChange={(e) => setDestinationType(e.target.value)}
@@ -209,7 +209,7 @@ const CreateDestinationModal = ({
           </div>
           <div>
             <label>
-              Places:
+              Places:<span className="text-red-500">*</span>
               <div className="flex gap-2 items-start">
                 <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
                   {places.map((place) => (
@@ -244,7 +244,7 @@ const CreateDestinationModal = ({
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label>
-              Top Attraction:
+              Top Attraction:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={topAttraction}
@@ -253,7 +253,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              What's Great:
+              What's Great:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={whatsGreat}
@@ -262,7 +262,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              Tour Guide:
+              Tour Guide:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={tourGuide}
@@ -271,7 +271,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              Famous For:
+              Famous For:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={famousFor}
@@ -280,7 +280,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              Cultural Experiences:
+              Cultural Experiences:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={culturalExperiences}
@@ -289,7 +289,7 @@ const CreateDestinationModal = ({
               />
             </label>
             <label>
-              Tips:
+              Tips:<span className="text-red-500">*</span>
               <input
                 type="text"
                 value={tips}
@@ -300,7 +300,7 @@ const CreateDestinationModal = ({
           </div>
           <div>
             <label>
-              Important Information:
+              Important Information:<span className="text-red-500">*</span>
               {importantInformation.map((info, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
                   <input
@@ -348,7 +348,7 @@ const CreateDestinationModal = ({
           </div>
           <div>
             <label>
-              Top Places:
+              Top Places:<span className="text-red-500">*</span>
               {topPlaces.map((place, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
                   <input
@@ -387,7 +387,7 @@ const CreateDestinationModal = ({
           </div>
           <div>
             <label>
-              Destination Images:
+              Destination Images:<span className="text-red-500">*</span>
               <input
                 type="file"
                 ref={destinationImageRef}
@@ -405,7 +405,7 @@ const CreateDestinationModal = ({
                 onChange={(e) => setIsPopularDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Popular Destination
+              Popular Destination<span className="text-red-500">*</span>
             </label>
             <label className="flex items-center gap-2">
               <input
@@ -414,7 +414,7 @@ const CreateDestinationModal = ({
                 onChange={(e) => setIsTrandingDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Trending Destination
+              Trending Destination<span className="text-red-500">*</span>
             </label>
           </div>
           <button

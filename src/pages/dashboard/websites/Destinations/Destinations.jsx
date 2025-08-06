@@ -277,14 +277,7 @@ const Destinations = () => {
               onChange={handleFilterChange}
               className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
             />
-            <input
-              type="text"
-              name="destinationName"
-              placeholder="Search by destination name"
-              value={filters.destinationName}
-              onChange={handleFilterChange}
-              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
-            />
+          
             <select
               name="status"
               value={filters.status}
@@ -365,8 +358,8 @@ const Destinations = () => {
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           {/* Desktop Table */}
           <div className="hidden lg:block">
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
+            <div className="overflow-x-scroll">
+              <table className="min-w-full overflow-x-auto">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

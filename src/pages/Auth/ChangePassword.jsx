@@ -34,7 +34,7 @@ const ChangePassword = () => {
 
       toast.success("Password changed successfully!");
       console.log(res, "pass");
-      navigate("/auth/login");
+      navigate("/agent/login-agent");
 
       // Clear inputs
       setNewPassword("");

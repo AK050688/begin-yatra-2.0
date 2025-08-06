@@ -8,7 +8,7 @@ export default function CheckAuth({ roles }) {
   const context = useOutletContext(); // Forward context from parent
 
   if (!user) {
-    return <Navigate to={"/auth/login"} state={location} />;
+    return <Navigate to={"/agent/login-agent"} state={location} />;
   }
 
   if (!roles.includes(user.role)) {

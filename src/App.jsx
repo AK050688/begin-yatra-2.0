@@ -65,8 +65,8 @@ function App() {
 
           <Route path="/agent/registration" element={<Registration />} />
           <Route path="/agent/forgot-password" element={<ForgotPassword />} />
-          <Route path="/agent/verify-otp" element={<VerifyOTP />} />
-          <Route path="/agent/add-new-password" element={<ChangePassword />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/add-new-password" element={<ChangePassword />} />
           <Route
             path="/get-qurey"
             element={

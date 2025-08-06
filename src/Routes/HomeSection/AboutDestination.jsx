@@ -16,9 +16,11 @@ const AboutDestination = () => {
         setLoading(true);
         setError(null);
         try {
-          const res = await api.get(`/api/destination/getDestinationById/${id}`);
-          console.log("Destination ??????",res);
-          
+          const res = await api.get(
+            `/api/destination/getDestinationById/${id}`
+          );
+          console.log("Destination ??????", res);
+
           if (res.data && res.data.data) {
             setDestinationData(res.data.data);
           } else {
@@ -28,7 +30,6 @@ const AboutDestination = () => {
           setError("Failed to fetch destination");
           setDestinationData(null);
           console.error(err);
-          
         } finally {
           setLoading(false);
         }
@@ -42,21 +43,21 @@ const AboutDestination = () => {
 
   const getImageUrl = (images) => {
     if (!images || images.length === 0) {
-      return '/Images/default.jpg'; // Default image
+      return "/Images/default.jpg"; // Default image
     }
     if (Array.isArray(images)) {
-      if (images[0].startsWith('http://') || images[0].startsWith('https://')) {
+      if (images[0].startsWith("http://") || images[0].startsWith("https://")) {
         return images[0];
       }
-      if (images[0].startsWith('/')) {
+      if (images[0].startsWith("/")) {
         return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
       }
       return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
     } else {
-      if (images.startsWith('http://') || images.startsWith('https://')) {
+      if (images.startsWith("http://") || images.startsWith("https://")) {
         return images;
       }
-      if (images.startsWith('/')) {
+      if (images.startsWith("/")) {
         return `https://begin-yatra-nq40.onrender.com/public/temp${images}`;
       }
       return `https://begin-yatra-nq40.onrender.com/public/temp/${images}`;
@@ -70,14 +71,14 @@ const AboutDestination = () => {
         price: packageData.packagePrice,
         duration: packageData.totalDaysNight,
         theme: packageData.theme,
-        summary: packageData.packageSummery || []
+        summary: packageData.packageSummery || [],
       };
     }
     return {
       price: "N/A",
       duration: "N/A",
       theme: "N/A",
-      summary: []
+      summary: [],
     };
   };
 
@@ -90,16 +91,21 @@ const AboutDestination = () => {
 
   if (loading) return <div className="p-6 text-center text-lg">Loading...</div>;
   if (error) return <div className="p-6 text-center text-red-500">{error}</div>;
-  if (!data) return <div className="p-6 text-center text-gray-500">Destination not found.</div>;
+  if (!data)
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Destination not found.
+      </div>
+    );
 
   return (
     <div className=" mx-auto  px-8 lg:px-16 md:px-10 py-8 bg-white">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12">
         <div className="w-full lg:w-1/2">
-          <img 
-            src={getImageUrl(data.destinationImage)} 
-            alt={data.destinationName || data.name} 
+          <img
+            src={getImageUrl(data.destinationImage)}
+            alt={data.destinationName || data.name}
             className="w-full h-auto rounded-lg object-cover max-h-[500px]"
           />
         </div>
@@ -116,8 +122,15 @@ const AboutDestination = () => {
               {[
                 { label: "Package", value: `₹${packageInfo.price}` },
                 { label: "Duration", value: packageInfo.duration },
-                { label: "Best Time to Visit", value: data.importantInformation?.[0]?.includes("Best Time") ? data.importantInformation[0].match(/Best Time To Visit: ([^.+]+)/)?.[1] || "N/A" : "N/A" },
-                { label: "Theme", value: packageInfo.theme }
+                {
+                  label: "Best Time to Visit",
+                  value: data.importantInformation?.[0]?.includes("Best Time")
+                    ? data.importantInformation[0].match(
+                        /Best Time To Visit: ([^.+]+)/
+                      )?.[1] || "N/A"
+                    : "N/A",
+                },
+                { label: "Theme", value: packageInfo.theme },
               ].map((item, index) => (
                 <div
                   key={index}
@@ -133,7 +146,7 @@ const AboutDestination = () => {
             className="mt-6 bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition w-full sm:w-auto"
             onClick={() => navigate("/get-qurey")}
           >
-            Explore
+            Get Quotes
           </button>
         </div>
       </section>
@@ -142,7 +155,7 @@ const AboutDestination = () => {
       <section className="space-y-8">
         <div>
           <h2 className="text-2xl sm:text-3xl text-blue-500  font-semibold mb-4">
-            {capitalizeFirstLetter(data.destinationName || data.name)} 
+            {capitalizeFirstLetter(data.destinationName || data.name)}
             <span className=" text-black"> Tour Guide</span>
           </h2>
           <p className="text-gray-700 leading-relaxed">
@@ -158,8 +171,8 @@ const AboutDestination = () => {
           <div className="space-y-4">
             {packageInfo.summary.length > 0 ? (
               packageInfo.summary.map((day, index) => (
-                <div 
-                  key={day._id} 
+                <div
+                  key={day._id}
                   className="flex items-start gap-4 p-4 border-l-4 border-blue-500 bg-gray-50 rounded-lg"
                 >
                   <div className="flex-shrink-0">
@@ -195,7 +208,7 @@ const AboutDestination = () => {
 
         <div>
           <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
-            {capitalizeFirstLetter(data.destinationName || data.name)} is 
+            {capitalizeFirstLetter(data.destinationName || data.name)} is
             <span className="text-blue-600"> Famous for</span>
           </h3>
           <p className="text-gray-700">
@@ -220,7 +233,10 @@ const AboutDestination = () => {
         <div>
           <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Cultural Experiences in
-            <span className="text-blue-600"> {capitalizeFirstLetter(data.destinationName || data.name)}</span>
+            <span className="text-blue-600">
+              {" "}
+              {capitalizeFirstLetter(data.destinationName || data.name)}
+            </span>
           </h3>
           <ul className="list-disc text-black pl-6 space-y-2">
             {data.culturalExperiences ? (
@@ -234,14 +250,13 @@ const AboutDestination = () => {
         <div>
           <h3 className="text-xl text-black sm:text-2xl font-semibold mb-3">
             Tips for
-            <span className="text-blue-600"> {capitalizeFirstLetter(data.destinationName || data.name)}</span>
+            <span className="text-blue-600">
+              {" "}
+              {capitalizeFirstLetter(data.destinationName || data.name)}
+            </span>
           </h3>
           <ul className="list-disc text-black pl-6 space-y-2">
-            {data.Tips ? (
-              <li>{data.Tips}</li>
-            ) : (
-              <li>No tips available.</li>
-            )}
+            {data.Tips ? <li>{data.Tips}</li> : <li>No tips available.</li>}
           </ul>
         </div>
 
@@ -251,7 +266,8 @@ const AboutDestination = () => {
             <span className="text-blue-600"> About Trip</span>
           </h3>
           <ul className="list-disc pl-6 text-black space-y-2">
-            {data.importantInformation && data.importantInformation.length > 0 ? (
+            {data.importantInformation &&
+            data.importantInformation.length > 0 ? (
               data.importantInformation.map((info, index) => (
                 <li key={index}>{info}</li>
               ))
@@ -269,21 +285,23 @@ const AboutDestination = () => {
           <div className="grid grid-cols-1 text-black sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.topPlaces && data.topPlaces.length > 0 ? (
               data.topPlaces.slice(0, 6).map((place, index) => (
-                <div 
-                  key={index} 
-                  onClick={() => navigate("/get-qurey")} 
+                <div
+                  key={index}
+                  onClick={() => navigate("/get-qurey")}
                   className="cursor-pointer border border-gray-200 rounded-lg shadow-md p-4 hover:shadow-lg transition"
                 >
-                  <img 
-                    src="/Images/moreplace.png" 
-                    alt={place} 
+                  <img
+                    src="/Images/moreplace.png"
+                    alt={place}
                     className="w-full h-40 object-cover rounded-md mb-2"
                   />
                   <p className="text-center font-medium">{place}</p>
                 </div>
               ))
             ) : (
-              <div className="text-center text-gray-500">No top places available.</div>
+              <div className="text-center text-gray-500">
+                No top places available.
+              </div>
             )}
           </div>
         </div>

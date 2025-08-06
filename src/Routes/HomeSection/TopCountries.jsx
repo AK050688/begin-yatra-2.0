@@ -104,13 +104,7 @@ const TopCountries = ({ totalTopCountries = [], loading = false }) => {
                     src={getImageUrl(destination.destinationImage)}
                     alt={destination.destinationName}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      console.error(
-                        `Failed to load image for ${destination.destinationName}: ${e.target.src}`
-                      );
-                      e.target.src =
-                        "https://via.placeholder.com/400x300?text=Image+Not+Found";
-                    }}
+                  
                   />
                   <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
                   <div className="absolute bottom-0 p-5 text-white w-full">

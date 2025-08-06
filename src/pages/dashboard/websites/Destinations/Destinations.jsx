@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { debounce } from 'lodash';
 import CreateDestinationModal from './CreateDestinationModal';
+import UpdateDestinationModal from './UpdateDestinationModal';
 import AddPlaceModal from './AddPlaceModal';
 import CreatePackageModal from './CreatePackageModal';
 import { useSelector } from 'react-redux';
@@ -117,7 +119,6 @@ const Destinations = () => {
           Authorization: token,
         },
       });
-      console.log('res places', res);
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setPlaces(res.data.data.places || []);
       }
@@ -147,26 +148,59 @@ const Destinations = () => {
     }
   };
 
-  // Fetch destinations
-  const getAllDestinations = async (pageNum = 1) => {
+  // Helper function to calculate match score for sorting
+  const calculateMatchScore = (destination, searchTerm) => {
+    if (!searchTerm) return 0;
+    const name = destination.destinationName?.toLowerCase() || '';
+    searchTerm = searchTerm.toLowerCase().trim();
+    
+    // Exact match or starts with search term gets highest score
+    if (name === searchTerm) return 3;
+    if (name.startsWith(searchTerm)) return 2;
+    if (name.includes(searchTerm)) return 1;
+    return 0;
+  };
+
+  // Debounced fetch function to prevent excessive API calls
+  const debouncedFetchDestinations = useCallback(
+    debounce((pageNum, filterValues) => {
+      getAllDestinations(pageNum, filterValues);
+    }, 500),
+    []
+  );
+
+  // Fetch destinations with sorting
+  const getAllDestinations = async (pageNum = 1, filterValues = filters) => {
     setLoading(true);
     setError('');
     try {
       const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(filterValues).forEach(([key, value]) => {
         if (value !== '' && value !== undefined && value !== null) {
           params.append(key, value);
         }
       });
       params.append('page', pageNum);
       params.append('limit', PAGE_SIZE);
-      
+
       const res = await api.get(`/api/destination/getAllDestination?${params.toString()}`, {
         headers: { 'Authorization': token }
       });
-      
+
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
-        setDestinations(res.data.data.destinations || []);
+        let fetchedDestinations = res.data.data.destinations || [];
+        
+        // Sort destinations based on search term (combine search and destinationName)
+        const searchTerm = (filterValues.search || filterValues.destinationName || '').trim();
+        if (searchTerm) {
+          fetchedDestinations = fetchedDestinations.sort((a, b) => {
+            const scoreA = calculateMatchScore(a, searchTerm);
+            const scoreB = calculateMatchScore(b, searchTerm);
+            return scoreB - scoreA; // Higher score comes first
+          });
+        }
+
+        setDestinations(fetchedDestinations);
         setTotalPages(res.data.data.totalPages || 1);
         setTotalDestinations(res.data.data.total || 0);
       }
@@ -179,31 +213,17 @@ const Destinations = () => {
     }
   };
 
-  useEffect(() => {
-    getAllPlaces();
-    getAllPackages();
-    getAllDestinations(page);
-  }, [page, filters]); // Added filters to useEffect dependency to auto-update on filter change
-
-  // Filter handlers
+  // Handle filter changes
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setFilters((prev) => ({
-        ...prev,
-        [name]: checked ? 'true' : ''
-      }));
-    } else {
-      setFilters((prev) => ({ ...prev, [name]: value }));
-    }
+    setFilters((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (checked ? 'true' : '') : value
+    }));
+    setPage(1); // Reset to first page on filter change
   };
 
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    setPage(1); // Reset to first page when filtering
-    getAllDestinations(1);
-  };
-
+  // Reset filters
   const handleReset = () => {
     setFilters({
       search: '',
@@ -213,8 +233,15 @@ const Destinations = () => {
       isTrandingDestination: ''
     });
     setPage(1);
-    getAllDestinations(1);
   };
+
+  // Effect to fetch data when page or filters change
+  useEffect(() => {
+    getAllPlaces();
+    getAllPackages();
+    debouncedFetchDestinations(page, filters);
+    return () => debouncedFetchDestinations.cancel(); // Cleanup debounce on unmount
+  }, [page, filters, debouncedFetchDestinations]);
 
   // Pagination handlers
   const handlePageChange = (newPage) => {
@@ -267,16 +294,23 @@ const Destinations = () => {
 
       {/* Filter Form */}
       <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-        <form onSubmit={handleFilterSubmit} className="space-y-4">
+        <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <input
-              type="text"
-              name="search"
-              placeholder="Search destinations..."
-              value={filters.search}
-              onChange={handleFilterChange}
-              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                name="search"
+                placeholder="Search destinations..."
+                value={filters.search}
+                onChange={handleFilterChange}
+                className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm w-full"
+              />
+              {loading && (
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                  <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                </div>
+              )}
+            </div>
           
             <select
               name="status"
@@ -329,7 +363,7 @@ const Destinations = () => {
               Create Destination
             </button>
           </div>
-        </form>
+        </div>
       </div>
 
       {/* Loading State */}
@@ -933,7 +967,7 @@ const Destinations = () => {
         onOpenAddPlace={() => setShowAddPlaceModal(true)}
         onDestinationCreated={() => getAllDestinations(page)}
       />
-      <CreateDestinationModal
+      <UpdateDestinationModal
         show={showUpdateModal}
         onClose={() => {
           setShowUpdateModal(false);
@@ -943,6 +977,7 @@ const Destinations = () => {
         places={places}
         packages={packages}
         onDestinationUpdated={() => getAllDestinations(page)}
+        onOpenAddPlace={() => setShowAddPlaceModal(true)}
       />
       <AddPlaceModal
         show={showAddPlaceModal}

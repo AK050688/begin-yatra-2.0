@@ -1,18 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import api, { imgApi } from "../Api/ApiService";
+import { useSelector } from "react-redux";
+import { selectAccessToken } from "../store/userSlice";
 
-const brands = [
-  { img: "/Logo/Logo.png", name: "Begin Yatra" },
-  { img: "/Logo/Logo.png", name: "Begin Yatra" },
-  { img: "/Logo/Logo.png", name: "Begin Yatra" },
-];
-
-const about = [
-  { num: "200+", text: "Destinations" },
-  // { num: "87k+", text: "Leads in CRM" },
-  { num: "100%", text: "Verified" },
-];
 
 const Partners = () => {
+  const [partners, setPartners] = useState([]);
+ 
+  console.log("partners",partners);
+  
+const token = useSelector(selectAccessToken);
+  // Fetch all partners
+  const fetchPartners = async (name = "") => {
+    try {
+       // Retrieve token from auth utility
+      const response = await api.get(
+        `/api/leads/getAllpartners${name ? `?name=${name}` : ""}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("fetchPartners", response);
+      if (response.data.statusCode === 200 || response.data.statusCode === 201) {
+        setPartners(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching partners:", error);
+    }
+  };
+
+  // Fetch partners on component mount
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
+  // Carousel settings
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  // Sample about data (since it wasn't provided)
+  const about = [
+    { num: "50+", text: "Years Experience" },
+    { num: "100+", text: "Partners" },
+    { num: "1M+", text: "Travelers Served" },
+  ];
+
   return (
     <div className="bg-gray-50 py-14 px-4">
       {/* Title */}
@@ -20,23 +87,29 @@ const Partners = () => {
         Partners Who Take Travel Leads
       </h1>
 
-      {/* Brand Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 max-w-5xl  mx-auto">
-        {brands.map((brand, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300"
-          >
-            <img
-              src={brand.img}
-              alt={brand.name}
-              className="w-20 h-20 object-contain mb-3"
-            />
-            <p className="text-gray-700 font-semibold text-center">
-              {brand.name}
-            </p>
-          </div>
-        ))}
+      {/* Brand Cards Carousel */}
+      <div className="max-w-5xl mx-auto">
+        <Slider {...settings}>
+          { partners.map((brand) => (
+            <>
+              {brand?.isListed &&  (<>
+                <div
+              key={brand?._id}
+              className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 mx-2"
+            >
+              <img
+                src={imgApi+brand.image}
+                alt={brand.name}
+                className="w-full h-30  object-contain mb-3"
+              />
+              <p className="text-gray-700 font-semibold text-center">
+                {brand.name}
+              </p>
+            </div>
+              </>)}
+            </>
+          ))}
+        </Slider>
       </div>
 
       {/* About Section */}

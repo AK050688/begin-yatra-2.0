@@ -3,8 +3,14 @@ import api from "../../../../Api/ApiService";
 import { FaEdit, FaEye, FaPlus, FaTimes, FaSearch, FaTrash } from 'react-icons/fa';
 import CreatePackageModal from './CreatePackageModal';
 import UpdatePackageModal from './UpdatePackageModal';
+import { useSelector } from "react-redux";
+import { selectAccessToken, selectUser } from "../../../../store/userSlice";
+import { toast } from "react-toastify";
 
 const AdminPackages = () => {
+  const token = useSelector(selectAccessToken);
+  console.log(">>>>>>>>>>>>>",token);
+  
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,8 +62,15 @@ const AdminPackages = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await api.delete(`/api/package/deletePackage/${packageId}`);
+      const res = await api.delete(`/api/package/deletePackage/${packageId}`,
+        {
+          headers: {
+            'Authorization': token,
+          }
+        }
+      );
       if (res.data.statusCode === 200) {
+        toast.success("Package deleted successfully");
         // Refresh package list
         await getAllPackages(page);
         // Adjust page if necessary

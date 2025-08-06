@@ -33,12 +33,14 @@ const SideBar = () => {
       label: "Website Management",
       subLinks: [
         { to: "/dashboard/website/reviews", label: "Reviews" },
+        { to: "/dashboard/website/partners", label: "Partners" },
         {
           label: "Destinations",
           subLinks: [
             { to: "/dashboard/website/destinations", label: "Destinations" },
             { to: "/dashboard/website/destinations/Packages", label: "Packages" },
             { to: "/dashboard/website/destinations/places", label: "Places" },
+            
           ],
         },
       

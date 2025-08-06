@@ -1,6 +1,6 @@
 import axios from "axios";
 const getEnv = import.meta.env.VITE_APP_BASE_API; 
-
+export const imgApi = `${import.meta.env.VITE_APP_BASE_API}/public/temp/`
 const api = axios.create({
   baseURL: getEnv ,
   headers: { "Content-Type": "application/json" },

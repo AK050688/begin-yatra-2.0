@@ -45,6 +45,7 @@ import PublicHomeLayout from "./components/PublicHomeLayout";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
 import Places from "./pages/dashboard/websites/Destinations/Places";
+import PartnersPage from "./pages/dashboard/websites/Partners/PartnersPage";
 const adminUser = ["admin"];
 const vendorUser = ["user"];
 function App() {
@@ -121,6 +122,7 @@ function App() {
             <Route path="transactions" element={<AllTransactions />} />
             <Route path="add-new-plans" element={<AddNewPlan />} />
             <Route path="website/reviews" element={<AdminReviews />} />
+            <Route path="website/partners" element={<PartnersPage />} />
             
 
             <Route path="website/destinations/*">

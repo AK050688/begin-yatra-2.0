@@ -139,7 +139,6 @@ const Banner = () => {
       handleExplore();
     }
   };
-
   return (
     <div className="relative w-full bg-white overflow-hidden lg:h-screen md:h-[80vh] h-[55vh]">
       {/* Carousel */}

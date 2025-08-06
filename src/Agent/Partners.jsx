@@ -7,8 +7,8 @@ const brands = [
 ];
 
 const about = [
-  { num: "50+", text: "Destinations" },
-  { num: "87k+", text: "Leads in CRM" },
+  { num: "200+", text: "Destinations" },
+  // { num: "87k+", text: "Leads in CRM" },
   { num: "100%", text: "Verified" },
 ];
 

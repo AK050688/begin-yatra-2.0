@@ -5,28 +5,28 @@ import { useNavigate } from "react-router-dom";
 const StoriesData = [
   {
     img: "/Images/kashmir1.jpeg",
-    reviews: "Top 10 Thins to do Kashmir",
+    reviews: "Top 10 Thins to do in Kashmir",
     Description:
       "Visit Srinagar Dal Lake and Mughal Gardens Ski in Gulmarg and ride the worlds highest cable car Trek in Sonamarg and discover scenic valleys Seek blessings at Vaishno Devi pilgrimage site Enjoy scenic views and adventure activities in Pahalgam",
     // numOfView: 325,
   },
   {
     img: "/Images/Shimla.jpeg",
-    reviews: "Top 10 Thins to do Shimla",
+    reviews: "Top 10 Thins to do in Shimla",
     Description:
       "Explore Shimla's Mall Road and Christ Church Visit Manalis Hadimba Devi Temple and Solang Valley Enjoy trekking, skiing, and adventure sports Take in scenic views from Jakhu Hill and Rohtang Pass Relax in nature's lap amidst pine and cedar forests",
     // numOfView: 135,
   },
   {
     img: "/Images/Dubai.jpeg",
-    reviews: "Top 10 Thins to do Dubai",
+    reviews: "Top 10 Thins to do in Dubai",
     Description:
       "Marvel at Burj Khalifa's towering grandeur Explore Dubai Mall's vast shopping paradise Visit iconic Palm Jumeirah and Atlantis Aquaventure Desert safaris and camel rides for thrilling adventures Gold Souk and spice markets for unique shopping",
     // numOfView: 595,
   },
   {
     img: "/Images/Gangtok.jpeg",
-    reviews: "Top 10 Thins to do Gangtok",
+    reviews: "Top 10 Thins to do in Gangtok",
     Description:
       "Visit Darjeeling's iconic toy train and tea gardens Explore Gangtok's Rumtek Monastery and Tsomgo Lake Enjoy Kanchenjunga views from Tiger Hill Trek to Singalila Ridge and experience scenic trails Visit Darjeeling's night markets and savor local cuisine",
     // numOfView: 315,

@@ -65,26 +65,13 @@ const Places = () => {
 
   // Get image URL helper
   const getImageUrl = (image) => {
-    console.log("IMage????", image);
+    console.log("Image", image);
     
-    if (!image) {
+    if (!image ) {
       return ; // Default image
     }
-
-    // If the image path is already a full URL, return it as is
-    if (image.startsWith("http://") || image.startsWith("https://")) {
-      return image;
-    }
-
-    // If it's a relative path, combine with base URL
-    if (image.startsWith("/")) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
-    }
-
-    // If it's just a filename, combine with base URL
     return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
-
   const getAllPlaces = async (pageNum = 1) => {
     setLoading(true);
     setError("");

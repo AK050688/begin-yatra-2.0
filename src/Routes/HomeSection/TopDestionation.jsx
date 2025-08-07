@@ -53,23 +53,13 @@ const TopDestinations = ({ trendingDestinations = [] }) => {
   const navigate = useNavigate();
   
   // Helper function to get image URL
-  const getImageUrl = (images) => {
-    if (!images || images.length === 0) {
-      return '/Images/kashmir.jpg'; // Default image
-    }
+  const getImageUrl = (image) => {
+    console.log("Image", image);
     
-    // If the image path is already a full URL, return it as is
-    if (images[0].startsWith('http://') || images[0].startsWith('https://')) {
-      return images[0];
+    if (!image ) {
+      return ; // Default image
     }
-    
-    // If it's a relative path, combine with base URL
-    if (images[0].startsWith('/')) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
-    }
-    
-    // If it's just a filename, combine with base URL
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
+    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
 
   const responsive = {

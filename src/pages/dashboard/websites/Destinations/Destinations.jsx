@@ -33,6 +33,8 @@ const Destinations = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [destinations, setDestinations] = useState([]);
+  console.log("destinations", destinations);
+
   const [filters, setFilters] = useState({
     search: "",
     status: "",
@@ -106,25 +108,11 @@ const Destinations = () => {
   };
 
   // Get image URL helper
-  const getImageUrl = (images) => {
-    if (!images || images.length === 0) {
-      return ; // Default image
+  const getImageUrl = (image) => {
+    if (!image) {
+      return; // Default image
     }
-
-    const imagePath = images[0]; // Get first image
-
-    // If the image path is already a full URL, return it as is
-    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-      return imagePath;
-    }
-
-    // If it's a relative path, combine with base URL
-    if (imagePath.startsWith("/")) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${imagePath}`;
-    }
-
-    // If it's just a filename, combine with base URL
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
+    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
 
   // Fetch all places
@@ -151,16 +139,18 @@ const Destinations = () => {
   // Fetch all packages
   const getAllPackages = async () => {
     setLoading(true);
+    setError("");
     try {
-      const res = await api.get(`/api/package`, {
-        headers: { Authorization: token },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setPackages(Array.isArray(data) ? data : data.packages || []);
+      const res = await api.get(`/api/package/getAllPackages`);
+      console.log("Response from getAllPackages:", res);
+      
+      if (res.data.statusCode === 200) {
+        setPackages(res.data.data.Package);
+      
       }
-    } catch (error) {
-      console.error("Error fetching packages:", error);
+    } catch (err) {
+      console.error("Error fetching packages:", err);
+      setError("Failed to fetch packages");
     } finally {
       setLoading(false);
     }

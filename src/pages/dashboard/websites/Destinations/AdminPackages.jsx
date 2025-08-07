@@ -335,9 +335,7 @@ const AdminPackages = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Price
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Description
-                    </th>
+                  
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Popular
                     </th>
@@ -393,7 +391,7 @@ const AdminPackages = () => {
                             <span className="text-xs text-gray-500">per person</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center gap-2">
                             <span title={pkg.AboutPackage || pkg.description}>
                               {truncateText(pkg.AboutPackage || pkg.description)}
@@ -407,7 +405,7 @@ const AdminPackages = () => {
                               </button>
                             )}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                             pkg.isFeaturedForTop

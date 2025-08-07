@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../Api/ApiService";
 
 const PopularPackages = ({ popularDestinations = [] }) => {
+
+  console.log("popularDestinations",popularDestinations);
+  
   const navigate = useNavigate();
   const truncateText = (text, maxWords = 5) => {
     if (!text) return '';
@@ -14,18 +17,13 @@ const PopularPackages = ({ popularDestinations = [] }) => {
   };
 
   // Helper function to get image URL
-  const getImageUrl = (images) => {
-    if (!images || images.length === 0) {
-      return '/Images/rajastan.png'; // Default image
+  const getImageUrl = (image) => {
+    console.log("Image", image);
+    
+    if (!image ) {
+      return ; // Default image
     }
-    if (images[0].startsWith('http://') || images[0].startsWith('https://')) {
-      return images[0];
-    }
-    if (images[0].startsWith('/')) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
-    }
-    // If it's just a filename, combine with base URL
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
+    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
 
   const responsive = {
@@ -77,9 +75,9 @@ const PopularPackages = ({ popularDestinations = [] }) => {
                       src={getImageUrl(destination.destinationImage)}
                       alt={destination.destinationName}
                       className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        e.target.src = '/Images/rajastan.png';
-                      }}
+                      // onError={(e) => {
+                      //   e.target.src = '/Images/rajastan.png';
+                      // }}
                     />
                     {/* Text overlay at bottom */}
                     <div className="absolute bottom-0 left-0 w-full bg-black/60 p-3">

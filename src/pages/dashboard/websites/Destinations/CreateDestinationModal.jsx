@@ -179,6 +179,34 @@ const CreateDestinationModal = ({
               </div>
             </label>
           </div>
+          <div>
+            <label>
+              Packages:
+              <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
+                {packages.map((pkg) => (
+                  <label
+                    key={pkg.id || pkg._id}
+                    className="flex items-center gap-2"
+                  >
+                    <input
+                      type="checkbox"
+                      value={pkg.id || pkg._id}
+                      checked={selectedPackages.includes(pkg.id || pkg._id)}
+                      onChange={(e) => {
+                        const value = pkg.id || pkg._id;
+                        setSelectedPackages((prev) =>
+                          e.target.checked
+                            ? [...prev, value]
+                            : prev.filter((p) => p !== value)
+                        );
+                      }}
+                    />
+                    <span>{pkg.name || pkg.packageName}</span>
+                  </label>
+                ))}
+              </div>
+            </label>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label>
               Top Attraction:<span className="text-red-500">*</span>

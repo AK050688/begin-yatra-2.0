@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 const UpdateDestinationModal = ({
   show,
   onClose,
-  places,
-  packages,
+  places = [],
+  packages = [],
   editDestination,
   onDestinationUpdated,
   onOpenAddPlace,
@@ -16,6 +16,7 @@ const UpdateDestinationModal = ({
   const user = useSelector(selectUser);
   const token = useSelector(selectAccessToken);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [selectedPackages, setSelectedPackages] = useState([]);
   const [topAttraction, setTopAttraction] = useState("");
   const [whatsGreat, setWhatsGreat] = useState("");
   const [tourGuide, setTourGuide] = useState("");
@@ -28,9 +29,8 @@ const UpdateDestinationModal = ({
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [destinationName, setDestinationName] = useState("");
-  const [selectedPackages, setSelectedPackages] = useState([]);
   const [isPopularDestination, setIsPopularDestination] = useState(false);
-  const [isTrandingDestination, setIsTrandingDestination] = useState(false);
+  const [isTrendingDestination, setIsTrendingDestination] = useState(false); // Fixed typo
   const [imagePreviews, setImagePreviews] = useState([]);
   const [destinationImageFiles, setDestinationImageFiles] = useState([]);
   const [placesImageFiles, setPlacesImageFiles] = useState([]);
@@ -40,20 +40,26 @@ const UpdateDestinationModal = ({
     if (editDestination) {
       setDestinationName(editDestination.destinationName || "");
       setDestinationType(editDestination.destinationType || "domestic");
-      setSelectedPackages(editDestination.packageId || []);
-      setSelectedPlaces(editDestination.places || []);
+      setSelectedPackages(Array.isArray(editDestination.packageId) ? editDestination.packageId : []);
+      setSelectedPlaces(Array.isArray(editDestination.places) ? editDestination.places : []);
       setTopAttraction(editDestination.topAttraction || "");
       setWhatsGreat(editDestination.whatsGreat || "");
       setTourGuide(editDestination.tourGuide || "");
       setFamousFor(editDestination.famousFor || "");
       setCulturalExperiences(editDestination.culturalExperiences || "");
-      setTips(editDestination.Tips || "");
-      setImportantInformation(editDestination.importantInformation || [""]);
-      setTopPlaces(editDestination.topPlaces || [""]);
-      setIsPopularDestination(editDestination.isPopularDestination || false);
-      setIsTrandingDestination(editDestination.isTrandingDestination || false);
-      // Set initial image previews from editDestination if available
-      setImagePreviews(editDestination.destinationImage || []);
+      setTips(editDestination.tips || ""); // Fixed case to match backend
+      setImportantInformation(
+        Array.isArray(editDestination.importantInformation) ? editDestination.importantInformation : [""]
+      );
+      setTopPlaces(Array.isArray(editDestination.topPlaces) ? editDestination.topPlaces : [""]);
+      setIsPopularDestination(!!editDestination.isPopularDestination);
+      setIsTrendingDestination(!!editDestination.isTrendingDestination); // Fixed typo
+      
+      // Ensure imagePreviews is always an array
+      const destinationImages = editDestination.destinationImage;
+      setImagePreviews(
+        Array.isArray(destinationImages) ? destinationImages : []
+      );
     }
   }, [editDestination, show]);
 
@@ -71,7 +77,7 @@ const UpdateDestinationModal = ({
   useEffect(() => {
     return () => {
       imagePreviews.forEach((preview) => {
-        if (!preview.startsWith('http')) {
+        if (typeof preview === "string" && preview.startsWith("blob:")) {
           URL.revokeObjectURL(preview);
         }
       });
@@ -89,9 +95,20 @@ const UpdateDestinationModal = ({
   const handleRemoveField = (setter, values, idx) =>
     setter(values.filter((_, i) => i !== idx));
 
-  // Handle form submission
+  // Handle package selection
+  const handlePackageChange = (packageId, checked) => {
+    setSelectedPackages((prev) =>
+      checked ? [...prev, packageId] : prev.filter((id) => id !== packageId)
+    );
+  };
+
+  // Handle form submission with basic validation
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!destinationName.trim()) {
+      setMessage("Destination Name is required.");
+      return;
+    }
     setSubmitting(true);
     setMessage("");
     try {
@@ -102,7 +119,7 @@ const UpdateDestinationModal = ({
       formData.append("tourGuide", tourGuide);
       formData.append("famousFor", famousFor);
       formData.append("culturalExperiences", culturalExperiences);
-      formData.append("Tips", tips);
+      formData.append("tips", tips); // Fixed case to match backend
       formData.append(
         "importantInformation",
         JSON.stringify(importantInformation.filter(Boolean))
@@ -112,7 +129,7 @@ const UpdateDestinationModal = ({
       formData.append("destinationName", destinationName);
       formData.append("packageId", JSON.stringify(selectedPackages));
       formData.append("isPopularDestination", isPopularDestination);
-      formData.append("isTrandingDestination", isTrandingDestination);
+      formData.append("isTrendingDestination", isTrendingDestination); // Fixed typo
 
       // Append destination images
       if (destinationImageFiles.length > 0) {
@@ -175,6 +192,7 @@ const UpdateDestinationModal = ({
                 value={destinationName}
                 onChange={(e) => setDestinationName(e.target.value)}
                 className="w-full border rounded px-2 py-1"
+                required
               />
             </label>
             <label>
@@ -194,28 +212,32 @@ const UpdateDestinationModal = ({
               Places:
               <div className="flex gap-2 items-start">
                 <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
-                  {places.map((place) => (
-                    <label
-                      key={place.id || place._id}
-                      className="flex items-center gap-2"
-                    >
-                      <input
-                        type="checkbox"
-                        value={place.id || place._id}
-                        checked={selectedPlaces.includes(place.id || place._id)}
-                        onChange={(e) => {
-                          const value = place.id || place._id;
-                          setSelectedPlaces((prev) =>
-                            e.target.checked
-                              ? [...prev, value]
-                              : prev.filter((p) => p !== value)
-                          );
-                        }}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
-                      />
-                      <span>{place.name || place.placeName}</span>
-                    </label>
-                  ))}
+                  {places.length > 0 ? (
+                    places.map((place) => (
+                      <label
+                        key={place.id || place._id}
+                        className="flex items-center gap-2"
+                      >
+                        <input
+                          type="checkbox"
+                          value={place.id || place._id}
+                          checked={selectedPlaces.includes(place.id || place._id)}
+                          onChange={(e) => {
+                            const value = place.id || place._id;
+                            setSelectedPlaces((prev) =>
+                              e.target.checked
+                                ? [...prev, value]
+                                : prev.filter((p) => p !== value)
+                            );
+                          }}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+                        />
+                        <span>{place.name || place.placeName}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <p>No places available</p>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -224,6 +246,34 @@ const UpdateDestinationModal = ({
                 >
                   + Add Place
                 </button>
+              </div>
+            </label>
+          </div>
+          <div>
+            <label>
+              Packages (Optional):
+              <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
+                {packages.length > 0 ? (
+                  packages.map((pkg) => (
+                    <label
+                      key={pkg.id || pkg._id}
+                      className="flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        value={pkg.id || pkg._id}
+                        checked={selectedPackages.includes(pkg.id || pkg._id)}
+                        onChange={(e) =>
+                          handlePackageChange(pkg.id || pkg._id, e.target.checked)
+                        }
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
+                      />
+                      <span>{pkg.name || pkg.packageName}</span>
+                    </label>
+                  ))
+                ) : (
+                  <p>No packages available</p>
+                )}
               </div>
             </label>
           </div>
@@ -377,7 +427,7 @@ const UpdateDestinationModal = ({
           <div>
             <label>
               Destination Images:
-              {imagePreviews.length > 0 ? (
+              {Array.isArray(imagePreviews) && imagePreviews.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
                   {imagePreviews.map((preview, index) => (
                     <img
@@ -397,7 +447,7 @@ const UpdateDestinationModal = ({
                   className="w-full mt-2"
                 />
               )}
-              {imagePreviews.length > 0 && (
+              {Array.isArray(imagePreviews) && imagePreviews.length > 0 && (
                 <div className="mt-2">
                   <button
                     type="button"
@@ -456,8 +506,8 @@ const UpdateDestinationModal = ({
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={isTrandingDestination}
-                onChange={(e) => setIsTrandingDestination(e.target.checked)}
+                checked={isTrendingDestination}
+                onChange={(e) => setIsTrendingDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
               Trending Destination

@@ -4,23 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../Api/ApiService";
 
 const TrendingPackages = ({ trendingPackages = [] }) => {
+
+  console.log("trendingPackages",trendingPackages);
+  
+
   const navigate = useNavigate();
 
   const getImageUrl = (image) => {
-    if (!image) return '/Images/goa.jpeg';
-
-    // Handle if image is an array
-    const img = Array.isArray(image) ? image[0] : image;
-
-    if (img.startsWith("http://") || img.startsWith("https://")) {
-      return img;
+    if (!image) return;
+    if (image.startsWith("/")) {
+      return `https://begin-yatra-nq40.onrender.com/public/temp${image}`;
     }
 
-    if (img.startsWith("/")) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${img}`;
-    }
-
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${img}`;
+    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
 
   const handlePackageClick = (packageId) => {
@@ -58,9 +54,9 @@ const TrendingPackages = ({ trendingPackages = [] }) => {
                   src={imageUrl}
                   alt={destination.destinationName || pkg.packageName}
                   className="w-full h-40 object-cover rounded-t-lg"
-                  onError={(e) => {
-                    e.target.src = "/Images/goa.jpeg";
-                  }}
+                  // onError={(e) => {
+                  //   e.target.src = "/Images/goa.jpeg";
+                  // }}
                 />
 
                 <div className="p-4 space-y-2">

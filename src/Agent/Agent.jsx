@@ -137,7 +137,7 @@ const Agent = () => {
       </div>
       {/* Review Cards Carousel */}
       {!loading && !error && (
-        <div className="mt-12 w-full relative">
+        <div className="mt-12 w-full mx-20 relative">
           {reviews.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">
@@ -147,7 +147,7 @@ const Agent = () => {
           ) : (
             <>
               <div className="w-full mx-20">
-                <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {paginatedReviews.map((review, index) => (
                     <div
                       key={review._id || index}

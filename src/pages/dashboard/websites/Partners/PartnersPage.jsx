@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 
 const PartnersPage = () => {
   const token = useSelector(selectAccessToken);
- const [partners, setPartners] = useState([]);
- const [loading, setLoading] = useState(false)
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -20,8 +20,8 @@ const PartnersPage = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   // Fetch all partners
- const fetchPartners = async (name = "") => {
-    setLoading(true)
+  const fetchPartners = async (name = "") => {
+    setLoading(true);
     try {
       const response = await api.get(
         `/api/leads/getAllpartners${name ? `?name=${name}` : ""}`,
@@ -39,10 +39,10 @@ const PartnersPage = () => {
         setPartners(response.data.data);
       }
     } catch (error) {
-     console.error("Error fetching partners:", error);
-     toast.error(error)
-    }finally {
-      setLoading(false)
+      console.error("Error fetching partners:", error);
+      toast.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,15 +57,14 @@ const PartnersPage = () => {
   };
 
   // Handle form submission for adding a partner
- const handleAddPartner = async (e) => {
-   
+  const handleAddPartner = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("name", formData.name);
     data.append("description", formData.description);
     data.append("isListed", formData.isListed);
     if (formData.logo) data.append("logo", formData.logo);
-   setLoading(true)
+    setLoading(true);
     try {
       await api.post("/api/leads/partners", data, {
         headers: {
@@ -73,13 +72,13 @@ const PartnersPage = () => {
           Authorization: token,
         },
       });
-     fetchPartners();
-     toast.success("Partner Add Successfully...")
+      fetchPartners();
+      toast.success("Partner Add Successfully...");
       setFormData({ name: "", description: "", logo: null, isListed: true });
     } catch (error) {
       console.error("Error adding partner:", error);
-    }finally {
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,8 +88,8 @@ const PartnersPage = () => {
       name: formData.name,
       description: formData.description,
       isListed: formData.isListed,
-   };
-      setLoading(true)
+    };
+    setLoading(true);
 
     try {
       await api.put(`/api/leads/updatePartners/${id}`, data, {
@@ -99,22 +98,22 @@ const PartnersPage = () => {
           Authorization: token,
         },
       });
-     fetchPartners();
-     toast.success("Partner updated successfully...")
+      fetchPartners();
+      toast.success("Partner updated successfully...");
       setFormData({ name: "", description: "", logo: null, isListed: true });
       setUpdateId(null);
       setShowUpdateModal(false);
     } catch (error) {
-     console.error("Error updating partner:", error);
-     toast.error(error)
-    }finally {
-      setLoading(false)
+      console.error("Error updating partner:", error);
+      toast.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle partner deletion
- const handleDeletePartner = async (id) => {
-      setLoading(true)
+  const handleDeletePartner = async (id) => {
+    setLoading(true);
     if (window.confirm("Are you sure you want to delete this partner?")) {
       try {
         await api.delete(`/api/leads/deletePartners/${id}`, {
@@ -122,14 +121,14 @@ const PartnersPage = () => {
             Authorization: token,
           },
         });
-       fetchPartners();
-       toast.success("Partner deleted successfully...")
+        fetchPartners();
+        toast.success("Partner deleted successfully...");
       } catch (error) {
-       console.error("Error deleting partner:", error);
-       toast.success(error)
-      }finally {
-      setLoading(false)
-    }
+        console.error("Error deleting partner:", error);
+        toast.success(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -171,10 +170,10 @@ const PartnersPage = () => {
     fetchPartners();
   }, []);
 
-   if (loading) {
+  if (loading) {
     <div className="flex justify-center items-center h-32">
-  <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-</div>
+      <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>;
   }
 
   return (
@@ -218,8 +217,7 @@ const PartnersPage = () => {
           </div> */}
           <button
             onClick={handleAddPartner}
-            className="w-full bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600"
-          >
+            className="w-full bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600">
             Add Partner
           </button>
         </div>
@@ -237,11 +235,10 @@ const PartnersPage = () => {
             className="w-full p-2 border rounded-md"
           />
           <button
-       onClick={handleSearch}
-       disabled={loading}
-            className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600"
-          >
-           { loading? "Searching...":"Search"}
+            onClick={handleSearch}
+            disabled={loading}
+            className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600">
+            {loading ? "Searching..." : "Search"}
           </button>
         </div>
       </div>
@@ -277,25 +274,21 @@ const PartnersPage = () => {
                 <td className="p-3">{partner.isListed ? "Yes" : "No"}</td>
                 <td className="p-3 flex space-x-2">
                   <button
-                onClick={() => handleEditClick(partner)}
-                disabled={loading}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
-                  >
-                    {loading?"Editing...":"Edit"}
+                    onClick={() => handleEditClick(partner)}
+                    disabled={loading}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                    {loading ? "Editing..." : "Edit"}
                   </button>
                   <button
-                onClick={() => handleViewDetails(partner)}
-                
-                    className="bg-blue-400 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                  >
+                    onClick={() => handleViewDetails(partner)}
+                    className="bg-blue-400 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                     View Details
                   </button>
-               <button
-                disabled={loading}
+                  <button
+                    disabled={loading}
                     onClick={() => handleDeletePartner(partner._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                  >
-                    {loading?"Deleting...":"Delete"}
+                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
+                    {loading ? "Deleting..." : "Delete"}
                   </button>
                 </td>
               </tr>
@@ -338,17 +331,15 @@ const PartnersPage = () => {
                 <label>Is Listed</label>
               </div>
               <div className="flex space-x-4">
-         <button
-          disabled={loading}
+                <button
+                  disabled={loading}
                   onClick={() => handleUpdatePartner(updateId)}
-                  className="w-full bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600"
-                >
-                  {loading ? "Updating..." :"Update Partner"}
+                  className="w-full bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600">
+                  {loading ? "Updating..." : "Update Partner"}
                 </button>
                 <button
                   onClick={closeUpdateModal}
-                  className="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
-                >
+                  className="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600">
                   Cancel
                 </button>
               </div>
@@ -379,8 +370,7 @@ const PartnersPage = () => {
             </p>
             <button
               onClick={closeViewModal}
-              className="mt-4 w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
-            >
+              className="mt-4 w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600">
               Close
             </button>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import CreateDestinationModal from "./CreateDestinationModal";
-import UpdateDestinationModal from './UpdateDestinationModal';
+import UpdateDestinationModal from "./UpdateDestinationModal";
 import AddPlaceModal from "./AddPlaceModal";
 import CreatePackageModal from "./CreatePackageModal";
 import { useSelector } from "react-redux";
@@ -26,6 +26,8 @@ const Destinations = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showCreatePackageModal, setShowCreatePackageModal] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState(null);
+  console.log("selectedDestination", selectedDestination);
+
   const [places, setPlaces] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -106,7 +108,7 @@ const Destinations = () => {
   // Get image URL helper
   const getImageUrl = (images) => {
     if (!images || images.length === 0) {
-      return "/public/Images/banner.jpg"; // Default image
+      return ; // Default image
     }
 
     const imagePath = images[0]; // Get first image
@@ -167,9 +169,9 @@ const Destinations = () => {
   // Helper function to calculate match score for sorting
   const calculateMatchScore = (destination, searchTerm) => {
     if (!searchTerm) return 0;
-    const name = destination.destinationName?.toLowerCase() || '';
+    const name = destination.destinationName?.toLowerCase() || "";
     searchTerm = searchTerm.toLowerCase().trim();
-    
+
     // Exact match or starts with search term gets highest score
     if (name === searchTerm) return 3;
     if (name.startsWith(searchTerm)) return 2;
@@ -192,22 +194,30 @@ const Destinations = () => {
     try {
       const params = new URLSearchParams();
       Object.entries(filterValues).forEach(([key, value]) => {
-        if (value !== '' && value !== undefined && value !== null) {
+        if (value !== "" && value !== undefined && value !== null) {
           params.append(key, value);
         }
       });
-      params.append('page', pageNum);
-      params.append('limit', PAGE_SIZE);
+      params.append("page", pageNum);
+      params.append("limit", PAGE_SIZE);
 
-      const res = await api.get(`/api/destination/getAllDestination?${params.toString()}`, {
-        headers: { 'Authorization': token }
-      });
+      const res = await api.get(
+        `/api/destination/getAllDestination?${params.toString()}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      console.log(">>>>>>>>>>>>>>>>>>>>", res.data.data.destinations);
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         let fetchedDestinations = res.data.data.destinations || [];
-        
+
         // Sort destinations based on search term (combine search and destinationName)
-        const searchTerm = (filterValues.search || filterValues.destinationName || '').trim();
+        const searchTerm = (
+          filterValues.search ||
+          filterValues.destinationName ||
+          ""
+        ).trim();
         if (searchTerm) {
           fetchedDestinations = fetchedDestinations.sort((a, b) => {
             const scoreA = calculateMatchScore(a, searchTerm);
@@ -248,7 +258,7 @@ const Destinations = () => {
     getAllDestinations(1);
     setFilters((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (checked ? 'true' : '') : value
+      [name]: type === "checkbox" ? (checked ? "true" : "") : value,
     }));
     setPage(1); // Reset to first page on filter change
   };
@@ -344,13 +354,12 @@ const Destinations = () => {
                 </div>
               )}
             </div>
-          
+
             <select
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
-            >
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -383,15 +392,13 @@ const Destinations = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="text-gray-600 hover:text-gray-800 text-sm"
-            >
+              className="text-gray-600 hover:text-gray-800 text-sm">
               Clear Filters
             </button>
             <button
               type="button"
               onClick={() => setShowDestinationModal(true)}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm font-medium"
-            >
+              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm font-medium">
               <FaPlus className="text-sm" />
               Create Destination
             </button>
@@ -413,8 +420,7 @@ const Destinations = () => {
           <p className="text-red-600">{error}</p>
           <button
             onClick={() => getAllDestinations(page)}
-            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Retry
           </button>
         </div>
@@ -435,7 +441,7 @@ const Destinations = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Destination Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Top Attraction
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -443,7 +449,7 @@ const Destinations = () => {
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Tour Guide
-                    </th>
+                    </th> */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
@@ -463,8 +469,7 @@ const Destinations = () => {
                     <tr>
                       <td
                         colSpan="9"
-                        className="px-6 py-4 text-center text-gray-500"
-                      >
+                        className="px-6 py-4 text-center text-gray-500">
                         No destinations found.
                       </td>
                     </tr>
@@ -477,9 +482,9 @@ const Destinations = () => {
                               className="h-12 w-12 rounded-lg object-cover"
                               src={getImageUrl(dest.destinationImage)}
                               alt={dest.destinationName}
-                              onError={(e) => {
-                                e.target.src = "/public/Images/banner.jpg";
-                              }}
+                              // onError={(e) => {
+                              //   e.target.src = "/public/Images/banner.jpg";
+                              // }}
                             />
                           </div>
                         </td>
@@ -487,13 +492,12 @@ const Destinations = () => {
                           <div className="flex items-center gap-2">
                             <span
                               title={dest.destinationName}
-                              className="font-medium"
-                            >
+                              className="font-medium">
                               {dest.destinationName}
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center gap-2">
                             <span title={dest.topAttraction}>
                               {truncateText(dest.topAttraction)}
@@ -537,7 +541,7 @@ const Destinations = () => {
                               </button>
                             )}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -546,8 +550,7 @@ const Destinations = () => {
                                 : dest.destinationStatus === "inactive"
                                 ? "bg-red-100 text-red-800"
                                 : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
+                            }`}>
                             {dest.destinationStatus}
                           </span>
                         </td>
@@ -557,8 +560,7 @@ const Destinations = () => {
                               dest.isPopularDestination
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
+                            }`}>
                             {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </td>
@@ -568,8 +570,7 @@ const Destinations = () => {
                               dest.isTrandingDestination
                                 ? "bg-purple-100 text-purple-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
+                            }`}>
                             {dest.isTrandingDestination ? "Yes" : "No"}
                           </span>
                         </td>
@@ -578,15 +579,13 @@ const Destinations = () => {
                             <button
                               title="View Details"
                               onClick={() => handleViewDetails(dest)}
-                              className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
-                            >
+                              className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition">
                               <FaEye className="text-sm" />
                             </button>
                             <button
                               title="Create Package"
                               onClick={() => handleCreatePackage(dest)}
-                              className="p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition"
-                            >
+                              className="p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition">
                               <FaSuitcase className="text-sm" />
                             </button>
                             <button
@@ -595,15 +594,13 @@ const Destinations = () => {
                                 setSelectedDestination(dest);
                                 setShowUpdateModal(true);
                               }}
-                              className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition"
-                            >
+                              className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition">
                               <FaEdit className="text-sm" />
                             </button>
                             <button
                               title="Delete"
                               onClick={() => handleDeleteDestination(dest._id)}
-                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
-                            >
+                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition">
                               <FaTrash className="text-sm" />
                             </button>
                           </div>
@@ -632,25 +629,23 @@ const Destinations = () => {
                           className="h-16 w-16 rounded-lg object-cover"
                           src={getImageUrl(dest.destinationImage)}
                           alt={dest.destinationName}
-                          onError={(e) => {
-                            e.target.src = "/public/Images/banner.jpg";
-                          }}
+                          // onError={(e) => {
+                          //   e.target.src = "/public/Images/banner.jpg";
+                          // }}
                         />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3
                             className="text-sm font-medium text-gray-900"
-                            title={dest.destinationName}
-                          >
+                            title={dest.destinationName}>
                             {dest.destinationName}
                           </h3>
                         </div>
                         <div className="flex items-center gap-2 mb-1">
                           <p
                             className="text-sm text-gray-500"
-                            title={dest.topAttraction}
-                          >
+                            title={dest.topAttraction}>
                             {truncateText(dest.topAttraction)}
                           </p>
                         </div>
@@ -663,8 +658,7 @@ const Destinations = () => {
                               : dest.destinationStatus === "inactive"
                               ? "bg-red-100 text-red-800"
                               : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
+                          }`}>
                           {dest.destinationStatus}
                         </span>
                       </div>
@@ -695,8 +689,7 @@ const Destinations = () => {
                               dest.isPopularDestination
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
+                            }`}>
                             {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </div>
@@ -709,8 +702,7 @@ const Destinations = () => {
                               dest.isTrandingDestination
                                 ? "bg-purple-100 text-purple-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
+                            }`}>
                             {dest.isTrandingDestination ? "Yes" : "No"}
                           </span>
                         </div>
@@ -721,16 +713,14 @@ const Destinations = () => {
                       <button
                         title="View Details"
                         onClick={() => handleViewDetails(dest)}
-                        className="flex-1 p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-xs"
-                      >
+                        className="flex-1 p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-xs">
                         <FaEye className="inline mr-1" />
                         View Details
                       </button>
                       <button
                         title="Create Package"
                         onClick={() => handleCreatePackage(dest)}
-                        className="flex-1 p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition text-xs"
-                      >
+                        className="flex-1 p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition text-xs">
                         <FaSuitcase className="inline mr-1" />
                         Package
                       </button>
@@ -740,16 +730,14 @@ const Destinations = () => {
                           setSelectedDestination(dest);
                           setShowUpdateModal(true);
                         }}
-                        className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs"
-                      >
+                        className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs">
                         <FaEdit className="inline mr-1" />
                         Edit
                       </button>
                       <button
                         title="Delete"
                         onClick={() => handleDeleteDestination(dest._id)}
-                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs"
-                      >
+                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs">
                         <FaTrash className="inline mr-1" />
                         Delete
                       </button>
@@ -774,8 +762,7 @@ const Destinations = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
-              >
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 ← Previous
               </button>
               <div className="flex items-center gap-1">
@@ -787,8 +774,7 @@ const Destinations = () => {
                       pageNum === page
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
+                    }`}>
                     {pageNum}
                   </button>
                 ))}
@@ -796,8 +782,7 @@ const Destinations = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
-              >
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
                 Next →
               </button>
             </div>
@@ -806,16 +791,14 @@ const Destinations = () => {
             <button
               onClick={() => handlePageChange(1)}
               disabled={page === 1}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
-            >
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
               First
             </button>
             <span className="text-gray-400">|</span>
             <button
               onClick={() => handlePageChange(totalPages)}
               disabled={page === totalPages}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
-            >
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
               Last
             </button>
           </div>
@@ -832,8 +815,7 @@ const Destinations = () => {
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition"
-              >
+                className="text-gray-400 hover:text-gray-600 transition">
                 <FaTimes className="text-xl" />
               </button>
             </div>
@@ -856,9 +838,9 @@ const Destinations = () => {
                                 index + 1
                               }`}
                               className="w-full h-24 object-cover rounded-lg"
-                              onError={(e) => {
-                                e.target.src = "/public/Images/banner.jpg";
-                              }}
+                              // onError={(e) => {
+                              //   e.target.src = "/public/Images/banner.jpg";
+                              // }}
                             />
                           </div>
                         )
@@ -887,8 +869,7 @@ const Destinations = () => {
                         : selectedDestination.destinationStatus === "inactive"
                         ? "bg-red-100 text-red-800"
                         : "bg-yellow-100 text-yellow-800"
-                    }`}
-                  >
+                    }`}>
                     {selectedDestination.destinationStatus}
                   </span>
                 </div>
@@ -901,8 +882,7 @@ const Destinations = () => {
                       selectedDestination.isPopularDestination
                         ? "bg-blue-100 text-blue-800"
                         : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
+                    }`}>
                     {selectedDestination.isPopularDestination ? "Yes" : "No"}
                   </span>
                 </div>
@@ -915,8 +895,7 @@ const Destinations = () => {
                       selectedDestination.isTrandingDestination
                         ? "bg-purple-100 text-purple-800"
                         : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
+                    }`}>
                     {selectedDestination.isTrandingDestination ? "Yes" : "No"}
                   </span>
                 </div>
@@ -1008,8 +987,7 @@ const Destinations = () => {
             <div className="flex justify-end gap-3 p-6 border-t">
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition"
-              >
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition">
                 Close
               </button>
               <button
@@ -1018,8 +996,7 @@ const Destinations = () => {
                   setSelectedDestination(selectedDestination);
                   setShowUpdateModal(true);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-              >
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                 Edit Destination
               </button>
             </div>

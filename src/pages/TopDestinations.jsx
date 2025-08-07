@@ -211,9 +211,9 @@ const TopDestinations = () => {
                     src={dest.image}
                     alt={dest.name}
                     className="w-full h-48 object-cover"
-                    onError={(e) => {
-                      e.target.src = "/public/Images/banner.jpg";
-                    }}
+                    // onError={(e) => {
+                    //   e.target.src = "/public/Images/banner.jpg";
+                    // }}
                   />
                   <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
                     <FaStar className="h-4 w-4 text-yellow-500" />

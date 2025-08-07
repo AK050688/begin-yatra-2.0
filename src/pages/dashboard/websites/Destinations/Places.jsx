@@ -68,7 +68,7 @@ const Places = () => {
     console.log("IMage????", image);
     
     if (!image) {
-      return "/public/Images/banner.jpg"; // Default image
+      return ; // Default image
     }
 
     // If the image path is already a full URL, return it as is
@@ -330,9 +330,9 @@ const Places = () => {
                               className="h-12 w-12 rounded-lg object-cover"
                               src={getImageUrl(place.placeImage)}
                               alt={place.placeName}
-                              onError={(e) => {
-                                e.target.src = "/public/Images/banner.jpg";
-                              }}
+                              // onError={(e) => {
+                              //   e.target.src = "/public/Images/banner.jpg";
+                              // }}
                             />
                           </div>
                         </td>
@@ -426,9 +426,9 @@ const Places = () => {
                           className="h-16 w-16 rounded-lg object-cover"
                           src={getImageUrl(place.placeImage)}
                           alt={place.placeName}
-                          onError={(e) => {
-                            e.target.src = "/public/Images/banner.jpg";
-                          }}
+                          // onError={(e) => {
+                          //   e.target.src = "/public/Images/banner.jpg";
+                          // }}
                         />
                       </div>
                       <div className="flex-1">
@@ -597,9 +597,9 @@ const Places = () => {
                     src={getImageUrl(selectedPlace.placeImage)}
                     alt={selectedPlace.placeName}
                     className="w-full h-48 object-cover rounded-lg"
-                    onError={(e) => {
-                      e.target.src = "/public/Images/banner.jpg";
-                    }}
+                    // onError={(e) => {
+                    //   e.target.src = "/public/Images/banner.jpg";
+                    // }}
                   />
                 </div>
               )}

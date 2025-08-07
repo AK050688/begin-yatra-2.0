@@ -36,15 +36,10 @@ const MyLeads = () => {
   };
   const getLeads = async (page) => {
     try {
-      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
       const response = await api.get(`/api/leads?page=${page}&limit=${50}`);
       // console.log("re", response.data.data.leads);
-
       const { leads, ...paginate } = response.data.data;
-
       // console.log("my leads", leads);
-
       setPagination({
         limit: 50,
         totalDocs: paginate.totalLeads,
@@ -52,7 +47,6 @@ const MyLeads = () => {
         hasPrevPage: paginate.hasPrevPage,
         page: paginate.currentPage,
       });
-
       if (!Array.isArray(leads)) {
         console.error("Leads is not an array:", leads);
         setSavedLeads([]);

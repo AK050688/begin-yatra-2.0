@@ -180,7 +180,7 @@ const PartnersPage = () => {
     <div className="container mx-auto p-4">
       {/* Add Partner Form */}
       <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Add Partner</h2>
+        <h2 className="text-xl text-black font-semibold mb-4">Add Partner</h2>
         <div className="space-y-4">
           <input
             type="text"
@@ -188,20 +188,20 @@ const PartnersPage = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Partner Name"
-            className="w-full p-2 border rounded-md"
+            className="w-full text-black  p-2 border rounded-md"
           />
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
             placeholder="Description"
-            className="w-full p-2 border rounded-md"
+            className="w-full text-black p-2 border rounded-md"
           />
           <input
             type="file"
             name="logo"
             onChange={handleInputChange}
-            className="w-full p-2 border rounded-md"
+            className="w-full text-black p-2 border rounded-md"
           />
           {/* <div className="flex items-center">
             <input
@@ -217,7 +217,7 @@ const PartnersPage = () => {
           </div> */}
           <button
             onClick={handleAddPartner}
-            className="w-full bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600">
+            className="w-full text-black bg-blue-400 text-white p-2 rounded-md hover:bg-blue-600">
             Add Partner
           </button>
         </div>
@@ -225,14 +225,14 @@ const PartnersPage = () => {
 
       {/* Search Partners */}
       <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Search Partners</h2>
+        <h2 className="text-xl text-black font-semibold mb-4">Search Partners</h2>
         <div className="flex space-x-4">
           <input
             type="text"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             placeholder="Search by name"
-            className="w-full p-2 border rounded-md"
+            className="w-full text-black p-2 border rounded-md"
           />
           <button
             onClick={handleSearch}
@@ -244,20 +244,20 @@ const PartnersPage = () => {
       </div>
 
       {/* Partners Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-x-auto">
+      <div className="bg-white  rounded-lg shadow-md overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-3 text-left">Logo</th>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Description</th>
-              <th className="p-3 text-left">Listed</th>
-              <th className="p-3 text-left">Actions</th>
+              <th className="p-3 text-black text-left">Logo</th>
+              <th className="p-3 text-black text-left">Name</th>
+              <th className="p-3 text-black text-left">Description</th>
+              <th className="p-3 text-black text-left">Listed</th>
+              <th className="p-3 text-black text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {partners.map((partner) => (
-              <tr key={partner._id} className="border-b">
+              <tr key={partner._id} className="text-black border-b">
                 <td className="p-3">
                   {partner.image && (
                     <img
@@ -301,7 +301,7 @@ const PartnersPage = () => {
       {showUpdateModal && (
         <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-lg w-full">
-            <h2 className="text-xl font-semibold mb-4">Update Partner</h2>
+            <h2 className="text-xl text-black font-semibold mb-4">Update Partner</h2>
             <div className="space-y-4">
               <input
                 type="text"
@@ -309,14 +309,14 @@ const PartnersPage = () => {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Partner Name"
-                className="w-full p-2 border rounded-md"
+                className="w-full text-black p-2 border rounded-md"
               />
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 placeholder="Description"
-                className="w-full p-2 border rounded-md"
+                className="w-full text-black p-2 border rounded-md"
               />
               <div className="flex items-center">
                 <input
@@ -326,9 +326,9 @@ const PartnersPage = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, isListed: e.target.checked })
                   }
-                  className="mr-2"
+                  className="mr-2 "
                 />
-                <label>Is Listed</label>
+                <label className="text-black">Is Listed</label>
               </div>
               <div className="flex space-x-4">
                 <button
@@ -352,11 +352,11 @@ const PartnersPage = () => {
       {selectedPartner && (
         <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-lg w-full">
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-xl text-black font-semibold mb-4">
               {selectedPartner.name}
             </h2>
             <p>
-              <strong>Description:</strong> {selectedPartner.description}
+              <strong className="text-black">Description:</strong> {selectedPartner.description}
             </p>
             {selectedPartner.image && (
               <img
@@ -365,8 +365,8 @@ const PartnersPage = () => {
                 className="w-32 h-32 object-cover my-2"
               />
             )}
-            <p>
-              <strong>Listed:</strong> {selectedPartner.isListed ? "Yes" : "No"}
+            <p className="text-black">
+              <strong className="text-black">Listed:</strong> {selectedPartner.isListed ? "Yes" : "No"}
             </p>
             <button
               onClick={closeViewModal}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../../store/userSlice';
-import api from '../../../../Api/ApiService';
+import api, { getImageUrl } from '../../../../Api/ApiService';
 import { FaTimes, FaUpload, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+
 
 const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
   const token = useSelector(selectAccessToken);
@@ -136,7 +137,7 @@ const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
                   name="placeImage"
                   accept="image/*"
                   onChange={handleFormChange}
-                  className="hidden"
+                  className="hidden text-black"
                   id="placeImage"
                   ref={placeImageRef}
                 />
@@ -155,7 +156,7 @@ const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
               {imagePreview && (
                 <div className="flex-shrink-0 relative">
                   <img
-                    src={imagePreview}
+                    src={getImageUrl(imagePreview)}
                     alt="Preview"
                     className="h-32 w-32 object-cover rounded-lg"
                   />
@@ -188,7 +189,7 @@ const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
               value={form.placeName}
               onChange={handleFormChange}
               placeholder="Enter place name"
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full text-black border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
@@ -204,7 +205,7 @@ const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
               onChange={handleFormChange}
               placeholder="Describe the place..."
               rows="4"
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full text-black border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
@@ -218,7 +219,7 @@ const UpdatePlaceModal = ({ show, onClose, editPlace, onPlaceUpdated }) => {
               name="status"
               value={form.status}
               onChange={handleFormChange}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             >
               <option value="active">Active</option>

@@ -116,10 +116,10 @@ const CreateDestinationModal = ({
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold text-center mb-4">Create Destination</h2>
+        <h2 className="text-2xl text-black font-bold text-center mb-4">Create Destination</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label>
+            <label className="text-black">
               Destination Name: <span className="text-red-500">*</span>
               <input
                 type="text"
@@ -129,7 +129,7 @@ const CreateDestinationModal = ({
                 required
               />
             </label>
-            <label>
+            <label className="text-black">
               Destination Type:<span className="text-red-500">*</span>
               <select
                 required
@@ -143,7 +143,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Places:<span className="text-red-500">*</span>
               <div className="flex gap-2 items-start">
                 <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
@@ -180,7 +180,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Packages:
               <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
                 {packages.map((pkg) => (
@@ -208,7 +208,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label>
+            <label className="text-black">
               Top Attraction:<span className="text-red-500">*</span>
               <input
                 required
@@ -218,7 +218,7 @@ const CreateDestinationModal = ({
                 className="w-full border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               What's Great:<span className="text-red-500">*</span>
               <input
                 required
@@ -228,7 +228,7 @@ const CreateDestinationModal = ({
                 className="w-full border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Tour Guide:<span className="text-red-500">*</span>
               <input
                 required
@@ -238,7 +238,7 @@ const CreateDestinationModal = ({
                 className="w-full border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Famous For:<span className="text-red-500">*</span>
               <input
                 required
@@ -248,7 +248,7 @@ const CreateDestinationModal = ({
                 className="w-full border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Cultural Experiences:<span className="text-red-500">*</span>
               <input
                 type="text"
@@ -258,7 +258,7 @@ const CreateDestinationModal = ({
                 required
               />
             </label>
-            <label>
+            <label className="text-black">
               Tips:<span className="text-red-500">*</span>
               <input
                 type="text"
@@ -270,7 +270,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Important Information:<span className="text-red-500">*</span>
               {importantInformation.map((info, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
@@ -320,7 +320,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Top Places:<span className="text-red-500">*</span>
               {topPlaces.map((place, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
@@ -361,7 +361,7 @@ const CreateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Destination Images:<span className="text-red-500">*</span>
               <input
                 type="file"
@@ -381,7 +381,7 @@ const CreateDestinationModal = ({
                 onChange={(e) => setIsPopularDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Popular Destination
+            <span className="text-black">  Popular Destination</span> 
             </label>
             <label className="flex items-center gap-2">
               <input
@@ -390,7 +390,7 @@ const CreateDestinationModal = ({
                 onChange={(e) => setIsTrandingDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Trending Destination
+            <span className="text-black"> Trending Destination</span> 
             </label>
           </div>
           <button

@@ -26,21 +26,17 @@ const Destinations = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showCreatePackageModal, setShowCreatePackageModal] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState(null);
-  console.log("selectedDestination", selectedDestination);
-
   const [places, setPlaces] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [destinations, setDestinations] = useState([]);
-  console.log("destinations", destinations);
-
   const [filters, setFilters] = useState({
     search: "",
     status: "",
     destinationName: "",
     isPopularDestination: "",
-    isTrandingDestination: "",
+    isTrendingDestination: "", // Fixed typo
   });
   const [message, setMessage] = useState("");
   const [page, setPage] = useState(1);
@@ -110,7 +106,12 @@ const Destinations = () => {
   // Get image URL helper
   const getImageUrl = (image) => {
     if (!image) {
-      return; // Default image
+      return "/public/Images/banner.jpg"; // Default image
+    }
+    if (Array.isArray(image)) {
+      return image.length > 0
+        ? `https://begin-yatra-nq40.onrender.com/public/temp/${image[0]}`
+        : "/public/Images/banner.jpg";
     }
     return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
   };
@@ -124,7 +125,6 @@ const Destinations = () => {
           Authorization: token,
         },
       });
-      console.log("res places", res);
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         setPlaces(res.data.data.places || []);
       }
@@ -142,11 +142,8 @@ const Destinations = () => {
     setError("");
     try {
       const res = await api.get(`/api/package/getAllPackages`);
-      console.log("Response from getAllPackages:", res);
-      
       if (res.data.statusCode === 200) {
-        setPackages(res.data.data.Package);
-      
+        setPackages(res.data.data.Package || []);
       }
     } catch (err) {
       console.error("Error fetching packages:", err);
@@ -197,12 +194,21 @@ const Destinations = () => {
           headers: { Authorization: token },
         }
       );
-      console.log(">>>>>>>>>>>>>>>>>>>>", res.data.data.destinations);
 
       if (res.data.statusCode === 200 || res.data.statusCode === 201) {
         let fetchedDestinations = res.data.data.destinations || [];
 
-        // Sort destinations based on search term (combine search and destinationName)
+        // Normalize destinationImage to always be an array
+        fetchedDestinations = fetchedDestinations.map((dest) => ({
+          ...dest,
+          destinationImage: Array.isArray(dest.destinationImage)
+            ? dest.destinationImage
+            : typeof dest.destinationImage === "string"
+            ? [dest.destinationImage]
+            : [],
+        }));
+
+        // Sort destinations based on search term
         const searchTerm = (
           filterValues.search ||
           filterValues.destinationName ||
@@ -242,17 +248,6 @@ const Destinations = () => {
     }
   };
 
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    setPage(1); // Reset to first page when filtering
-    getAllDestinations(1);
-    setFilters((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "") : value,
-    }));
-    setPage(1); // Reset to first page on filter change
-  };
-
   // Reset filters
   const handleReset = () => {
     setFilters({
@@ -260,7 +255,7 @@ const Destinations = () => {
       status: "",
       destinationName: "",
       isPopularDestination: "",
-      isTrandingDestination: "",
+      isTrendingDestination: "", // Fixed typo
     });
     setPage(1);
   };
@@ -349,7 +344,8 @@ const Destinations = () => {
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+              className="border text-black border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+            >
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -369,8 +365,8 @@ const Destinations = () => {
               <label className="flex items-center text-sm text-gray-600">
                 <input
                   type="checkbox"
-                  name="isTrandingDestination"
-                  checked={filters.isTrandingDestination === "true"}
+                  name="isTrendingDestination" // Fixed typo
+                  checked={filters.isTrendingDestination === "true"}
                   onChange={handleFilterChange}
                   className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                 />
@@ -382,13 +378,15 @@ const Destinations = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="text-gray-600 hover:text-gray-800 text-sm">
+              className="text-gray-600 hover:text-gray-800 text-sm"
+            >
               Clear Filters
             </button>
             <button
               type="button"
               onClick={() => setShowDestinationModal(true)}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm font-medium">
+              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm font-medium"
+            >
               <FaPlus className="text-sm" />
               Create Destination
             </button>
@@ -410,7 +408,8 @@ const Destinations = () => {
           <p className="text-red-600">{error}</p>
           <button
             onClick={() => getAllDestinations(page)}
-            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Retry
           </button>
         </div>
@@ -431,15 +430,6 @@ const Destinations = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Destination Name
                     </th>
-                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Top Attraction
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Famous For
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Tour Guide
-                    </th> */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
@@ -458,8 +448,9 @@ const Destinations = () => {
                   {destinations.length === 0 ? (
                     <tr>
                       <td
-                        colSpan="9"
-                        className="px-6 py-4 text-center text-gray-500">
+                        colSpan="6"
+                        className="px-6 py-4 text-center text-gray-500"
+                      >
                         No destinations found.
                       </td>
                     </tr>
@@ -472,9 +463,9 @@ const Destinations = () => {
                               className="h-12 w-12 rounded-lg object-cover"
                               src={getImageUrl(dest.destinationImage)}
                               alt={dest.destinationName}
-                              // onError={(e) => {
-                              //   e.target.src = "/public/Images/banner.jpg";
-                              // }}
+                              onError={(e) => {
+                                e.target.src = "/public/Images/banner.jpg";
+                              }}
                             />
                           </div>
                         </td>
@@ -482,56 +473,12 @@ const Destinations = () => {
                           <div className="flex items-center gap-2">
                             <span
                               title={dest.destinationName}
-                              className="font-medium">
+                              className="font-medium"
+                            >
                               {dest.destinationName}
                             </span>
                           </div>
                         </td>
-                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <div className="flex items-center gap-2">
-                            <span title={dest.topAttraction}>
-                              {truncateText(dest.topAttraction)}
-                            </span>
-                            {needsTruncation(dest.topAttraction) && (
-                              <button
-                                onClick={() => handleViewDetails(dest)}
-                                className="text-blue-600 hover:text-blue-800 text-xs font-medium"
-                              >
-                                View Details
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <div className="flex items-center gap-2">
-                            <span title={dest.famousFor}>
-                              {truncateText(dest.famousFor)}
-                            </span>
-                            {needsTruncation(dest.famousFor) && (
-                              <button
-                                onClick={() => handleViewDetails(dest)}
-                                className="text-blue-600 hover:text-blue-800 text-xs font-medium"
-                              >
-                                View Details
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <div className="flex items-center gap-2">
-                            <span title={dest.tourGuide}>
-                              {truncateText(dest.tourGuide)}
-                            </span>
-                            {needsTruncation(dest.tourGuide) && (
-                              <button
-                                onClick={() => handleViewDetails(dest)}
-                                className="text-blue-600 hover:text-blue-800 text-xs font-medium"
-                              >
-                                View Details
-                              </button>
-                            )}
-                          </div>
-                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -540,7 +487,8 @@ const Destinations = () => {
                                 : dest.destinationStatus === "inactive"
                                 ? "bg-red-100 text-red-800"
                                 : "bg-yellow-100 text-yellow-800"
-                            }`}>
+                            }`}
+                          >
                             {dest.destinationStatus}
                           </span>
                         </td>
@@ -550,18 +498,20 @@ const Destinations = () => {
                               dest.isPopularDestination
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}>
+                            }`}
+                          >
                             {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
-                              dest.isTrandingDestination
+                              dest.isTrendingDestination // Fixed typo
                                 ? "bg-purple-100 text-purple-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}>
-                            {dest.isTrandingDestination ? "Yes" : "No"}
+                            }`}
+                          >
+                            {dest.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -569,13 +519,15 @@ const Destinations = () => {
                             <button
                               title="View Details"
                               onClick={() => handleViewDetails(dest)}
-                              className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition">
+                              className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                            >
                               <FaEye className="text-sm" />
                             </button>
                             <button
                               title="Create Package"
                               onClick={() => handleCreatePackage(dest)}
-                              className="p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition">
+                              className="p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition"
+                            >
                               <FaSuitcase className="text-sm" />
                             </button>
                             <button
@@ -584,13 +536,15 @@ const Destinations = () => {
                                 setSelectedDestination(dest);
                                 setShowUpdateModal(true);
                               }}
-                              className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition">
+                              className="p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition"
+                            >
                               <FaEdit className="text-sm" />
                             </button>
                             <button
                               title="Delete"
                               onClick={() => handleDeleteDestination(dest._id)}
-                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition">
+                              className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                            >
                               <FaTrash className="text-sm" />
                             </button>
                           </div>
@@ -619,23 +573,25 @@ const Destinations = () => {
                           className="h-16 w-16 rounded-lg object-cover"
                           src={getImageUrl(dest.destinationImage)}
                           alt={dest.destinationName}
-                          // onError={(e) => {
-                          //   e.target.src = "/public/Images/banner.jpg";
-                          // }}
+                          onError={(e) => {
+                            e.target.src = "/public/Images/banner.jpg";
+                          }}
                         />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3
                             className="text-sm font-medium text-gray-900"
-                            title={dest.destinationName}>
+                            title={dest.destinationName}
+                          >
                             {dest.destinationName}
                           </h3>
                         </div>
                         <div className="flex items-center gap-2 mb-1">
                           <p
                             className="text-sm text-gray-500"
-                            title={dest.topAttraction}>
+                            title={dest.topAttraction}
+                          >
                             {truncateText(dest.topAttraction)}
                           </p>
                         </div>
@@ -648,7 +604,8 @@ const Destinations = () => {
                               : dest.destinationStatus === "inactive"
                               ? "bg-red-100 text-red-800"
                               : "bg-yellow-100 text-yellow-800"
-                          }`}>
+                          }`}
+                        >
                           {dest.destinationStatus}
                         </span>
                       </div>
@@ -679,7 +636,8 @@ const Destinations = () => {
                               dest.isPopularDestination
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}>
+                            }`}
+                          >
                             {dest.isPopularDestination ? "Yes" : "No"}
                           </span>
                         </div>
@@ -689,11 +647,12 @@ const Destinations = () => {
                         <div className="flex items-center gap-2">
                           <span
                             className={`px-2 py-1 text-xs font-medium rounded-full ${
-                              dest.isTrandingDestination
+                              dest.isTrendingDestination // Fixed typo
                                 ? "bg-purple-100 text-purple-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}>
-                            {dest.isTrandingDestination ? "Yes" : "No"}
+                            }`}
+                          >
+                            {dest.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
                           </span>
                         </div>
                       </div>
@@ -703,14 +662,16 @@ const Destinations = () => {
                       <button
                         title="View Details"
                         onClick={() => handleViewDetails(dest)}
-                        className="flex-1 p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-xs">
+                        className="flex-1 p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-xs"
+                      >
                         <FaEye className="inline mr-1" />
                         View Details
                       </button>
                       <button
                         title="Create Package"
                         onClick={() => handleCreatePackage(dest)}
-                        className="flex-1 p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition text-xs">
+                        className="flex-1 p-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition text-xs"
+                      >
                         <FaSuitcase className="inline mr-1" />
                         Package
                       </button>
@@ -720,14 +681,16 @@ const Destinations = () => {
                           setSelectedDestination(dest);
                           setShowUpdateModal(true);
                         }}
-                        className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs">
+                        className="flex-1 p-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition text-xs"
+                      >
                         <FaEdit className="inline mr-1" />
                         Edit
                       </button>
                       <button
                         title="Delete"
                         onClick={() => handleDeleteDestination(dest._id)}
-                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs">
+                        className="flex-1 p-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs"
+                      >
                         <FaTrash className="inline mr-1" />
                         Delete
                       </button>
@@ -752,7 +715,8 @@ const Destinations = () => {
               <button
                 onClick={handlePrevPage}
                 disabled={page === 1}
-                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+              >
                 ← Previous
               </button>
               <div className="flex items-center gap-1">
@@ -764,7 +728,8 @@ const Destinations = () => {
                       pageNum === page
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}>
+                    }`}
+                  >
                     {pageNum}
                   </button>
                 ))}
@@ -772,7 +737,8 @@ const Destinations = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm">
+                className="px-3 py-2 bg-gray-500 rounded disabled:opacity-50 hover:bg-gray-300 transition text-sm"
+              >
                 Next →
               </button>
             </div>
@@ -781,14 +747,16 @@ const Destinations = () => {
             <button
               onClick={() => handlePageChange(1)}
               disabled={page === 1}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
+            >
               First
             </button>
             <span className="text-gray-400">|</span>
             <button
               onClick={() => handlePageChange(totalPages)}
               disabled={page === totalPages}
-              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50">
+              className="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 disabled:opacity-50"
+            >
               Last
             </button>
           </div>
@@ -805,7 +773,8 @@ const Destinations = () => {
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition">
+                className="text-gray-400 hover:text-gray-600 transition"
+              >
                 <FaTimes className="text-xl" />
               </button>
             </div>
@@ -813,6 +782,7 @@ const Destinations = () => {
             <div className="p-6 space-y-6">
               {/* Image Section */}
               {selectedDestination.destinationImage &&
+                Array.isArray(selectedDestination.destinationImage) &&
                 selectedDestination.destinationImage.length > 0 && (
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
@@ -823,14 +793,18 @@ const Destinations = () => {
                         (image, index) => (
                           <div key={index} className="relative">
                             <img
-                              src={image}
+                              src={
+                                image.startsWith("http")
+                                  ? image
+                                  : `https://begin-yatra-nq40.onrender.com/public/temp/${image}`
+                              }
                               alt={`${selectedDestination.destinationName} ${
                                 index + 1
                               }`}
                               className="w-full h-24 object-cover rounded-lg"
-                              // onError={(e) => {
-                              //   e.target.src = "/public/Images/banner.jpg";
-                              // }}
+                              onError={(e) => {
+                                e.target.src = "/public/Images/banner.jpg";
+                              }}
                             />
                           </div>
                         )
@@ -859,7 +833,8 @@ const Destinations = () => {
                         : selectedDestination.destinationStatus === "inactive"
                         ? "bg-red-100 text-red-800"
                         : "bg-yellow-100 text-yellow-800"
-                    }`}>
+                    }`}
+                  >
                     {selectedDestination.destinationStatus}
                   </span>
                 </div>
@@ -872,7 +847,8 @@ const Destinations = () => {
                       selectedDestination.isPopularDestination
                         ? "bg-blue-100 text-blue-800"
                         : "bg-gray-100 text-gray-800"
-                    }`}>
+                    }`}
+                  >
                     {selectedDestination.isPopularDestination ? "Yes" : "No"}
                   </span>
                 </div>
@@ -882,11 +858,12 @@ const Destinations = () => {
                   </h3>
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      selectedDestination.isTrandingDestination
+                      selectedDestination.isTrendingDestination // Fixed typo
                         ? "bg-purple-100 text-purple-800"
                         : "bg-gray-100 text-gray-800"
-                    }`}>
-                    {selectedDestination.isTrandingDestination ? "Yes" : "No"}
+                    }`}
+                  >
+                    {selectedDestination.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
                   </span>
                 </div>
               </div>
@@ -936,10 +913,11 @@ const Destinations = () => {
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Tips
                 </h3>
-                <p className="text-gray-900">{selectedDestination.Tips}</p>
+                <p className="text-gray-900">{selectedDestination.tips}</p> {/* Fixed case */}
               </div>
 
               {selectedDestination.importantInformation &&
+                Array.isArray(selectedDestination.importantInformation) &&
                 selectedDestination.importantInformation.length > 0 && (
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -958,6 +936,7 @@ const Destinations = () => {
                 )}
 
               {selectedDestination.topPlaces &&
+                Array.isArray(selectedDestination.topPlaces) &&
                 selectedDestination.topPlaces.length > 0 && (
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
@@ -977,7 +956,8 @@ const Destinations = () => {
             <div className="flex justify-end gap-3 p-6 border-t">
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition">
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition"
+              >
                 Close
               </button>
               <button
@@ -986,7 +966,8 @@ const Destinations = () => {
                   setSelectedDestination(selectedDestination);
                   setShowUpdateModal(true);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
                 Edit Destination
               </button>
             </div>

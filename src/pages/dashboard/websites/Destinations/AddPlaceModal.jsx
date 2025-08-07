@@ -56,20 +56,20 @@ const token  = useSelector(selectAccessToken)
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
       <div className="bg-white w-[90%] max-w-lg max-h-[90vh] overflow-y-auto rounded-lg p-6 shadow-lg relative">
         <button onClick={onClose} className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-        <h2 className="text-2xl font-bold text-center mb-4">Add Place</h2>
+        <h2 className="text-2xl text-black font-bold text-center mb-4">Add Place</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label>Place Name:
-              <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)} className="w-full border rounded px-2 py-1" required />
+            <label className='text-black'>Place Name:
+              <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)} className="w-full border text-black rounded px-2 py-1" required />
             </label>
           </div>
           <div>
-            <label>Description:
-              <textarea value={placeDescription} onChange={e => setPlaceDescription(e.target.value)} className="w-full border rounded px-2 py-1" required />
+            <label  className='text-black'>Description:
+              <textarea value={placeDescription} onChange={e => setPlaceDescription(e.target.value)} className="w-full border text-black rounded px-2 py-1" required />
             </label>
           </div>
           <div>
-            <label>Place Image:
+            <label className='text-black'>Place Image:
               <input type="file" ref={placeImageRef} accept="image/*" className="w-full" required />
             </label>
           </div>

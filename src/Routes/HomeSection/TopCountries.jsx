@@ -3,6 +3,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "../../Api/ApiService";
 
 // Custom Arrow for Carousel
 const CustomArrow = ({ onClick, direction }) => (
@@ -26,25 +27,6 @@ const TopCountries = ({ totalTopCountries = [], loading = false }) => {
     return words.slice(0, maxWords).join(" ") + "...";
   };
 
-  // Helper function to get image URL
-  const getImageUrl = (images) => {
-    if (!images || images.length === 0) {
-      // Use a reliable default image URL (replace with a valid hosted image)
-      return "https://via.placeholder.com/400x300?text=Default+Image";
-    }
-
-    const image = images[0];
-    // If the image is already a full URL, return it
-    if (image.startsWith("http://") || image.startsWith("https://")) {
-      return image;
-    }
-
-    // Construct URL for the image
-    const baseUrl = "https://begin-yatra-nq40.onrender.com/public/temp";
-    return image.startsWith("/")
-      ? `${baseUrl}${image}`
-      : `${baseUrl}/${image}`;
-  };
 
   const responsive = {
     desktop: {
@@ -75,7 +57,7 @@ const TopCountries = ({ totalTopCountries = [], loading = false }) => {
   }
 
   return (
-    <div className="bg-gray-50 py-10  px-6 lg:px-12 md:px-12 relative">
+    <div className="bg-gray-50 px-6 lg:px-12 md:px-12 relative">
       {totalTopCountries.length > 0 && (
         <div className="lg:mb-12 md:6 md-4">
           <h4 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">

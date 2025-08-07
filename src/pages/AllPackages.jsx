@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../Api/ApiService";
+import api, { getImageUrl } from "../Api/ApiService";
+import debounce from "lodash/debounce"; // Add lodash for debouncing
 
 const priceRanges = [
   { label: "₹ 0 - ₹ 10,000 per person", min: 0, max: 10000 },
@@ -17,11 +18,6 @@ const durationRanges = [
   { label: "25+ Days", min: 26, max: Infinity },
 ];
 
-// const getUniqueDestinations = (pkgs) => {
-//   const set = new Set(pkgs.map((p) => p.location));
-//   return Array.from(set);
-// };
-
 const AllPackages = () => {
   // API states
   const [packages, setPackages] = useState([]);
@@ -32,54 +28,70 @@ const AllPackages = () => {
   const [totalPackages, setTotalPackages] = useState(0);
 
   // Filter states
-  const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
-  const [selectedDurationRanges, setSelectedDurationRanges] = useState([]);
-  const [appliedPriceRanges, setAppliedPriceRanges] = useState([]);
-  const [appliedDurationRanges, setAppliedDurationRanges] = useState([]);
+  const [priceRangesFilter, setPriceRangesFilter] = useState([]);
+  const [durationRangesFilter, setDurationRangesFilter] = useState([]);
+  const [themeFilter, setThemeFilter] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   // Responsive sidebar state
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const navigate = useNavigate();
 
+  // Debounce search input
+  const debouncedSetSearchTerm = useCallback(
+    debounce((value) => {
+      setDebouncedSearchTerm(value);
+      setPage(1); // Reset page to 1 on search change
+    }, 300),
+    []
+  );
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSetSearchTerm(value);
+  };
+
   // API call to fetch packages
-  const getAllPackages = async (pageNum = 1) => {
+  const getAllPackages = useCallback(async (pageNum = 1) => {
     setLoading(true);
     setError("");
     try {
       const res = await api.get(`/api/package/getAllPackages?page=${pageNum}`);
       console.log("Response from getAllPackages:", res);
-      
+
       if (res.data.statusCode === 200) {
-        setPackages(res.data.data.Package);
+        setPackages(res.data.data.Package || []);
         setTotalPages(res.data.data.totalPages || 1);
         setTotalPackages(res.data.data.total || 0);
+      } else {
+        setError("Failed to fetch packages: Invalid response");
       }
     } catch (err) {
       console.error("Error fetching packages:", err);
-      setError("Failed to fetch packages");
+      setError(err.response?.data?.message || "Failed to fetch packages");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getAllPackages(page);
-  }, [page]);
+  }, [page, getAllPackages]);
 
-  // Helper function to truncate text to one line
+  // Helper function to truncate text
   const truncateToOneLine = (text, maxLength = 70) => {
-    if (!text) return '';
+    if (!text) return "";
     if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   };
 
-  // Helper function to get duration from totalDaysNight string
+  // Helper function to get duration from totalDaysNight
   const getDurationFromTotalDaysNight = (totalDaysNight) => {
     if (!totalDaysNight) return null;
-    
-    // Extract the number of days from "5 Days / 4 Nights" format
     const match = totalDaysNight.match(/(\d+)\s+Days/);
     return match ? parseInt(match[1]) : null;
   };
@@ -87,159 +99,136 @@ const AllPackages = () => {
   // Helper function to format price
   const formatPrice = (price) => {
     if (!price) return "Contact for price";
-    return `₹${price.toLocaleString('en-IN')}`;
+    return `₹${price.toLocaleString("en-IN")}`;
   };
 
   // Filtering logic
   const filteredPackages = useMemo(() => {
     return packages.filter((pkg) => {
       // Search filter
-      const search = searchTerm.trim().toLowerCase();
+      const search = debouncedSearchTerm.trim().toLowerCase();
       let searchMatch = true;
       if (search.length > 0) {
         searchMatch =
           pkg.packageName?.toLowerCase().includes(search) ||
           pkg.theme?.toLowerCase().includes(search) ||
           pkg.AboutPackage?.toLowerCase().includes(search) ||
-          pkg.description?.toLowerCase().includes(search);
+          pkg.destinationId?.destinationName?.toLowerCase().includes(search);
       }
-      
+
       // Price filter
       let priceMatch = true;
-      if (appliedPriceRanges.length > 0) {
-        priceMatch = appliedPriceRanges.some((rangeIdx) => {
+      if (priceRangesFilter.length > 0) {
+        priceMatch = priceRangesFilter.some((rangeIdx) => {
           const range = priceRanges[rangeIdx];
           const price = parseFloat(pkg.packagePrice) || 0;
           return price >= range.min && price <= range.max;
         });
       }
-      
-      // Duration filter - using totalDaysNight if available
+
+      // Duration filter
       let durationMatch = true;
-      if (appliedDurationRanges.length > 0) {
-        durationMatch = appliedDurationRanges.some((rangeIdx) => {
+      if (durationRangesFilter.length > 0) {
+        durationMatch = durationRangesFilter.some((rangeIdx) => {
           const range = durationRanges[rangeIdx];
           const duration = getDurationFromTotalDaysNight(pkg.totalDaysNight) || 0;
           return duration >= range.min && duration <= range.max;
         });
       }
-      
-      return searchMatch && priceMatch && durationMatch;
-    });
-  }, [packages, searchTerm, appliedPriceRanges, appliedDurationRanges]);
 
-  // Handlers
-  const handlePriceChange = (idx) => {
-    setSelectedPriceRanges((prev) =>
+      // Theme filter
+      let themeMatch = true;
+      if (themeFilter.length > 0) {
+        themeMatch = themeFilter.includes(pkg.theme);
+      }
+
+      return searchMatch && priceMatch && durationMatch && themeMatch;
+    });
+  }, [packages, debouncedSearchTerm, priceRangesFilter, durationRangesFilter, themeFilter]);
+
+  // Filter handlers
+  const handlePriceChange = useCallback((idx) => {
+    setPriceRangesFilter((prev) =>
       prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
     );
-  };
-  
-  const handleDurationChange = (idx) => {
-    setSelectedDurationRanges((prev) =>
+    setPage(1); // Reset page to 1 on filter change
+  }, []);
+
+  const handleDurationChange = useCallback((idx) => {
+    setDurationRangesFilter((prev) =>
       prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
     );
-  };
-  
-  const handleApplyFilter = () => {
-    setAppliedPriceRanges(selectedPriceRanges);
-    setAppliedDurationRanges(selectedDurationRanges);
-  };
-  
-  const handleReset = () => {
-    setSelectedPriceRanges([]);
-    setSelectedDurationRanges([]);
-    setAppliedPriceRanges([]);
-    setAppliedDurationRanges([]);
+    setPage(1); // Reset page to 1 on filter change
+  }, []);
+
+  const handleThemeChange = useCallback((theme) => {
+    setThemeFilter((prev) =>
+      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
+    );
+    setPage(1); // Reset page to 1 on filter change
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setPriceRangesFilter([]);
+    setDurationRangesFilter([]);
+    setThemeFilter([]);
     setSearchTerm("");
-  };
+    setDebouncedSearchTerm("");
+    setPage(1); // Reset page to 1 on reset
+  }, []);
 
   // Navigation handler
-  const handleViewDetails = (pkg) => {
-    localStorage.setItem('selectedPackage', JSON.stringify(pkg));
-    navigate('/get-qurey');
-  };
+  const handleViewDetails = useCallback((pkg) => {
+    localStorage.setItem("selectedPackage", JSON.stringify(pkg));
+    navigate("/get-qurey");
+  }, [navigate]);
 
   // Pagination handlers
-  const handlePageChange = (newPage) => {
+  const handlePageChange = useCallback((newPage) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-  const handleNextPage = () => {
+  const handleNextPage = useCallback(() => {
     if (page < totalPages) {
       handlePageChange(page + 1);
     }
-  };
+  }, [page, totalPages, handlePageChange]);
 
-  const handlePrevPage = () => {
+  const handlePrevPage = useCallback(() => {
     if (page > 1) {
       handlePageChange(page - 1);
     }
-  };
-
-  // Helper function to get package image with fallback
-  const getImageUrl = (pkg) => {
-    // 1. Use packageImage if available and not empty
-    if (pkg.packageImage && pkg.packageImage.length > 0) {
-      const imagePath = Array.isArray(pkg.packageImage) ? pkg.packageImage[0] : pkg.packageImage;
-      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-      }
-      return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
-    }
-
-    // 2. Use destination image if available
-    if (
-      pkg.destinationId &&
-      pkg.destinationId.destinationImage &&
-      pkg.destinationId.destinationImage.length > 0
-    ) {
-      const imagePath = pkg.destinationId.destinationImage[0];
-      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-      }
-      return `https://begin-yatra-nq40.onrender.com/public/temp/${imagePath}`;
-    }
-
-    // 3. Fallback image
-    return '/Images/banner.jpg';
-  };
-  // const getPackageImage = (pkg) => {
-  //   if (pkg.packageImage) {
-  //     return pkg.packageImage;
-  //   }
-    
-  //   const theme = pkg.theme?.toLowerCase();
-    
-  // };
+  }, [page, handlePageChange]);
 
   // Get unique themes for filter display
   const uniqueThemes = useMemo(() => {
-    const themes = packages.map(pkg => pkg.theme).filter(Boolean);
+    const themes = packages.map((pkg) => pkg.theme).filter(Boolean);
     return [...new Set(themes)];
   }, [packages]);
 
-  // Get price and duration statistics for filter display
+  // Get price and duration statistics
   const filterStats = useMemo(() => {
-    const prices = packages.map(pkg => parseFloat(pkg.packagePrice)).filter(price => !isNaN(price));
-    const durations = packages.map(pkg => getDurationFromTotalDaysNight(pkg.totalDaysNight)).filter(duration => duration !== null);
-    
+    const prices = packages.map((pkg) => parseFloat(pkg.packagePrice)).filter((price) => !isNaN(price));
+    const durations = packages
+      .map((pkg) => getDurationFromTotalDaysNight(pkg.totalDaysNight))
+      .filter((duration) => duration !== null);
+
     return {
       minPrice: prices.length > 0 ? Math.min(...prices) : 0,
       maxPrice: prices.length > 0 ? Math.max(...prices) : 0,
       minDuration: durations.length > 0 ? Math.min(...durations) : 0,
       maxDuration: durations.length > 0 ? Math.max(...durations) : 0,
       totalPackages: totalPackages,
-      filteredPackages: filteredPackages.length
+      filteredPackages: filteredPackages.length,
     };
   }, [packages, filteredPackages, totalPackages]);
 
   // Generate page numbers for pagination
-  const getPageNumbers = () => {
+  const getPageNumbers = useCallback(() => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -247,14 +236,14 @@ const AllPackages = () => {
     } else {
       const start = Math.max(1, page - Math.floor(maxVisiblePages / 2));
       const end = Math.min(totalPages, start + maxVisiblePages - 1);
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
-  };
+  }, [page, totalPages]);
 
   return (
     <>
@@ -273,20 +262,20 @@ const AllPackages = () => {
               className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition"
               onClick={() => setShowMobileFilters((prev) => !prev)}
             >
-              {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+              {showMobileFilters ? "Hide Filters" : "Show Filters"}
             </button>
             <div className="text-sm text-gray-600">
               {filterStats.filteredPackages} of {filterStats.totalPackages} packages
             </div>
           </div>
-          
+
           {/* Sidebar Filters */}
-          <div className={`w-full md:w-auto ${showMobileFilters ? '' : 'hidden'} md:block`}>
+          <div className={`w-full md:w-auto ${showMobileFilters ? "block" : "hidden"} md:block transition-all duration-300`}>
             <aside className="w-full md:w-80 bg-white rounded-xl shadow-lg p-4 sm:p-6 flex flex-col gap-6 mb-4 md:mb-0">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Filter by</h2>
-                <button 
-                  className="text-blue-600 font-semibold cursor-pointer hover:underline text-sm" 
+                <button
+                  className="text-blue-600 font-semibold cursor-pointer hover:underline text-sm"
                   onClick={handleReset}
                 >
                   Reset all
@@ -300,17 +289,17 @@ const AllPackages = () => {
                   </div>
                   <div className="flex flex-col gap-2 mt-2">
                     {priceRanges.map((range, idx) => (
-                      <label key={range.label} className="flex items-center gap-2 text-gray-700 text-sm sm:text-base cursor-pointer">
+                      <label
+                        key={range.label}
+                        className="flex items-center gap-2 text-gray-700 text-sm sm:text-base cursor-pointer"
+                      >
                         <input
                           className="cursor-pointer"
                           type="checkbox"
-                          checked={selectedPriceRanges.includes(idx)}
+                          checked={priceRangesFilter.includes(idx)}
                           onChange={() => handlePriceChange(idx)}
                         />
                         <span>{range.label}</span>
-                        {appliedPriceRanges.includes(idx) && (
-                          <span className="ml-auto text-blue-600 text-xs">✓</span>
-                        )}
                       </label>
                     ))}
                   </div>
@@ -321,17 +310,17 @@ const AllPackages = () => {
                   <div className="font-semibold text-gray-800 mb-1 mt-4 text-sm sm:text-base">Duration</div>
                   <div className="flex flex-col gap-2 mt-2">
                     {durationRanges.map((range, idx) => (
-                      <label key={range.label} className="flex items-center gap-2 text-gray-700 text-sm sm:text-base cursor-pointer">
+                      <label
+                        key={range.label}
+                        className="flex items-center gap-2 text-gray-700 text-sm sm:text-base cursor-pointer"
+                      >
                         <input
                           type="checkbox"
                           className="cursor-pointer"
-                          checked={selectedDurationRanges.includes(idx)}
+                          checked={durationRangesFilter.includes(idx)}
                           onChange={() => handleDurationChange(idx)}
                         />
                         <span>{range.label}</span>
-                        {appliedDurationRanges.includes(idx) && (
-                          <span className="ml-auto text-blue-600 text-xs">✓</span>
-                        )}
                       </label>
                     ))}
                   </div>
@@ -341,59 +330,54 @@ const AllPackages = () => {
                 {uniqueThemes.length > 0 && (
                   <div>
                     <div className="font-semibold text-gray-800 mb-1 mt-4 text-sm sm:text-base">Theme</div>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-col gap-2 mt-2">
                       {uniqueThemes.map((theme) => (
-                        <span
+                        <label
                           key={theme}
-                          className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium"
+                          className="flex items-center gap-2 text-gray-700 text-sm sm:text-base cursor-pointer"
                         >
-                          {theme}
-                        </span>
+                          <input
+                            type="checkbox"
+                            className="cursor-pointer"
+                            checked={themeFilter.includes(theme)}
+                            onChange={() => handleThemeChange(theme)}
+                          />
+                          <span>{theme}</span>
+                        </label>
                       ))}
                     </div>
                   </div>
                 )}
-
-                {/* Apply Filter Button */}
-                <button
-                  className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 cursor-pointer transition mt-4 text-sm sm:text-base"
-                  onClick={handleApplyFilter}
-                >
-                  Apply Filter
-                </button>
-
-                {/* Clear Filters Button */}
-                {(selectedPriceRanges.length > 0 || selectedDurationRanges.length > 0 || searchTerm) && (
-                  <button
-                    className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded-lg font-semibold shadow hover:bg-gray-300 cursor-pointer transition text-sm sm:text-base"
-                    onClick={handleReset}
-                  >
-                    Clear All Filters
-                  </button>
-                )}
               </div>
             </aside>
           </div>
-          
+
           {/* Package Cards */}
           <main className="flex-1">
             {/* Search and Filter Summary */}
             <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span>Showing {filterStats.filteredPackages} of {filterStats.totalPackages} packages</span>
-                {(appliedPriceRanges.length > 0 || appliedDurationRanges.length > 0 || searchTerm) && (
+                {(priceRangesFilter.length > 0 || durationRangesFilter.length > 0 || themeFilter.length > 0 || debouncedSearchTerm) && (
                   <span className="text-blue-600">(filtered)</span>
                 )}
               </div>
-              <input
-                type="text"
-                placeholder="Search by name, theme, or description..."
-                className="w-full sm:w-96 px-4 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-              />
+              <div className="relative w-full sm:w-96">
+                <input
+                  type="text"
+                  placeholder="Search by name, theme, or destination..."
+                  className="w-full text-black px-4 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                {loading && (
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                  </div>
+                )}
+              </div>
             </div>
-            
+
             {/* Loading State */}
             {loading && (
               <div className="text-center py-10">
@@ -401,12 +385,12 @@ const AllPackages = () => {
                 <p className="mt-2 text-gray-600">Loading packages...</p>
               </div>
             )}
-            
+
             {/* Error State */}
             {error && (
               <div className="text-center py-10">
                 <p className="text-red-600">{error}</p>
-                <button 
+                <button
                   onClick={() => getAllPackages(page)}
                   className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 >
@@ -414,19 +398,29 @@ const AllPackages = () => {
                 </button>
               </div>
             )}
-            
+
             {/* Packages Grid */}
             {!loading && !error && (
               <div className="grid gap-4 sm:gap-8 grid-cols-1">
                 {filteredPackages.length === 0 && (
                   <div className="text-center text-gray-500 text-base sm:text-xl py-10 sm:py-20">
                     <div className="mb-4">
-                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      <svg
+                        className="mx-auto h-12 w-12 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
                       </svg>
                     </div>
                     <p>No packages found for selected filters.</p>
-                    <button 
+                    <button
                       onClick={handleReset}
                       className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
@@ -441,7 +435,7 @@ const AllPackages = () => {
                   >
                     <div className="relative w-full md:w-72 h-48 sm:h-60">
                       <img
-                        src={getImageUrl(pkg)}
+                        src={getImageUrl(pkg?.destinationId?.destinationImage)}
                         alt={pkg.packageName}
                         className="w-full h-48 sm:h-60 object-cover object-center rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
                         onError={(e) => {
@@ -449,8 +443,6 @@ const AllPackages = () => {
                         }}
                         loading="lazy"
                       />
-                      {/* Optional: Loading placeholder */}
-                      <div className="absolute inset-0 bg-gray-200 animate-pulse hidden" />
                     </div>
                     <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between">
                       <div>
@@ -473,29 +465,10 @@ const AllPackages = () => {
                           )}
                           {pkg.packageSummery && pkg.packageSummery.length > 0 && (
                             <span className="inline-block bg-purple-100 text-purple-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
-                              {pkg.packageSummery.length} Day{pkg.packageSummery.length > 1 ? 's' : ''} Plan
+                              {pkg.packageSummery.length} Day{pkg.packageSummery.length > 1 ? "s" : ""} Plan
                             </span>
                           )}
                         </div>
-                        {/* Package Summary Preview */}
-                        {/* {pkg.packageSummery && pkg.packageSummery.length > 0 && (
-                          <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-2">Itinerary Preview:</h4>
-                            <div className="space-y-1">
-                              {pkg.packageSummery.slice(0, 2).map((day, index) => (
-                                <div key={day._id || index} className="flex items-start gap-2 text-xs text-gray-600">
-                                  <span className="font-medium text-blue-600 min-w-[40px]">{day.day}</span>
-                                  <span>{day.about}</span>
-                                </div>
-                              ))}
-                              {pkg.packageSummery.length > 2 && (
-                                <div className="text-xs text-blue-600 font-medium">
-                                  +{pkg.packageSummery.length - 2} more days
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )} */}
                       </div>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
                         <div className="flex flex-col">
@@ -516,7 +489,7 @@ const AllPackages = () => {
                 ))}
               </div>
             )}
-            
+
             {/* Enhanced Pagination */}
             {!loading && !error && totalPages > 1 && (
               <div className="mt-8">
@@ -532,8 +505,7 @@ const AllPackages = () => {
                     >
                       ← Previous
                     </button>
-                    
-                    {/* Page Numbers */}
+
                     <div className="flex items-center gap-1">
                       {getPageNumbers().map((pageNum) => (
                         <button
@@ -541,15 +513,15 @@ const AllPackages = () => {
                           onClick={() => handlePageChange(pageNum)}
                           className={`px-3 py-2 rounded text-sm transition ${
                             pageNum === page
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                           }`}
                         >
                           {pageNum}
                         </button>
                       ))}
                     </div>
-                    
+
                     <button
                       onClick={handleNextPage}
                       disabled={page === totalPages}
@@ -559,8 +531,7 @@ const AllPackages = () => {
                     </button>
                   </div>
                 </div>
-                
-                {/* Quick Navigation */}
+
                 <div className="flex justify-center gap-2">
                   <button
                     onClick={() => handlePageChange(1)}

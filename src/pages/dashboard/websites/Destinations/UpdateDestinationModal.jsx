@@ -182,25 +182,25 @@ const UpdateDestinationModal = ({
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold text-center mb-4">Update Destination</h2>
+        <h2 className="text-2xl text-black font-bold text-center mb-4">Update Destination</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label>
+            <label className="text-black">
               Destination Name:
               <input
                 type="text"
                 value={destinationName}
                 onChange={(e) => setDestinationName(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
                 required
               />
             </label>
-            <label>
+            <label className="text-black">
               Destination Type:
               <select
                 value={destinationType}
                 onChange={(e) => setDestinationType(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               >
                 <option value="domestic">Domestic</option>
                 <option value="international">International</option>
@@ -208,7 +208,7 @@ const UpdateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Places:
               <div className="flex gap-2 items-start">
                 <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
@@ -216,7 +216,7 @@ const UpdateDestinationModal = ({
                     places.map((place) => (
                       <label
                         key={place.id || place._id}
-                        className="flex items-center gap-2"
+                        className="flex  items-center gap-2"
                       >
                         <input
                           type="checkbox"
@@ -232,7 +232,7 @@ const UpdateDestinationModal = ({
                           }}
                           className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                         />
-                        <span>{place.name || place.placeName}</span>
+                        <span className="text-black">{place.name || place.placeName}</span>
                       </label>
                     ))
                   ) : (
@@ -241,7 +241,7 @@ const UpdateDestinationModal = ({
                 </div>
                 <button
                   type="button"
-                  className="bg-blue-500 text-white px-2 py-1 rounded h-fit"
+                  className="bg-blue-500  text-white px-2 py-1 rounded h-fit"
                   onClick={onOpenAddPlace}
                 >
                   + Add Place
@@ -250,14 +250,14 @@ const UpdateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Packages (Optional):
               <div className="flex flex-col gap-1 w-full max-h-28 overflow-y-auto border rounded p-2">
                 {packages.length > 0 ? (
                   packages.map((pkg) => (
                     <label
                       key={pkg.id || pkg._id}
-                      className="flex items-center gap-2"
+                      className="flex text-black items-center gap-2"
                     >
                       <input
                         type="checkbox"
@@ -268,73 +268,73 @@ const UpdateDestinationModal = ({
                         }
                         className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                       />
-                      <span>{pkg.name || pkg.packageName}</span>
+                      <span className="text-black">{pkg.name || pkg.packageName}</span>
                     </label>
                   ))
                 ) : (
-                  <p>No packages available</p>
+                  <p className="text-red-500">No packages available</p>
                 )}
               </div>
             </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label>
+            <label className="text-black">
               Top Attraction:
               <input
                 type="text"
                 value={topAttraction}
                 onChange={(e) => setTopAttraction(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               What's Great:
               <input
                 type="text"
                 value={whatsGreat}
                 onChange={(e) => setWhatsGreat(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Tour Guide:
               <input
                 type="text"
                 value={tourGuide}
                 onChange={(e) => setTourGuide(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label  className="text-black">
               Famous For:
               <input
                 type="text"
                 value={famousFor}
                 onChange={(e) => setFamousFor(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Cultural Experiences:
               <input
                 type="text"
                 value={culturalExperiences}
                 onChange={(e) => setCulturalExperiences(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label>
+            <label className="text-black">
               Tips:
               <input
                 type="text"
                 value={tips}
                 onChange={(e) => setTips(e.target.value)}
-                className="w-full border rounded px-2 py-1"
+                className="w-full text-black border rounded px-2 py-1"
               />
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Important Information:
               {importantInformation.map((info, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
@@ -349,7 +349,7 @@ const UpdateDestinationModal = ({
                         e.target.value
                       )
                     }
-                    className="flex-1 border rounded px-2 py-1"
+                    className="flex-1 border rounded text-black px-2 py-1"
                   />
                   <button
                     type="button"
@@ -361,7 +361,7 @@ const UpdateDestinationModal = ({
                       )
                     }
                     disabled={importantInformation.length === 1}
-                    className="px-2"
+                    className="px-2 text-black"
                   >
                     -
                   </button>
@@ -374,7 +374,7 @@ const UpdateDestinationModal = ({
                           importantInformation
                         )
                       }
-                      className="px-2"
+                      className="px-2 text-black"
                     >
                       +
                     </button>
@@ -384,7 +384,7 @@ const UpdateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Top Places:
               {topPlaces.map((place, idx) => (
                 <div key={idx} className="flex gap-2 mb-1">
@@ -399,7 +399,7 @@ const UpdateDestinationModal = ({
                         e.target.value
                       )
                     }
-                    className="flex-1 border rounded px-2 py-1"
+                    className="flex-1 border text-black rounded px-2 py-1"
                   />
                   <button
                     type="button"
@@ -407,7 +407,7 @@ const UpdateDestinationModal = ({
                       handleRemoveField(setTopPlaces, topPlaces, idx)
                     }
                     disabled={topPlaces.length === 1}
-                    className="px-2"
+                    className="px-2 text-black"
                   >
                     -
                   </button>
@@ -415,7 +415,7 @@ const UpdateDestinationModal = ({
                     <button
                       type="button"
                       onClick={() => handleAddField(setTopPlaces, topPlaces)}
-                      className="px-2"
+                      className="px-2 text-black"
                     >
                       +
                     </button>
@@ -425,7 +425,7 @@ const UpdateDestinationModal = ({
             </label>
           </div>
           <div>
-            <label>
+            <label className="text-black">
               Destination Images:
               {Array.isArray(imagePreviews) && imagePreviews.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
@@ -434,7 +434,7 @@ const UpdateDestinationModal = ({
                       key={index}
                       src={preview.startsWith('http') ? preview : `${imgApi}${preview}`}
                       alt={`Preview ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-lg"
+                      className="w-full h-24 text-black object-cover rounded-lg"
                     />
                   ))}
                 </div>
@@ -444,7 +444,7 @@ const UpdateDestinationModal = ({
                   multiple
                   accept="image/*"
                   onChange={(e) => handleImageChange(e, setDestinationImageFiles, setImagePreviews)}
-                  className="w-full mt-2"
+                  className="w-full mt-2 text-black"
                 />
               )}
               {Array.isArray(imagePreviews) && imagePreviews.length > 0 && (
@@ -464,53 +464,31 @@ const UpdateDestinationModal = ({
                     multiple
                     accept="image/*"
                     onChange={(e) => handleImageChange(e, setDestinationImageFiles, setImagePreviews)}
-                    className="w-full mt-2"
+                    className="w-full mt-2 text-black"
                   />
                 </div>
               )}
             </label>
           </div>
-          <div>
-            <label>
-              Places Images:
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) => handleImageChange(e, setPlacesImageFiles, () => {})}
-                className="w-full mt-2"
-              />
-              {placesImageFiles.length > 0 && (
-                <div className="mt-2">
-                  <button
-                    type="button"
-                    onClick={() => setPlacesImageFiles([])}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Clear Places Images
-                  </button>
-                </div>
-              )}
-            </label>
-          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex   items-center gap-2">
               <input
                 type="checkbox"
                 checked={isPopularDestination}
                 onChange={(e) => setIsPopularDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Popular Destination
+              <span className="text-black"> Popular Destination</span>
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex   items-center gap-2">
               <input
                 type="checkbox"
                 checked={isTrendingDestination}
                 onChange={(e) => setIsTrendingDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-              Trending Destination
+             <span className="text-black">Trending Destination</span>  
             </label>
           </div>
           <button

@@ -480,7 +480,7 @@ export default function AddLeads() {
                           value={form.name}
                           onChange={handleChange}
                           placeholder="Full Name"
-                          className={`w-full pl-11 pr-4 py-3 border ${
+                          className={`w-full text-black pl-11 pr-4 py-3 border ${
                             errors.name ? "border-red-500" : "border-red-200"
                           } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-red-300`}
                           required
@@ -504,7 +504,7 @@ export default function AddLeads() {
                           value={form.phone}
                           onChange={handleChange}
                           placeholder="Phone Number"
-                          className={`w-full pl-11 pr-4 py-3 border ${
+                          className={`w-full text-black pl-11 pr-4 py-3 border ${
                             errors.phone ? "border-red-500" : "border-red-200"
                           } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-red-300`}
                           required
@@ -528,7 +528,7 @@ export default function AddLeads() {
                           value={form.email}
                           onChange={handleChange}
                           placeholder="Email Address"
-                          className={`w-full pl-11 pr-4 py-3 border ${
+                          className={`w-full text-black pl-11 pr-4 py-3 border ${
                             errors.email ? "border-red-500" : "border-red-200"
                           } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-red-300`}
                           required
@@ -552,7 +552,7 @@ export default function AddLeads() {
                           value={form.city}
                           onChange={handleChange}
                           placeholder="City"
-                          className={`w-full pl-11 pr-4 py-3 border ${
+                          className={`w-full text-black pl-11 pr-4 py-3 border ${
                             errors.city ? "border-red-500" : "border-red-200"
                           } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-red-300`}
                           required
@@ -585,7 +585,7 @@ export default function AddLeads() {
                           value={form.destination}
                           onChange={handleChange}
                           placeholder="Destination"
-                          className={`w-full pl-11 pr-4 py-3 border ${
+                          className={`w-full text-black pl-11 pr-4 py-3 border ${
                             errors.destination
                               ? "border-red-500"
                               : "border-red-200"
@@ -610,7 +610,7 @@ export default function AddLeads() {
                           name="travelDate"
                           value={form.travelDate}
                           onChange={handleChange}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                     </div>
@@ -623,7 +623,7 @@ export default function AddLeads() {
                           placeholder="Enter days"
                           value={form.travelDays}
                           onChange={handleChange}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                       <div className="relative">
@@ -634,7 +634,7 @@ export default function AddLeads() {
                           placeholder="Enter nights"
                           value={form.travelNights}
                           onChange={handleChange}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                     </div>
@@ -645,7 +645,7 @@ export default function AddLeads() {
                           name="leadType"
                           value={form.leadType}
                           onChange={handleChange}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300 appearance-none"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300 appearance-none"
                         >
                           <option value="">Select Lead Type</option>
                           <option value="domestic">Domestic</option>
@@ -660,7 +660,7 @@ export default function AddLeads() {
                           name="tripType"
                           value={form.tripType}
                           onChange={handleChange}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300 appearance-none"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300 appearance-none"
                         >
                           <option value="">Select Trip Type</option>
                           <option value="Family">Family</option>
@@ -669,7 +669,7 @@ export default function AddLeads() {
                           <option value="Business">Business</option>
                           <option value="Senior_Citizen">Senior_Citizen</option>
                           <option value="Group">Group</option>
-                          <option value="Group">Others</option>
+                          <option value="Others">Others</option>
                         </select>
                       </div>
                     </div>
@@ -694,7 +694,7 @@ export default function AddLeads() {
                           value={form?.totalMembers?.adult}
                           onChange={handleGroupChange}
                           min="0"
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                     </div>
@@ -710,7 +710,7 @@ export default function AddLeads() {
                           value={form?.totalMembers?.children}
                           onChange={handleGroupChange}
                           min="0"
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                     </div>
@@ -726,7 +726,7 @@ export default function AddLeads() {
                           value={form?.totalMembers?.infant}
                           onChange={handleGroupChange}
                           min="0"
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
+                          className="w-full text-black pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-300"
                         />
                       </div>
                     </div>

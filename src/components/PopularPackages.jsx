@@ -2,7 +2,10 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../Api/ApiService";
+import api, { getImageUrl } from "../Api/ApiService";
+
+
+
 
 const PopularPackages = ({ popularDestinations = [] }) => {
 
@@ -17,14 +20,6 @@ const PopularPackages = ({ popularDestinations = [] }) => {
   };
 
   // Helper function to get image URL
-  const getImageUrl = (image) => {
-    console.log("Image", image);
-    
-    if (!image ) {
-      return ; // Default image
-    }
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
-  };
 
   const responsive = {
     superLargeDesktop: {

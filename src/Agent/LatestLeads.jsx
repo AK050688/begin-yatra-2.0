@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 3;
   const totalPages = Math.ceil(leads.length / itemsPerPage);
@@ -30,18 +30,25 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
       destination: lead.destination || "Unknown",
       from: lead.city || "Unknown",
       to: lead.destination || "Unknown",
-      people: [
-        lead.adult !== "0" && `${lead.adult} Adult${Number(lead.adult) !== 1 ? "s" : ""}`,
-        lead.children !== "0" && `${lead.children} Child${Number(lead.children) !== 1 ? "ren" : ""}`,
-        lead.infant !== "0" && `${lead.infant} Infant${Number(lead.infant) !== 1 ? "s" : ""}`,
-      ]
-        .filter(Boolean)
-        .join(" ") || "No Travelers",
-      date: lead.travelDate ? new Date(lead.travelDate).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }) : "N/A",
+      totalMembers:
+        [
+          lead.adult !== "0" &&
+            `${lead.adult} Adult${Number(lead.adult) !== 1 ? "s" : ""}`,
+          lead.children !== "0" &&
+            `${lead.children} Child${Number(lead.children) !== 1 ? "ren" : ""}`,
+          lead.infant !== "0" &&
+            `${lead.infant} Infant${Number(lead.infant) !== 1 ? "s" : ""}`,
+        ]
+          .filter(Boolean)
+          .join(" ") || "No Travelers",
+          totalMembers: (Number(lead.adult) || 0) + (Number(lead.children) || 0) + (Number(lead.infant) || 0),
+      date: lead.travelDate
+        ? new Date(lead.travelDate).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+        : "N/A",
       duration: lead.travelTime || "N/A",
     }));
   };
@@ -89,21 +96,33 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
                 </div>
                 <div className="px-10 pt-5 pb-5 space-y-3 text-gray-700">
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900">Route:</span>
+                    <span className="font-semibold text-gray-900">
+                      Destination:
+                    </span>
                     <span className="text-gray-600">
                       {lead.from} → {lead.to}
                     </span>
                   </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900">Travelers:</span>
+                  {/* <p className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-900">Total Members:</span>
                     <span className="text-gray-600">{lead.people}</span>
+                  </p> */}
+
+                  <p className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-900">
+                      Total Members:
+                    </span>
+                    <span className="text-gray-600">{lead.totalMembers}</span>
                   </p>
+
                   <p className="flex items-center gap-2">
                     <span className="font-semibold text-gray-900">Date:</span>
                     <span className="text-gray-600">{lead.date}</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900">Duration:</span>
+                    <span className="font-semibold text-gray-900">
+                      Duration:
+                    </span>
                     <span className="text-gray-600">{lead.duration}</span>
                   </p>
                 </div>
@@ -113,8 +132,9 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
                   <FaWhatsapp className="text-green-600 hover:text-green-800 text-xl cursor-pointer transition-colors" />
                 </div>
                 <button
-                  onClick={()=>navigate("/get-qurey")}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-b-xl cursor-pointer transition-colors duration-300 focus:ring-4 ring-blue-300 focus:outline-none">
+                  onClick={() => navigate("/get-qurey")}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-b-xl cursor-pointer transition-colors duration-300 focus:ring-4 ring-blue-300 focus:outline-none"
+                >
                   Buy Now
                 </button>
               </div>
@@ -133,7 +153,8 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
               <FaArrowLeft className="inline mr-2" /> Previous
             </button>
             <span className="text-gray-700 font-medium">
-              Page {pagination.page} of {Math.ceil(pagination.totalDocs / pagination.limit)}
+              Page {pagination.page} of{" "}
+              {Math.ceil(pagination.totalDocs / pagination.limit)}
             </span>
             <button
               onClick={onNext}

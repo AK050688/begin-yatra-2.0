@@ -97,7 +97,7 @@ const AgentRegistrationForm = () => {
           <input
           type="text"
                 id="companyName"
-                required
+                // required
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Your Company"

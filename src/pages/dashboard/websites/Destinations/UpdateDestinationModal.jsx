@@ -40,8 +40,14 @@ const UpdateDestinationModal = ({
     if (editDestination) {
       setDestinationName(editDestination.destinationName || "");
       setDestinationType(editDestination.destinationType || "domestic");
-      setSelectedPackages(Array.isArray(editDestination.packageId) ? editDestination.packageId : []);
-      setSelectedPlaces(Array.isArray(editDestination.places) ? editDestination.places : []);
+      setSelectedPackages(
+        Array.isArray(editDestination.packageId)
+          ? editDestination.packageId
+          : []
+      );
+      setSelectedPlaces(
+        Array.isArray(editDestination.places) ? editDestination.places : []
+      );
       setTopAttraction(editDestination.topAttraction || "");
       setWhatsGreat(editDestination.whatsGreat || "");
       setTourGuide(editDestination.tourGuide || "");
@@ -49,12 +55,18 @@ const UpdateDestinationModal = ({
       setCulturalExperiences(editDestination.culturalExperiences || "");
       setTips(editDestination.tips || ""); // Fixed case to match backend
       setImportantInformation(
-        Array.isArray(editDestination.importantInformation) ? editDestination.importantInformation : [""]
+        Array.isArray(editDestination.importantInformation)
+          ? editDestination.importantInformation
+          : [""]
       );
-      setTopPlaces(Array.isArray(editDestination.topPlaces) ? editDestination.topPlaces : [""]);
+      setTopPlaces(
+        Array.isArray(editDestination.topPlaces)
+          ? editDestination.topPlaces
+          : [""]
+      );
       setIsPopularDestination(!!editDestination.isPopularDestination);
-      setIsTrendingDestination(!!editDestination.isTrendingDestination); // Fixed typo
-      
+      setIsTrendingDestination(!!editDestination.isTrandingDestination);
+
       // Ensure imagePreviews is always an array
       const destinationImages = editDestination.destinationImage;
       setImagePreviews(
@@ -129,7 +141,7 @@ const UpdateDestinationModal = ({
       formData.append("destinationName", destinationName);
       formData.append("packageId", JSON.stringify(selectedPackages));
       formData.append("isPopularDestination", isPopularDestination);
-      formData.append("isTrendingDestination", isTrendingDestination); // Fixed typo
+      formData.append("isTrandingDestination", isTrendingDestination);
 
       // Append destination images
       if (destinationImageFiles.length > 0) {
@@ -182,7 +194,9 @@ const UpdateDestinationModal = ({
         >
           &times;
         </button>
-        <h2 className="text-2xl text-black font-bold text-center mb-4">Update Destination</h2>
+        <h2 className="text-2xl text-black font-bold text-center mb-4">
+          Update Destination
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="text-black">
@@ -221,7 +235,9 @@ const UpdateDestinationModal = ({
                         <input
                           type="checkbox"
                           value={place.id || place._id}
-                          checked={selectedPlaces.includes(place.id || place._id)}
+                          checked={selectedPlaces.includes(
+                            place.id || place._id
+                          )}
                           onChange={(e) => {
                             const value = place.id || place._id;
                             setSelectedPlaces((prev) =>
@@ -232,7 +248,9 @@ const UpdateDestinationModal = ({
                           }}
                           className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                         />
-                        <span className="text-black">{place.name || place.placeName}</span>
+                        <span className="text-black">
+                          {place.name || place.placeName}
+                        </span>
                       </label>
                     ))
                   ) : (
@@ -264,11 +282,16 @@ const UpdateDestinationModal = ({
                         value={pkg.id || pkg._id}
                         checked={selectedPackages.includes(pkg.id || pkg._id)}
                         onChange={(e) =>
-                          handlePackageChange(pkg.id || pkg._id, e.target.checked)
+                          handlePackageChange(
+                            pkg.id || pkg._id,
+                            e.target.checked
+                          )
                         }
                         className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
                       />
-                      <span className="text-black">{pkg.name || pkg.packageName}</span>
+                      <span className="text-black">
+                        {pkg.name || pkg.packageName}
+                      </span>
                     </label>
                   ))
                 ) : (
@@ -305,7 +328,7 @@ const UpdateDestinationModal = ({
                 className="w-full text-black border rounded px-2 py-1"
               />
             </label>
-            <label  className="text-black">
+            <label className="text-black">
               Famous For:
               <input
                 type="text"
@@ -432,7 +455,11 @@ const UpdateDestinationModal = ({
                   {imagePreviews.map((preview, index) => (
                     <img
                       key={index}
-                      src={preview.startsWith('http') ? preview : `${imgApi}${preview}`}
+                      src={
+                        preview.startsWith("http")
+                          ? preview
+                          : `${imgApi}${preview}`
+                      }
                       alt={`Preview ${index + 1}`}
                       className="w-full h-24 text-black object-cover rounded-lg"
                     />
@@ -443,7 +470,13 @@ const UpdateDestinationModal = ({
                   type="file"
                   multiple
                   accept="image/*"
-                  onChange={(e) => handleImageChange(e, setDestinationImageFiles, setImagePreviews)}
+                  onChange={(e) =>
+                    handleImageChange(
+                      e,
+                      setDestinationImageFiles,
+                      setImagePreviews
+                    )
+                  }
                   className="w-full mt-2 text-black"
                 />
               )}
@@ -463,14 +496,20 @@ const UpdateDestinationModal = ({
                     type="file"
                     multiple
                     accept="image/*"
-                    onChange={(e) => handleImageChange(e, setDestinationImageFiles, setImagePreviews)}
+                    onChange={(e) =>
+                      handleImageChange(
+                        e,
+                        setDestinationImageFiles,
+                        setImagePreviews
+                      )
+                    }
                     className="w-full mt-2 text-black"
                   />
                 </div>
               )}
             </label>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex   items-center gap-2">
               <input
@@ -488,7 +527,7 @@ const UpdateDestinationModal = ({
                 onChange={(e) => setIsTrendingDestination(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded"
               />
-             <span className="text-black">Trending Destination</span>  
+              <span className="text-black">Trending Destination</span>
             </label>
           </div>
           <button

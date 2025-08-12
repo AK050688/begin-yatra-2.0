@@ -461,7 +461,7 @@ const Destinations = () => {
                           <div className="flex-shrink-0 h-12 w-12">
                             <img
                               className="h-12 w-12 rounded-lg object-cover"
-                              src={getImageUrl(dest.destinationImage)}
+                              src={`${import.meta.env.VITE_APP_BASE_API}/public/temp/${dest.destinationImage}`}
                               alt={dest.destinationName}
                               onError={(e) => {
                                 e.target.src = "/public/Images/banner.jpg";

@@ -211,9 +211,16 @@ const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
                     {lead.satatus}
                   </span>
                 </p>
-                <label className="text-sm text-gray-500 font-medium">
-                  Total Members:
-                </label>
+                <div className="flex flex-col">
+                  <label className="text-sm text-gray-500 font-medium">
+                    Total Members:
+                  </label>
+                  <span className="text-gray-800 mx-2">
+                    {Number(lead?.totalMembers?.adult || "0") +
+                      Number(lead?.totalMembers?.children || "0") +
+                      Number(lead?.totalMembers?.infant || "0")}
+                  </span>
+                </div>
                 <div className="text-gray-800 flex gap-2 items-center">
                   <div className="flex flex-col items-center">
                     <label className="text-sm text-gray-500 font-medium">

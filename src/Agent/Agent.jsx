@@ -9,7 +9,6 @@ import Footer from "../HaderFooter/Footer";
 import { FaArrowLeft, FaArrowRight, FaStar } from "react-icons/fa6";
 import api from "../Api/ApiService";
 
-
 const Agent = () => {
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -189,7 +188,9 @@ const Agent = () => {
               {/* Pagination Controls for Reviews */}
               <div className="flex justify-center items-center gap-4 mt-8">
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   disabled={currentPage === 1}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold disabled:opacity-50 hover:bg-blue-700 transition"
                 >

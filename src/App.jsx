@@ -123,7 +123,6 @@ function App() {
             <Route path="add-new-plans" element={<AddNewPlan />} />
             <Route path="website/reviews" element={<AdminReviews />} />
             <Route path="website/partners" element={<PartnersPage />} />
-            
 
             <Route path="website/destinations/*">
               <Route index element={<Destinations />} />

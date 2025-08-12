@@ -30,18 +30,18 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
       destination: lead.destination || "Unknown",
       from: lead.city || "Unknown",
       to: lead.destination || "Unknown",
-      totalMembers:
-        [
-          lead.adult !== "0" &&
-            `${lead.adult} Adult${Number(lead.adult) !== 1 ? "s" : ""}`,
-          lead.children !== "0" &&
-            `${lead.children} Child${Number(lead.children) !== 1 ? "ren" : ""}`,
-          lead.infant !== "0" &&
-            `${lead.infant} Infant${Number(lead.infant) !== 1 ? "s" : ""}`,
-        ]
-          .filter(Boolean)
-          .join(" ") || "No Travelers",
-          totalMembers: (Number(lead.adult) || 0) + (Number(lead.children) || 0) + (Number(lead.infant) || 0),
+      // totalMembers:
+      //   [
+      //     lead.adult !== "0" &&
+      //       `${lead.adult} Adult${Number(lead.adult) !== 1 ? "s" : ""}`,
+      //     lead.children !== "0" &&
+      //       `${lead.children} Child${Number(lead.children) !== 1 ? "ren" : ""}`,
+      //     lead.infant !== "0" &&
+      //       `${lead.infant} Infant${Number(lead.infant) !== 1 ? "s" : ""}`,
+      //   ]
+      //     .filter(Boolean)
+      //     .join(" ") || "No Travelers",
+      totalMembers: (Number(lead?.totalMembers?.adult) || 0) + (Number(lead?.totalMembers?.children) || 0) + (Number(lead?.totalMembers?.infant) || 0),
       date: lead.travelDate
         ? new Date(lead.travelDate).toLocaleDateString("en-GB", {
             day: "2-digit",

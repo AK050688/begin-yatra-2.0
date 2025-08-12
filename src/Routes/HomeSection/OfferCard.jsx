@@ -8,7 +8,7 @@ const offers = [
     description:
       "A unique blend of Indian and European cultures, attracting visitors seeking relaxation, adventure, and cultural immersion",
     // discount: "20% OFF",
-    image: "/Images/offer.webp",
+    image: "/Images/goaaa.jpeg",
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const offers = [
     description:
       "A unique blend of picturesque landscapes, rich culture, and adventurous activities, attracting tourists and nature lovers.",
     // discount: "Flat ₹10,000 OFF",
-    image: "/Images/offer.webp",
+    image: "/Images/kashmirr.jpeg",
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const offers = [
     description:
       "Shimla is the Capital Town of Himachal Pradesh. It was formerly the summer capital during the British Rule.",
     discount: "Save ₹7,500",
-    image: "/Images/offer.webp",
+    image: "/Images/shimlaa.jpeg",
   },
 ];
 

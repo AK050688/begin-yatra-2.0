@@ -27,7 +27,7 @@ const Banner = () => {
               100% Mobile Verified Leads
             </span>
             <span className="bg-blue-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
-              Non Shareable
+              Non-sharable
             </span>
             <span className="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
               Replacement Policy

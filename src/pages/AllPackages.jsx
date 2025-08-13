@@ -438,9 +438,9 @@ const AllPackages = () => {
                         src={getImageUrl(pkg?.destinationId?.destinationImage)}
                         alt={pkg.packageName}
                         className="w-full h-48 sm:h-60 object-cover object-center rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
-                        onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/600x400?text=Image+Not+Found";
-                        }}
+                        // onError={(e) => {
+                        //   e.target.src = "https://via.placeholder.com/600x400?text=Image+Not+Found";
+                        // }}
                         loading="lazy"
                       />
                     </div>

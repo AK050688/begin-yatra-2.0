@@ -157,9 +157,6 @@ const Agent = () => {
                           src={review.image || "/Images/gojo.jpg"}
                           alt={review.name}
                           className="w-16 h-16 rounded-full object-cover border-2 border-indigo-100"
-                          onError={(e) => {
-                            e.target.src = "/Images/gojo.jpg";
-                          }}
                         />
                         <div>
                           <h3 className="font-semibold text-xl text-gray-800">

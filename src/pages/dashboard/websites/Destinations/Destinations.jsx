@@ -461,11 +461,10 @@ const Destinations = () => {
                           <div className="flex-shrink-0 h-12 w-12">
                             <img
                               className="h-12 w-12 rounded-lg object-cover"
-                              src={`${import.meta.env.VITE_APP_BASE_API}/public/temp/${dest.destinationImage}`}
+                              src={`${
+                                import.meta.env.VITE_APP_BASE_API
+                              }/public/temp/${dest.destinationImage}`}
                               alt={dest.destinationName}
-                              onError={(e) => {
-                                e.target.src = "/public/Images/banner.jpg";
-                              }}
                             />
                           </div>
                         </td>
@@ -511,7 +510,8 @@ const Destinations = () => {
                                 : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
+                            {dest.isTrendingDestination ? "Yes" : "No"}{" "}
+                            {/* Fixed typo */}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -652,7 +652,8 @@ const Destinations = () => {
                                 : "bg-gray-100 text-gray-800"
                             }`}
                           >
-                            {dest.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
+                            {dest.isTrendingDestination ? "Yes" : "No"}{" "}
+                            {/* Fixed typo */}
                           </span>
                         </div>
                       </div>
@@ -802,9 +803,9 @@ const Destinations = () => {
                                 index + 1
                               }`}
                               className="w-full h-24 object-cover rounded-lg"
-                              onError={(e) => {
-                                e.target.src = "/public/Images/banner.jpg";
-                              }}
+                              // onError={(e) => {
+                              //   e.target.src = "/public/Images/banner.jpg";
+                              // }}
                             />
                           </div>
                         )
@@ -863,7 +864,8 @@ const Destinations = () => {
                         : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {selectedDestination.isTrendingDestination ? "Yes" : "No"} {/* Fixed typo */}
+                    {selectedDestination.isTrendingDestination ? "Yes" : "No"}{" "}
+                    {/* Fixed typo */}
                   </span>
                 </div>
               </div>
@@ -913,7 +915,8 @@ const Destinations = () => {
                 <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                   Tips
                 </h3>
-                <p className="text-gray-900">{selectedDestination.tips}</p> {/* Fixed case */}
+                <p className="text-gray-900">{selectedDestination.tips}</p>{" "}
+                {/* Fixed case */}
               </div>
 
               {selectedDestination.importantInformation &&

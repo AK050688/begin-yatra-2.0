@@ -14,62 +14,74 @@ import AboutSection from "./HomeSection/AboutSection";
 import api from "../Api/ApiService";
 
 const Home = () => {
-    const [homeData, setHomeData] = useState({
-        totalPopularDestination: [],
-        totalTrandingDestination: [],
-        totalTrandingPackages: [],
-        domesticDestinations: [],
-        internationalDestinations: []
-    });
-    const [loading, setLoading] = useState(false);
+  const [homeData, setHomeData] = useState({
+    totalPopularDestination: [],
+    totalTrandingDestination: [],
+    totalTrandingPackages: [],
+    domesticDestinations: [],
+    internationalDestinations: [],
+  });
+  const [loading, setLoading] = useState(false);
 
-    const getAllHomeData = async () => {
-        setLoading(true);
-        try {
-            const res = await api.get("/api/auth/homepage");
-            console.log("res.data Home data", res.data);
+  const getAllHomeData = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/api/auth/homepage");
+      console.log("res.data Home data", res.data);
 
-            if (res.data.statusCode === 200) {
-                
-                setHomeData({
-                    totalPopularDestination: res.data.data.totalPopularDestination || [],
-                    totalTrandingDestination: res.data.data.totalTrandingDestination || [],
-                    totalTrandingPackages: res.data.data.totalTrandingPackages || [],
-                    totalTopCountries:res.data.data.totalTopCountries || [],
-                });
+      if (res.data.statusCode === 200) {
+        setHomeData({
+          totalPopularDestination: res.data.data.totalPopularDestination || [],
+          totalTrandingDestination:
+            res.data.data.totalTrandingDestination || [],
+          totalTrandingPackages: res.data.data.totalTrandingPackages || [],
+          totalTopCountries: res.data.data.totalTopCountries || [],
+        });
 
-                console.log("Home data set:", res.data.data);
-            }
-        } catch (error) {
-            console.error("Error fetching home data:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        console.log("Home data set:", res.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        getAllHomeData();
-    }, []);
+  useEffect(() => {
+    getAllHomeData();
+  }, []);
 
-    return (
-        <div className="">
-            {/* <HeroSection /> */}
-            <Banner />
-            <div className="mt-"></div>
-            <AboutSection/>
-            <OfferCards/>
-            <PopularPackages popularDestinations={homeData.totalPopularDestination} loading={loading} />
-            <TopDestinations trendingDestinations={homeData.totalTrandingDestination} loading={loading} />
-            <TrandingStories/>
-            <TopCountries totalTopCountries={homeData.totalTopCountries} loading={loading} />
-            <TrendingPackages trendingPackages={homeData.totalTrandingPackages} loading={loading} />
-            <div className="mx-auto  bg-white ">
-                <WnatToGOForm/>
-            </div>
-            <PackageMarketplace/>
-            <HowItWork/>
-        </div>
-    );
+  return (
+    <div className="">
+      {/* <HeroSection /> */}
+      <Banner />
+      <div className="mt-"></div>
+      <AboutSection />
+      <OfferCards />
+      <PopularPackages
+        popularDestinations={homeData.totalPopularDestination}
+        loading={loading}
+      />
+      <TopDestinations
+        trendingDestinations={homeData.totalTrandingDestination}
+        loading={loading}
+      />
+      <TrandingStories />
+      <TopCountries
+        totalTopCountries={homeData.totalTopCountries}
+        loading={loading}
+      />
+      <TrendingPackages
+        trendingPackages={homeData.totalTrandingPackages}
+        loading={loading}
+      />
+      <div className="mx-auto  bg-white ">
+        <WnatToGOForm />
+      </div>
+      <PackageMarketplace />
+      <HowItWork />
+    </div>
+  );
 };
 
 export default Home;

@@ -573,9 +573,9 @@ const Destinations = () => {
                           className="h-16 w-16 rounded-lg object-cover"
                           src={getImageUrl(dest.destinationImage)}
                           alt={dest.destinationName}
-                          onError={(e) => {
-                            e.target.src = "/public/Images/banner.jpg";
-                          }}
+                          // onError={(e) => {
+                          //   e.target.src = "/public/Images/banner.jpg";
+                          // }}
                         />
                       </div>
                       <div className="flex-1">

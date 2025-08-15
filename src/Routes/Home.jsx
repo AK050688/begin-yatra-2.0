@@ -55,7 +55,6 @@ const Home = () => {
     <div className="">
       {/* <HeroSection /> */}
       <Banner />
-      <div className="mt-"></div>
       <AboutSection />
       <OfferCards />
       <PopularPackages
@@ -75,7 +74,7 @@ const Home = () => {
         trendingPackages={homeData.totalTrandingPackages}
         loading={loading}
       />
-      <div className="mx-auto  bg-white ">
+      <div className="mx-auto bg-white">
         <WnatToGOForm />
       </div>
       <PackageMarketplace />

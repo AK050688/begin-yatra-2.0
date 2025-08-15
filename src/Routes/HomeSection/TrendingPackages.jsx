@@ -1,28 +1,16 @@
-import React from "react";
-import { MapPin, Star } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { imgApi } from "../../Api/ApiService";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../Api/ApiService";
 
 const TrendingPackages = ({ trendingPackages = [] }) => {
-
-  console.log("trendingPackages",trendingPackages);
-  
-
   const navigate = useNavigate();
 
-  const getImageUrl = (image) => {
-    if (!image) return;
-    if (image.startsWith("/")) {
-      return `https://begin-yatra-nq40.onrender.com/public/temp${image}`;
-    }
-
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
-  };
-
   const handlePackageClick = (packageId) => {
-    const selectedPackage = trendingPackages.find(pkg => pkg._id === packageId);
+    const selectedPackage = trendingPackages.find(
+      (pkg) => pkg._id === packageId
+    );
     if (selectedPackage) {
-      localStorage.setItem('selectedPackage', JSON.stringify(selectedPackage));
+      localStorage.setItem("selectedPackage", JSON.stringify(selectedPackage));
     }
     navigate("/get-qurey");
   };
@@ -43,7 +31,7 @@ const TrendingPackages = ({ trendingPackages = [] }) => {
         {trendingPackages.length > 0 &&
           trendingPackages.map((pkg, index) => {
             const destination = pkg.destinationId || {};
-            const imageUrl = getImageUrl(destination.destinationImage);
+            const imageUrl = `${imgApi}${destination.destinationImage}`;
 
             return (
               <div
@@ -79,7 +67,9 @@ const TrendingPackages = ({ trendingPackages = [] }) => {
 
                   <div className="text-sm">
                     <p className="text-green-600 font-bold text-lg">
-                      ₹ {pkg.packagePrice?.toLocaleString() || "Contact for price"}
+                      ₹{" "}
+                      {pkg.packagePrice?.toLocaleString() ||
+                        "Contact for price"}
                     </p>
                     <p className="text-xs text-gray-400">
                       *Excluding Applicable Taxes

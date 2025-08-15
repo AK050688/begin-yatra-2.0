@@ -3,41 +3,41 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { imgApi } from "../../Api/ApiService";
 
-export const destinations = [
-  {
-    id: "1",
-    name: "Goa",
-    image: "/Images/kashmir.jpg",
-  },
-  {
-    id: "2",
-    name: "Kerala",
-    image: "/Images/Andaman.jpg",
-  },
-  {
-    id: "3",
-    name: "Manali",
-    image: "/Images/rajastan.png",
-  },
-  {
-    id: "4",
-    name: "Rajasthan",
-    image: "/Images/kashmir.jpg",
-  },
-  {
-    id: "5",
-    name: "Kashmir",
-    image: "/Images/Andaman.jpg",
-  },
-  {
-    id: "6",
-    name: "Andaman",
-    image: "/Images/rajastan.png",
-  },
-];
+// export const destinations = [
+//   {
+//     id: "1",
+//     name: "Goa",
+//     image: "/Images/kashmir.jpg",
+//   },
+//   {
+//     id: "2",
+//     name: "Kerala",
+//     image: "/Images/Andaman.jpg",
+//   },
+//   {
+//     id: "3",
+//     name: "Manali",
+//     image: "/Images/rajastan.png",
+//   },
+//   {
+//     id: "4",
+//     name: "Rajasthan",
+//     image: "/Images/kashmir.jpg",
+//   },
+//   {
+//     id: "5",
+//     name: "Kashmir",
+//     image: "/Images/Andaman.jpg",
+//   },
+//   {
+//     id: "6",
+//     name: "Andaman",
+//     image: "/Images/rajastan.png",
+//   },
+// ];
 
-// Custom arrows for carousel
 const CustomArrow = ({ onClick, direction }) => (
   <button
     onClick={onClick}
@@ -50,19 +50,7 @@ const CustomArrow = ({ onClick, direction }) => (
 );
 
 const TopDestinations = ({ trendingDestinations = [] }) => {
-  console.log("trendingDestinations", trendingDestinations);
-
   const navigate = useNavigate();
-
-  // Helper function to get image URL
-  const getImageUrl = (image) => {
-    console.log("Image", image);
-
-    if (!image) {
-      return; // Default image
-    }
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
-  };
 
   const responsive = {
     superLargeDesktop: {
@@ -119,7 +107,7 @@ const TopDestinations = ({ trendingDestinations = [] }) => {
                   className="overflow-hidden cursor-pointer rounded-xl shadow-lg group"
                 >
                   <img
-                    src={getImageUrl(destination.destinationImage)}
+                    src={`${imgApi}${destination.destinationImage}`}
                     alt={destination.destinationName}
                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                     // onError={(e) => {

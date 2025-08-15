@@ -1,13 +1,16 @@
 import axios from "axios";
-const getEnv = import.meta.env.VITE_APP_BASE_API;
-export const imgApi = `${import.meta.env.VITE_APP_BASE_API}/public/temp/`;
+
+const baseURL = import.meta.env.VITE_APP_BASE_API;
+
+export const imgApi = `${baseURL}/public/temp/`;
+
 const api = axios.create({
-  baseURL: getEnv,
+  baseURL,
   headers: { "Content-Type": "application/json" },
 });
 
 export const axiosWithCredentials = axios.create({
-  baseURL: getEnv,
+  baseURL,
   withCredentials: true,
 });
 
@@ -15,7 +18,7 @@ export const getImageUrl = (image) => {
   if (!image) {
     return;
   }
-  return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
+  return `${baseURL}/public/temp/${image}`;
 };
 
 export default api;

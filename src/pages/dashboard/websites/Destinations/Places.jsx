@@ -70,7 +70,7 @@ const Places = () => {
     if (!image ) {
       return ; // Default image
     }
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
+    return `https://api.beginyatra.com/public/temp/${image}`;
   };
   const getAllPlaces = async (pageNum = 1) => {
     setLoading(true);

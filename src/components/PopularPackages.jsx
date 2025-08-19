@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getImageUrl } from "../Api/ApiService";
 
 const PopularPackages = ({ popularDestinations = [] }) => {
+  
   const navigate = useNavigate();
   const truncateText = (text, maxWords = 5) => {
     if (!text) return "";

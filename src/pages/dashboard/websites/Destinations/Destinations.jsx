@@ -110,10 +110,10 @@ const Destinations = () => {
     }
     if (Array.isArray(image)) {
       return image.length > 0
-        ? `https://begin-yatra-nq40.onrender.com/public/temp/${image[0]}`
+        ? `https://api.beginyatra.com/public/temp/${image[0]}`
         : "/public/Images/banner.jpg";
     }
-    return `https://begin-yatra-nq40.onrender.com/public/temp/${image}`;
+    return `https://api.beginyatra.com/public/temp/${image}`;
   };
 
   // Fetch all places
@@ -571,7 +571,9 @@ const Destinations = () => {
                       <div className="flex-shrink-0">
                         <img
                           className="h-16 w-16 rounded-lg object-cover"
-                          src={getImageUrl(dest.destinationImage)}
+                          src={`${
+                                import.meta.env.VITE_APP_BASE_API
+                              }/public/temp/${dest.destinationImage}`}
                           alt={dest.destinationName}
                           // onError={(e) => {
                           //   e.target.src = "/public/Images/banner.jpg";
@@ -797,7 +799,7 @@ const Destinations = () => {
                               src={
                                 image.startsWith("http")
                                   ? image
-                                  : `https://begin-yatra-nq40.onrender.com/public/temp/${image}`
+                                  : `https://g9f9f447-8000.inc1.devtunnels.ms/public/temp/${image}`
                               }
                               alt={`${selectedDestination.destinationName} ${
                                 index + 1

@@ -50,17 +50,17 @@ const AboutDestination = () => {
         return images[0];
       }
       if (images[0].startsWith("/")) {
-        return `https://begin-yatra-nq40.onrender.com/public/temp${images[0]}`;
+        return `https://api.beginyatra.com/public/temp${images[0]}`;
       }
-      return `https://begin-yatra-nq40.onrender.com/public/temp/${images[0]}`;
+      return `https://api.beginyatra.com/public/temp/${images[0]}`;
     } else {
       if (images.startsWith("http://") || images.startsWith("https://")) {
         return images;
       }
       if (images.startsWith("/")) {
-        return `https://begin-yatra-nq40.onrender.com/public/temp${images}`;
+        return `https://api.beginyatra.com/public/temp${images}`;
       }
-      return `https://begin-yatra-nq40.onrender.com/public/temp/${images}`;
+      return `https://api.beginyatra.com/public/temp/${images}`;
     }
   };
 

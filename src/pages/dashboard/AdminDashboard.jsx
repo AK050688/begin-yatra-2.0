@@ -152,7 +152,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Top Destinations Section */}
-      <div>
+      {/* <div>
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">
           Top Destinations
         </h1>
@@ -181,7 +181,7 @@ const AdminDashboard = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

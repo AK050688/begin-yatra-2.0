@@ -128,12 +128,12 @@ const Agent = () => {
         onPrev={handleLeadsPrev}
       />
       <Teravelleads title={"Categories of Travel leads"} />
-      <div className="">
+      {/* <div className="">
         <Teravelleads title={"Types of Travel Leads"} />
-      </div>
-      <div className="">
+      </div> */}
+      {/* <div className="">
         <Teravelleads title={"How to generate travel leads?"} />
-      </div>
+      </div> */}
       {/* Review Cards Carousel */}
       {!loading && !error && (
         <div className="mt-12 w-full mx-20 relative">

@@ -86,7 +86,7 @@ const PopularPackages = ({ popularDestinations = [] }) => {
                       <p className="text-xs text-gray-300">Starting from</p>
                       <p className="text-sm font-semibold text-green-300">
                         ₹
-                        {(destination.packagePrice || 50000).toLocaleString(
+                        {(destination.packageId.packagePrice || 50000).toLocaleString(
                           "en-IN"
                         )}
                       </p>

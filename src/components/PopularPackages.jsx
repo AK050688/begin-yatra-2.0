@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getImageUrl } from "../Api/ApiService";
 
 const PopularPackages = ({ popularDestinations = [] }) => {
+  console.log(popularDestinations);
   
   const navigate = useNavigate();
   const truncateText = (text, maxWords = 5) => {
@@ -86,9 +87,14 @@ const PopularPackages = ({ popularDestinations = [] }) => {
                       <p className="text-xs text-gray-300">Starting from</p>
                       <p className="text-sm font-semibold text-green-300">
                         ₹
-                        {(destination.packageId.packagePrice || 50000).toLocaleString(
-                          "en-IN"
-                        )}
+                        {destination.packageId &&
+                        destination.packageId.length > 0
+                          ? Math.min(
+                              ...destination.packageId.map(
+                                (pkg) => pkg.packagePrice
+                              )
+                            ).toLocaleString("en-IN")
+                          : "N/A"}
                       </p>
                     </div>
                   </div>

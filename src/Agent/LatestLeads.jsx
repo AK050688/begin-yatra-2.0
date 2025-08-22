@@ -132,7 +132,7 @@ const TravelLeadsSlider = ({ leads, pagination, onNext, onPrev }) => {
                   <FaWhatsapp className="text-green-600 hover:text-green-800 text-xl cursor-pointer transition-colors" />
                 </div>
                 <button
-                  onClick={() => navigate("/get-qurey")}
+                  onClick={() => navigate("/agent/registration")}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-b-xl cursor-pointer transition-colors duration-300 focus:ring-4 ring-blue-300 focus:outline-none"
                 >
                   Buy Now

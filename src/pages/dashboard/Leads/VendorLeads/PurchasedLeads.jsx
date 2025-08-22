@@ -371,7 +371,7 @@ const PurchaseLeads = () => {
                 </div>
 
                 {/* Lead Details */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-gray-200 pt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 border-t border-gray-200 pt-6">
                   {/* Contact Info */}
                   <div>
                     <div className="flex items-center gap-2 mb-3">
@@ -434,6 +434,31 @@ const PurchaseLeads = () => {
                       </p>
                     </div>
                   </div>
+                  {/* <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Users className="text-gray-600 text-lg" />
+                      <h4 className="font-semibold text-gray-700 text-sm">
+                        Total Members
+                      </h4>
+                    </div>
+                    <div className="ml-6 flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <label className="font-medium">Adults:</label>
+                        {lead?.totalMembers?.adult}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="font-medium">Children:</label>
+                        {lead?.totalMembers?.children}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="font-medium">Infants:</label>
+                        {lead?.totalMembers?.infant}
+                      </div>
+                    </div>
+                  </div> */}
+                </div>
+                {/* Purchase Info */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <Users className="text-gray-600 text-lg" />
@@ -456,9 +481,6 @@ const PurchaseLeads = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-                {/* Purchase Info */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <BsInfoCircle className="text-gray-600 text-lg" />

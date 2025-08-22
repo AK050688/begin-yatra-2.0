@@ -137,7 +137,7 @@ const AdminProfile = () => {
             <input
               className="h-10 border-2 rounded-md indent-2"
               value={form.email}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </div>
           <div className="flex flex-wrap justify-between items-center gap-4 py-1">

@@ -30,7 +30,7 @@ const TopDestinations = () => {
 
       <div className="flex gap-2 flex-wrap max-w-5xl mx-auto">
         {destinations.map((dest, index) => (
-          <Link to="/get-qurey" key={index}>
+          <Link to="/agent/registration" key={index}>
             <div className="flex items-center justify-center">
               <p className="px-6 py-3 text-center bg-white border border-blue-500 text-blue-500 font-semibold rounded-full shadow-md hover:bg-blue-500 hover:text-white transition-all duration-300">
                 {dest.name}

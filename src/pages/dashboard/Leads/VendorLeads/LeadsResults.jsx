@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectUser } from "../../../../store/userSlice";
 
-const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
+const LeadsResults = ({ leads, getLeads, totalLeads, onEmptyResults }) => {
   const token = useSelector((state) => state?.auth?.data?.accessToken);
   const [allLeads, setAllLeads] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
 
   const leadsData = async () => {
     await leads;
-    console.log("leads ❓❓❓❓❓", leads);
+    // console.log("leads ❓❓❓❓❓", leads);
 
     setAllLeads(leads);
   };
@@ -29,10 +29,20 @@ const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
     }
   };
 
-  useEffect(() => {
-    leadsData();
+ useEffect(() => {
+  leadsData();
+}, [leads]); // runs only when leads change
+
+useEffect(() => {
+  if (user?._id) {
     getUserData();
-  });
+  }
+}, [user?._id]);
+  // useEffect(() => {
+  //   leadsData();
+  //   getUserData();
+  // });
+
 
   const confirmBuy = async () => {
     setLoading(true);
@@ -93,43 +103,15 @@ const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
     setShowModal(true);
   };
 
-  // Apply filters to leads
-  const filteredLeads = allLeads.filter((lead) => {
-    const searchTerm = filters.search.toLowerCase();
-    const matchesSearch =
-      !searchTerm ||
-      lead.name.toLowerCase().includes(searchTerm) ||
-      lead.email.toLowerCase().includes(searchTerm) ||
-      lead.destination.toLowerCase().includes(searchTerm) ||
-      lead.leadId.toLowerCase().includes(searchTerm);
+  // Server-side filtering is now handled, so we just use the leads passed from parent
+  const filteredLeads = allLeads;
 
-    const matchesDestination =
-      !filters.destination ||
-      lead.destination
-        .toLowerCase()
-        .includes(filters.destination.toLowerCase());
-
-    const matchesCity =
-      !filters.city ||
-      lead.city.toLowerCase().includes(filters.city.toLowerCase());
-
-    const matchesTripType =
-      !filters.tripType || lead.tripType === filters.tripType;
-
-    const matchesSatatus = !filters.satatus || lead.satatus === filters.satatus;
-
-    const matchesLeadType =
-      !filters.leadType || lead.leadType === filters.leadType;
-
-    return (
-      matchesSearch &&
-      matchesDestination &&
-      matchesCity &&
-      matchesTripType &&
-      matchesSatatus &&
-      matchesLeadType
-    );
-  });
+  // Notify parent component if there are no leads
+  useEffect(() => {
+    if (onEmptyResults && filteredLeads.length === 0 && allLeads.length > 0) {
+      onEmptyResults();
+    }
+  }, [filteredLeads.length, allLeads.length, onEmptyResults]);
 
   // console.log("filteredLeads", filteredLeads);
 
@@ -147,7 +129,7 @@ const LeadsResults = ({ filters, leads, getLeads, totalLeads }) => {
       ) : (
         filteredLeads.map((lead) => (
           <div
-            key={lead._id}
+            key={lead.id}
             className="shadow-lg p-6 mb-6 bg-white rounded-lg border border-gray-100"
           >
             {/* Header */}

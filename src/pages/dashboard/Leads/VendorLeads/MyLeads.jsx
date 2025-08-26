@@ -3,7 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import LeadsResults from "./LeadsResults";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../../../../Api/ApiService";
+import { fetchLeads } from "../../../../Api/ApiService";
 
 const MyLeads = () => {
   const navigate = useNavigate();
@@ -16,6 +16,17 @@ const MyLeads = () => {
     satatus: "",
     leadType: "",
   });
+  const [prevFilters, setPrevFilters] = useState(filters);
+  const [pagination, setPagination] = useState({
+    totalDocs: 0,
+    limit: 50,
+    totalPages: 1,
+    page: 1,
+    hasPrevPage: false,
+    hasNextPage: false,
+    nextPage: null,
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleGoToDashboard = () => {
     navigate("/dashboard");
@@ -24,6 +35,9 @@ const MyLeads = () => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
+    // console.log("Filters updated:", { ...filters, [name]: value });
+    console.log(e.target.value)
+    
   };
 
   const generateLeadId = () => {
@@ -34,12 +48,12 @@ const MyLeads = () => {
     const random = Math.floor(1000 + Math.random() * 9000);
     return `lead_${timestamp}_${random}`;
   };
+
   const getLeads = async (page) => {
+    setIsLoading(true);
     try {
-      const response = await api.get(`/api/leads?page=${page}&limit=${50}`);
-      // console.log("re", response.data.data.leads);
+      const response = await fetchLeads({ ...filters, page, limit: 50 });
       const { leads, ...paginate } = response.data.data;
-      // console.log("my leads", leads);
       setPagination({
         limit: 50,
         totalDocs: paginate.totalLeads,
@@ -80,23 +94,25 @@ const MyLeads = () => {
     } catch (error) {
       console.error("Failed to fetch leads:", error);
       setSavedLeads([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // Reset pagination to page 1 when filters change
   useEffect(() => {
-    getLeads();
-  }, []);
+    const filtersChanged = JSON.stringify(filters) !== JSON.stringify(prevFilters);
+    
+    if (filtersChanged) {
+      setPagination(prev => ({ ...prev, page: 1 }));
+      setPrevFilters(filters);
+      getLeads(1); // Always fetch page 1 when filters change
+    }
+  }, [filters, prevFilters]);
 
-  const [pagination, setPagination] = useState({
-    totalDocs: 0,
-    limit: 50,
-    totalPages: 1,
-    page: 1,
-    hasPrevPage: false,
-    hasNextPage: false,
-    prevPage: null,
-    nextPage: null,
-  });
+  useEffect(() => {
+    getLeads(1); // Initial load with page 1
+  }, []);
 
   const handlePageChange = (pageNumber) => {
     getLeads(pageNumber);
@@ -185,7 +201,7 @@ const MyLeads = () => {
               value={filters.search}
               onChange={handleFilterChange}
               placeholder="Search by Name, Email, Destination City, or Lead ID..."
-              className="w-full border-0 outline-none"
+              className="w-full border-0 outline-none text-black"
             />
           </div>
 
@@ -196,7 +212,7 @@ const MyLeads = () => {
               name="destination"
               value={filters.destination}
               onChange={handleFilterChange}
-              className="flex-1 min-w-[250px] h-10 p-4 border border-gray-300 rounded-lg"
+              className="flex-1 min-w-[250px] h-10 p-4 border border-gray-300 rounded-lg text-black"
               placeholder="Search by destination..."
             />
             <input
@@ -204,7 +220,7 @@ const MyLeads = () => {
               name="city"
               value={filters.city}
               onChange={handleFilterChange}
-              className="flex-1 min-w-[250px] h-10 p-4 border border-gray-300 rounded-lg"
+              className="flex-1 min-w-[250px] h-10 p-4 border border-gray-300 rounded-lg text-black"
               placeholder="Search by current city..."
             />
             <select
@@ -220,14 +236,13 @@ const MyLeads = () => {
               <option value="Couples">Couples</option>
               <option value="Senior_citizen">Senior Citizen</option>
               <option value="Others">Others</option>
-              {/* Add more tripType options based on your API data */}
             </select>
           </div>
 
           {/* Additional Dropdowns */}
           <div className="flex flex-wrap gap-4">
             <select
-              name="satatus" // Changed from status to satatus
+              name="satatus"
               value={filters.satatus}
               onChange={handleFilterChange}
               className="flex-1 min-w-[250px] p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -250,12 +265,23 @@ const MyLeads = () => {
         </form>
       </div>
 
-      <LeadsResults
-        filters={filters}
-        leads={savedLeads}
-        getLeads={getLeads}
-        totalLeads={pagination.totalDocs}
-      />
+      {isLoading ? (
+        <div className="text-center py-10">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <p className="mt-2 text-gray-600">Loading leads...</p>
+        </div>
+      ) : (
+        <LeadsResults
+          onEmptyResults={() => {
+            if (pagination.hasNextPage) {
+              getLeads(pagination.page + 1); // Fetch next page if available
+            }
+          }}
+          leads={savedLeads}
+          getLeads={getLeads}
+          totalLeads={pagination.totalDocs}
+        />
+      )}
       <div className="mt-20">
         {pagination.totalDocs > 0 && (
           <div className="max-w-6xl mx-auto mt-6 flex flex-col items-center gap-4">

@@ -21,7 +21,22 @@ export const getImageUrl = (image) => {
   return `${baseURL}/public/temp/${image}`;
 };
 
-export default api;
+// New function to fetch leads with filters
+export const fetchLeads = async (filters) => {
+  const { search, destination, city, tripType, satatus, leadType, page, limit } = filters;
+  const response = await api.get(`/api/leads`, {
+    params: {
+      search,
+      destination,
+      city,
+      tripType,
+      satatus,
+      leadType,
+      page,
+      limit,
+    },
+  });
+  return response;
+};
 
-// https://7wvxgkc8-8000.inc1.devtunnels.ms
-// https://begin-yatra-nq40.onrender.com
+export default api;

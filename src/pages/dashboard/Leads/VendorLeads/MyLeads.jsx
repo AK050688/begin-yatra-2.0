@@ -193,17 +193,7 @@ const MyLeads = () => {
 
         <form className="mt-4 space-y-4">
           {/* Main Search */}
-          <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-2">
-            <BiSearch className="text-2xl text-gray-500" />
-            <input
-              type="text"
-              name="search"
-              value={filters.search}
-              onChange={handleFilterChange}
-              placeholder="Search by Name, Email, Destination City, or Lead ID..."
-              className="w-full border-0 outline-none text-black"
-            />
-          </div>
+          
 
           {/* Filter Inputs */}
           <div className="flex flex-wrap gap-4">
